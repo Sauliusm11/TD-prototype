@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Portal
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 7482667652216324306, guid: 2d0130974e66aee41b30cb2f90a2f183, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.2768499, g: 0.16402636, b: 0.3584906, a: 1}
   m_Transform:
     e00: 1
     e01: 0

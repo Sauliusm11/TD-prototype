@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: hills
+  m_Name: Hills
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 1505198404, guid: 5d78a001fedb8684c8291d365a5f390c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

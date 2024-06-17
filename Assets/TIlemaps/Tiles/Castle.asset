@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Castle
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 7482667652216324306, guid: 1302736ca2450eb4d8f2861c4ac38258, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.124154516, g: 0.2145624, b: 0.5849056, a: 1}
   m_Transform:
     e00: 1
     e01: 0
