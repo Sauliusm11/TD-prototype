@@ -62,4 +62,9 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    public Vector3Int GetCastleLocation()
+    {
+        return new Vector3Int(castle.X,castle.Y,0);
+    }
 }
