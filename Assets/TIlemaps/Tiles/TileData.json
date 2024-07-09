@@ -1,25 +1,25 @@
 {
   "Tiles": [
     {
-      "name": "grass",
+      "name": "Grass",
       "movementSpeed": 1.0,
       "damageResistance": 1.0,
       "attackRange": 1.0
     },
     {
-      "name": "hills",
+      "name": "Hills",
       "movementSpeed": 0.8,
       "damageResistance": 1.1,
       "attackRange": 1.2
     },
     {
-      "name": "trees",
+      "name": "Trees",
       "movementSpeed": 0.9,
       "damageResistance": 1.5,
       "attackRange": 0.5
     },
     {
-      "name": "mountains",
+      "name": "Mountains",
       "movementSpeed": 0.5,
       "damageResistance": 2.0,
       "attackRange": 2.0
