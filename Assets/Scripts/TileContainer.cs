@@ -30,7 +30,6 @@ public class TileContainer
         instance = this;
         JsonParser parser = new JsonParser();
         tiles = parser.LoadTileList();
-        Debug.Log(tiles[3].name);
     }
     //public void PrintTiles()
     //{
