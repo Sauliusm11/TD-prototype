@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
-
+    public TileContainer.Tile selectedTile;
     Tilemap tilemap;
     class TileInfo
     {
@@ -58,7 +59,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(string.Format("{0}, {1}, {2}", castle.Tile, castle.X, castle.Y));
         xOffset = bounds.position.x + 0.5f;
         yOffset = bounds.position.y + 0.5f;
-        Instantiate(enemyPrefab, new Vector3(portal.X +xOffset, portal.Y + yOffset, 0), new Quaternion());//+- 0.5f to center the enemy on the tile
+        Instantiate(enemyPrefab, new Vector3(portal.X + xOffset, portal.Y + yOffset, 0), new Quaternion());//+- 0.5f to center the enemy on the tile
         Debug.Log(tilemap.CellToWorld(new Vector3Int(portal.X, portal.Y, 0)));
 
         TileContainer tileContainer = TileContainer.getInstance();
@@ -69,7 +70,14 @@ public class GameManager : MonoBehaviour
     {
         
     }
-
+    public void SetSelectedTile(TileContainer.Tile selection)
+    {
+        selectedTile = selection;
+    }
+    public TileContainer.Tile GetSelectedTile()
+    {
+        return selectedTile;
+    }
     public Vector3 GetCastleLocation()
     {
         return new Vector3(castle.X + xOffset, castle.Y + yOffset, 0);
