@@ -48,15 +48,14 @@ public class TileSelectionHandler : MonoBehaviour
         {
             if (tile.name.Equals(selection.name))
             {
-                Debug.Log(tile.name);
                 return tile;
             }
         }
         //Removal
         return null;
     }
-    //public List<Tile> GetTileList()
-    //{
-    //    return Tiles;
-    //}
+    public List<Tile> GetTileList()
+    {
+        return Tiles;
+    }
 }

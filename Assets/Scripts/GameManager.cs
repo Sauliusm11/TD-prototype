@@ -7,6 +7,15 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
+    public enum State { Saving, Loading, Playing};
+    State currentState;
+    [SerializeField]
+    GameObject saveConfirmPanel;
+    [SerializeField]
+    GameObject loadConfirmPanel;
+    JsonParser parser;
+
+    [HideInInspector]
     public TileContainer.Tile selectedTile;
     Tilemap tilemap;
     class TileInfo
@@ -32,6 +41,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SwitchState(State.Playing);
+        parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         tilemap.CompressBounds();
         BoundsInt bounds = tilemap.cellBounds;
@@ -69,6 +80,75 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+    void SwitchState(State newState)
+    {
+        EndState();
+        BeginState(newState);
+    }
+    void BeginState(State newState)
+    {
+        switch (newState)
+        {
+            case State.Saving:
+                saveConfirmPanel.SetActive(true);
+                break;
+            case State.Loading:
+                loadConfirmPanel.SetActive(true);
+                break;
+            case State.Playing:
+                break;
+            default:
+                break;
+        }
+        currentState = newState;
+    }
+    void EndState()
+    {
+        switch (currentState)
+        {
+            case State.Saving:
+                saveConfirmPanel.SetActive(false);
+                break;
+            case State.Loading:
+                loadConfirmPanel.SetActive(false);
+                break;
+            case State.Playing:
+                break;
+            default:
+                break;
+        }
+    }
+    public void CloseFilePrompt()
+    {
+        if (currentState == State.Saving || currentState == State.Loading)
+        {
+            SwitchState(State.Playing);
+        }
+    }
+    public void StartSaving()
+    {
+        if(currentState != State.Saving)
+        {
+            SwitchState(State.Saving);
+        }
+    }
+    public void ConfirmSaving()
+    {
+        parser.SaveLevelTiles();
+        CloseFilePrompt();
+    }
+    public void StartLoading()
+    {
+        if (currentState != State.Loading)
+        {
+            SwitchState(State.Loading);
+        }
+    }
+    public void ConfirmLoading()
+    {
+        parser.LoadLevelTiles();
+        CloseFilePrompt();
     }
     public void SetSelectedTile(TileContainer.Tile selection)
     {

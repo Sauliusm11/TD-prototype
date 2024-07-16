@@ -28,7 +28,7 @@ public class TileContainer
     TileContainer()
     {
         instance = this;
-        JsonParser parser = new JsonParser();
+        JsonParser parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         tiles = parser.LoadTileList();
     }
     //public void PrintTiles()
