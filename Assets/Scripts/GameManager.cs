@@ -43,35 +43,35 @@ public class GameManager : MonoBehaviour
     {
         SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
-        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        tilemap.CompressBounds();
-        BoundsInt bounds = tilemap.cellBounds;
-        TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-        for (int x = 0; x < bounds.size.x; x++)
-        {
-            for (int y = 0; y < bounds.size.y; y++)
-            {
-                TileBase tile = allTiles[x + y * bounds.size.x];
-                if (tile != null)
-                {
-                    if (tile.name.Contains("Portal"))
-                    {
-                        portal = new TileInfo(x,y,tile);
-                    }
-                    if (tile.name.Contains("Castle"))
-                    {
-                        castle = new TileInfo(x, y, tile);
-                    }
+        //tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        //tilemap.CompressBounds();
+        //BoundsInt bounds = tilemap.cellBounds;
+        //TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
+        //for (int x = 0; x < bounds.size.x; x++)
+        //{
+        //    for (int y = 0; y < bounds.size.y; y++)
+        //    {
+        //        TileBase tile = allTiles[x + y * bounds.size.x];
+        //        if (tile != null)
+        //        {
+        //            if (tile.name.Contains("Portal"))
+        //            {
+        //                portal = new TileInfo(x,y,tile);
+        //            }
+        //            if (tile.name.Contains("Castle"))
+        //            {
+        //                castle = new TileInfo(x, y, tile);
+        //            }
 
-                }
-            }
-        }
-        Debug.Log(string.Format("{0}, {1}, {2}",portal.Tile, portal.X, portal.Y));
-        Debug.Log(string.Format("{0}, {1}, {2}", castle.Tile, castle.X, castle.Y));
-        xOffset = bounds.position.x + 0.5f;
-        yOffset = bounds.position.y + 0.5f;
-        Instantiate(enemyPrefab, new Vector3(portal.X + xOffset, portal.Y + yOffset, 0), new Quaternion());//+- 0.5f to center the enemy on the tile
-        Debug.Log(tilemap.CellToWorld(new Vector3Int(portal.X, portal.Y, 0)));
+        //        }
+        //    }
+        //}
+        //Debug.Log(string.Format("{0}, {1}, {2}",portal.Tile, portal.X, portal.Y));
+        //Debug.Log(string.Format("{0}, {1}, {2}", castle.Tile, castle.X, castle.Y));
+        //xOffset = bounds.position.x + 0.5f;
+        //yOffset = bounds.position.y + 0.5f;
+        //Instantiate(enemyPrefab, new Vector3(portal.X + xOffset, portal.Y + yOffset, 0), new Quaternion());//+- 0.5f to center the enemy on the tile
+        //Debug.Log(tilemap.CellToWorld(new Vector3Int(portal.X, portal.Y, 0)));
 
         TileContainer tileContainer = TileContainer.getInstance();
     }

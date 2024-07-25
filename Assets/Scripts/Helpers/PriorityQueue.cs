@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //Made using https://www.geeksforgeeks.org/priority-queue-using-binary-heap/
@@ -75,5 +76,9 @@ public class PriorityQueue<T> where T : IComparable<T>
     public int Count()
     {
         return data.Count;
+    }
+    public bool Contains(T item)
+    {
+        return data.Contains(item);
     }
 }

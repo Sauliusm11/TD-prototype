@@ -44,9 +44,9 @@ public class TileContainer
     public class Tile
     {
         public string name;
-        public double movementSpeed;
-        public double damageResistance;
-        public double attackRange;
+        public float movementSpeed;
+        public float damageResistance;
+        public float attackRange;
 
         public Tile(string name, float movementSpeed, float damageResistance, float attackRange)
         {

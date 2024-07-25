@@ -33,6 +33,7 @@ public class JsonParser : MonoBehaviour
 
     Tilemap tilemap;
     TileSelectionHandler tileSelectionHandler;
+    PathfindingManager pathfindingManager;
     //Text input fields for filenames 
     //Maybe these should be handled by gamemanager?
     TMP_InputField saveFileInputField;
@@ -47,6 +48,7 @@ public class JsonParser : MonoBehaviour
         loadFileInputField = loadFilePrompt.GetComponentInChildren<TMP_InputField>();
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
     }
     public void SaveLevelTiles()
     {
@@ -110,6 +112,7 @@ public class JsonParser : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(savedTiles.x[i], savedTiles.y[i]), null);
             }
         }
+        pathfindingManager.LoadLevelTileList(tilemap.GetTilesBlock(bounds), bounds.size);
     }
 
     public List<TileContainer.Tile> LoadTileList() 
