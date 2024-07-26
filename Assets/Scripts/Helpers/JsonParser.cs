@@ -79,9 +79,13 @@ public class JsonParser : MonoBehaviour
     }
     public void LoadLevelTiles()
     {
-        string filename = loadFileInputField.text + ".json";
-        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename);
-        SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
+        string filename = loadFileInputField.text;
+        TextAsset file = Resources.Load("Levels/" + filename) as TextAsset;
+        SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
+        //string filename = loadFileInputField.text + ".json";
+        //string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename);
+        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
+
         List<Tile> Tiles = tileSelectionHandler.GetTileList();
         //Clear out current level
         tilemap.CompressBounds();
@@ -118,8 +122,13 @@ public class JsonParser : MonoBehaviour
     public List<TileContainer.Tile> LoadTileList() 
     {
         //return File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json"/*filename*/);
-        string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json"/*filename*/);
-        list = JsonUtility.FromJson<TileList>(json);
+
+        //string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json"/*filename*/);
+        //list = JsonUtility.FromJson<TileList>(json); 
+        
+        TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData"/*filename*/) as TextAsset;
+        list = JsonUtility.FromJson<TileList>(file.ToString());
+
         List<TileContainer.Tile> tiles = new List<TileContainer.Tile>();
         foreach (TileInfo tileInfo in list.Tiles) 
         {

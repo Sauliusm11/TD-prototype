@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static JsonParser;
 
 public class PathfindingManager : MonoBehaviour
 {
@@ -110,6 +107,7 @@ public class PathfindingManager : MonoBehaviour
             }
         }
         tilesSize = size;
+        ResetFlags();
         StartCoroutine(PreparePathFinding());
         //
     }
