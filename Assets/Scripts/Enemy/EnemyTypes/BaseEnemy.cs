@@ -7,6 +7,7 @@ using UnityEngine;
 public class BaseEnemy : MonoBehaviour
 {
     EnemyPathFinding pathFinder;
+    //Stack<WorldNode> path;
     Stack<WorldNode> path;
     // Start is called before the first frame update
     void Start()
@@ -27,7 +28,12 @@ public class BaseEnemy : MonoBehaviour
     /// <returns></returns>
     IEnumerator FollowPath()
     {
-        while (path.Count > 0) 
+        //for (int i = 0; i < path.Count; i++) 
+        //{
+        //    WorldNode node = path[i];
+        //    yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()));
+        //}
+        while (path.Count > 0)
         {
             WorldNode node = path.Pop();
             Debug.Log(path.Count);

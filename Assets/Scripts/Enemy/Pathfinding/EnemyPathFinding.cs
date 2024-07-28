@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 using UnityEngine.Tilemaps;
 /// <summary>
 /// Pathfinding class of the enemies with no movement speed changes
@@ -17,6 +15,7 @@ public class EnemyPathFinding : MonoBehaviour
     Vector3 goTo;
     Node Target;
     Stack<WorldNode> path = new Stack<WorldNode>();
+    WorldNode[] pathArray;
     // Start is called before the first frame update
     void Start()
     {
@@ -169,7 +168,9 @@ public class EnemyPathFinding : MonoBehaviour
             currentNode = nodes[current];
             path.Push(pathfindingManager.ConvertToWorldNode(currentNode));
         }
-        pathfindingManager.PathfinderFinished(flagIndex);
+        //pathArray = new WorldNode[path.Count];
+        //path.CopyTo(pathArray, 0);
+        //pathfindingManager.PathfinderFinished(flagIndex);
     }
     /// <summary>
     /// Called by the enemy class to recive the path
@@ -177,6 +178,7 @@ public class EnemyPathFinding : MonoBehaviour
     /// <returns>A copy of the path Stack</returns>
     public Stack<WorldNode> GetPath()
     {
+        //return pathArray.AsReadOnlyList();
         return Utility.CloneStack(path);
     }
 }
