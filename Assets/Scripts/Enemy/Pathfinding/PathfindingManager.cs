@@ -147,7 +147,7 @@ public class PathfindingManager : MonoBehaviour
     }
     IEnumerator PreparePathFinding()
     {
-        //Need to work out how to do the wait for all thing once there are more pathfinders
+        ResetFlags();
         StartCoroutine(baseEnemyPathFinder.CalculatePath(Nodes,start,target,tilesSize,0));
         yield return null;
     }
