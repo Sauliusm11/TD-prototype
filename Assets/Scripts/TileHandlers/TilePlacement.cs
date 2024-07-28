@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-
+/// <summary>
+/// Class responsible for tile placement, attached to the grid on which the tiles will be placed
+/// </summary>
 public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
     Tilemap tilemap;
@@ -17,22 +19,33 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         selectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    /// <summary>
+    /// Called when the grid is clicked (references do not show up, it is working)
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerClick(PointerEventData eventData)
     {
         PlaceTile(eventData.pointerCurrentRaycast.worldPosition);
     }
-    public void PlaceTile(Vector3 position)
+    /// <summary>
+    /// Called when mouse is being held and dragged on the grid allowing for painting (references do not show up, it is working)
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnDrag(PointerEventData eventData)
+    {
+        PlaceTile(eventData.pointerCurrentRaycast.worldPosition);
+    }
+    /// <summary>
+    /// Places the selected tile on mouse location(if it is not on UI).
+    /// Called by the drag and click handlers
+    /// </summary>
+    /// <param name="position"></param>
+    void PlaceTile(Vector3 position)
     {
         //Build eventData from Input pos;
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = Input.mousePosition;
-        if (!PointerOverUI(eventData))
+        if (!PointerOverUI(eventData))//Do not place if pointer is on UI
         {
             Vector3Int cellPosition = tilemap.WorldToCell(position);
             TileContainer.Tile selection = manager.GetSelectedTile();
@@ -40,6 +53,11 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             tilemap.SetTile(cellPosition, tile);
         }
     }
+    /// <summary>
+    /// Checks if pointer is hovering over a UI object
+    /// </summary>
+    /// <param name="eventData"></param>
+    /// <returns>True if it is</returns>
     bool PointerOverUI(PointerEventData eventData)
     {
         List<RaycastResult> raycastResults = new List<RaycastResult>();
@@ -54,8 +72,5 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         }
         return false;
     }
-    public void OnDrag(PointerEventData eventData)
-    {
-        PlaceTile(eventData.pointerCurrentRaycast.worldPosition);
-    }
+
 }

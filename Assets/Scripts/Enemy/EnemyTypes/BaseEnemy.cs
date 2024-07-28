@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Class for the basic movement enemy type (might become abstract later :p)
+/// </summary>
 public class BaseEnemy : MonoBehaviour
 {
     EnemyPathFinding pathFinder;
@@ -19,15 +21,26 @@ public class BaseEnemy : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Move the enemy one tile at a time along the path
+    /// </summary>
+    /// <returns></returns>
     IEnumerator FollowPath()
     {
         while (path.Count > 0) 
         {
             WorldNode node = path.Pop();
+            Debug.Log(path.Count);
             yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()));
         }
         yield return null;
     }
+    /// <summary>
+    /// Increment the movement of the enemy to a given world space
+    /// </summary>
+    /// <param name="goTo">End position of the enemy</param>
+    /// <param name="speed">Speed at which the enemy 'walks'</param>
+    /// <returns></returns>
     IEnumerator MoveTo(Vector3 goTo, float speed)
     {
         GameObject enemy = gameObject;

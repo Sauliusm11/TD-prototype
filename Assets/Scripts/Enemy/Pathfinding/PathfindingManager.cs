@@ -5,36 +5,20 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static JsonParser;
-
+/// <summary>
+/// Pathfinder manager acting as a mediator between all different pathfinding classes 
+/// </summary>
 public class PathfindingManager : MonoBehaviour
 {
     EnemyPathFinding baseEnemyPathFinder;
-    TileBase[] Tiles;
     Vector3Int tilesSize;
     TileContainer tileContainer;
     Node[] Nodes;
     Node target;
     Node start;
-    class TileInfoInternal
-    {
-        public int X;
-        public int Y;
-        public TileBase Tile;
-
-        public TileInfoInternal(int x, int y, TileBase tile)
-        {
-            X = x;
-            Y = y;
-            Tile = tile;
-        }
-    }
-    Tilemap tilemap;
     List<bool> PathfinderFlags = new List<bool>();
 
-    GameManager gameManager;
-    //Should get these from gamemanager
-    TileInfoInternal portal;
-    TileInfoInternal castle;
+    Tilemap tilemap;
     float xOffset;
     float yOffset;
     [SerializeField]
@@ -45,50 +29,28 @@ public class PathfindingManager : MonoBehaviour
         tileContainer = TileContainer.getInstance();
         baseEnemyPathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         PathfinderFlags.Add(false);
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         tilemap.CompressBounds();
         BoundsInt bounds = tilemap.cellBounds;
-        TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-        for (int x = 0; x < bounds.size.x; x++)
-        {
-            for (int y = 0; y < bounds.size.y; y++)
-            {
-                TileBase tile = allTiles[x + y * bounds.size.x];
-                if (tile != null)
-                {
-                    if (tile.name.Contains("Portal"))
-                    {
-                        portal = new TileInfoInternal(x, y, tile);
-                    }
-                    if (tile.name.Contains("Castle"))
-                    {
-                        castle = new TileInfoInternal(x, y, tile);
-                    }
-
-                }
-            }
-        }
         xOffset = bounds.position.x + 0.5f;
         yOffset = bounds.position.y + 0.5f;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /// <summary>
+    /// Builds a 'graph' using the Node class from the tiles of the loaded level.
+    /// And starts the prepare pathfinding coroutine.
+    /// Should only be called on loading a new level
+    /// </summary>
+    /// <param name="tiles">Tile array of the level</param>
+    /// <param name="size">X and Y sizes of the array(needed to keep track of 2 dimensions in a 1D array)</param>
     public void LoadLevelTileList(TileBase[] tiles,Vector3Int size)
     {
-        //Do I even need to store tiles?
-        Tiles = tiles;
         Nodes = new Node[tiles.Length];
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
             {
-                TileBase tile = Tiles[x + y * size.x];
+                TileBase tile = tiles[x + y * size.x];
                 Node node = new Node(x,y,Mathf.Infinity);
                 foreach (TileContainer.Tile tileInfo in tileContainer.tiles)
                 {
@@ -96,8 +58,8 @@ public class PathfindingManager : MonoBehaviour
                     {
                         node = new Node(x,y,tileInfo.movementSpeed);
                     }
-
                 }
+                //Reminder: this only really works with one castle and one portal
                 if (tile.name.Contains("Portal"))
                 {
                     start = new Node(x, y, 1);
@@ -111,15 +73,23 @@ public class PathfindingManager : MonoBehaviour
         }
         tilesSize = size;
         StartCoroutine(PreparePathFinding());
-        //
     }
-
+    /// <summary>
+    /// Convert a Node from the grid system to the WorldNode
+    /// </summary>
+    /// <param name="node"></param>
+    /// <returns></returns>
     public WorldNode ConvertToWorldNode(Node node)
     {
         Vector3 position = tilemap.CellToWorld(new Vector3Int(node.GetX(), node.GetY()));
-        WorldNode newNode = new WorldNode(position.x+xOffset, position.y+yOffset, node.GetMovementSpeedCoef());
+        WorldNode newNode = new WorldNode(position.x + xOffset, position.y + yOffset, node.GetMovementSpeedCoef());
         return newNode;
     }
+    /// <summary>
+    /// Called by each individual pathfinder to indicate that it has finished the calculation.
+    /// If all flags are true, calls the method responsible for the start of the wave
+    /// </summary>
+    /// <param name="index">Index of the flag assigned to the pathfinder</param>
     public void PathfinderFinished(int index)
     {
         PathfinderFlags[index] = true;
@@ -135,9 +105,12 @@ public class PathfindingManager : MonoBehaviour
         if (goodToGo)
         { 
             //Place wave starting call here
-            Instantiate(enemyPrefab, new Vector3(portal.X + xOffset, portal.Y + yOffset, 0), new Quaternion());//+- 0.5f to center the enemy on the tile
+            Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
         }
     }
+    /// <summary>
+    /// Resets all readiness flags to false
+    /// </summary>
     void ResetFlags()
     {
         for (int i = 0; i < PathfinderFlags.Count; i++)
@@ -145,6 +118,10 @@ public class PathfindingManager : MonoBehaviour
             PathfinderFlags[i] = false;
         } 
     }
+    /// <summary>
+    /// Does all the necessary preparations and signals each pathfinder to recalculate the path.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator PreparePathFinding()
     {
         ResetFlags();

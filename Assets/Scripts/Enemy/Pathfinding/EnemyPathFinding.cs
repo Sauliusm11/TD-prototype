@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Networking.Types;
 using UnityEngine.Tilemaps;
-
+/// <summary>
+/// Pathfinding class of the enemies with no movement speed changes
+/// </summary>
 public class EnemyPathFinding : MonoBehaviour
 {
     GameManager gameManager;
@@ -21,16 +24,18 @@ public class EnemyPathFinding : MonoBehaviour
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /// <summary>
+    /// Calculate the path using A*
+    /// </summary>
+    /// <param name="nodes">All available nodes</param>
+    /// <param name="start">Starting node</param>
+    /// <param name="target">End node</param>
+    /// <param name="size">X and Y sizes of the array(needed to keep track of 2 dimensions in a 1D array)</param>
+    /// <param name="flagIndex">Index of this specific pathfinder flag assgined by the manager</param>
+    /// <returns></returns>
     public IEnumerator CalculatePath(Node[] nodes,Node start, Node target, Vector3Int size,int flagIndex)
     {
         Target = target;
-        //target = gameManager.GetCastleLocation();
         Vector3 current = transform.position;
         PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>();
         int[] cameFrom = new int[nodes.Length];
@@ -85,78 +90,23 @@ public class EnemyPathFinding : MonoBehaviour
             
         }
         yield return null;
-        
-
-        //goTo = current;
-        //int counter = 0;
-        ////Cool, I have to implement a priority queue myself :)
-        ////Actually build it in PathfindingManager
-        //while (Mathf.Abs(target.x - current.x) + Mathf.Abs(target.y - current.y) > 0 && counter < 1000000)
-        //{
-        //    counter++;
-        //    if (Utility.Equals(target.x, current.x)) 
-        //    {
-        //        if (target.y > current.y)
-        //        {
-        //            goTo.y += 1;
-        //        }
-        //        else
-        //        {
-        //            goTo.y -= 1;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (Utility.Equals(target.y, current.y)) 
-        //        {
-        //            if (target.x > current.x)
-        //            {
-        //                goTo.x += 1;
-        //            }
-        //            else
-        //            {
-        //                goTo.x -= 1;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if (Mathf.Abs(target.x - current.x) > Mathf.Abs(target.y - current.y))
-        //            {
-        //                if (target.x > current.x)
-        //                {
-        //                    goTo.x += 1;
-        //                }
-        //                else
-        //                {
-        //                    goTo.x -= 1;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                if (target.y > current.y)
-        //                {
-        //                    goTo.y += 1;
-        //                }
-        //                else
-        //                {
-        //                    goTo.y -= 1;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    //TODO: Call moveTo and wait for it
-        //    //Debug.Log(string.Format("current: {0}, goto: {1}, target: {2}", current, goTo, target));
-        //    yield return StartCoroutine(MoveTo(goTo, 2));
-        //    current = transform.position;
-        //    goTo = current;
-        //    //Debug.Log(string.Format("Current: {0}", current));
-        //}
     }
-    //Oh, I need to calculate it in the fake(tile) coordinate system?
+
+    /// <summary>
+    /// Calculates the distance to target from given node(ignoring costs, just pure distance)
+    /// </summary>
+    /// <param name="node"></param>
+    /// <returns></returns>
     int CalculateDistanceToTarget(Node node)
     {
         return Mathf.Abs(node.GetX() - Target.GetX()) + Mathf.Abs(node.GetY() - Target.GetY());
     }
+    /// <summary>
+    /// Gets all the neighbouring node indexes into a list to iterate through
+    /// </summary>
+    /// <param name="index">Index of the current node</param>
+    /// <param name="size">X and Y sizes of the array(needed to keep track of 2 dimensions in a 1D array)</param>
+    /// <returns></returns>
     List<int> GetNeighbourIndexes(int index, Vector3Int size)
     {
         List<int> indexes = new List<int>();
@@ -198,6 +148,13 @@ public class EnemyPathFinding : MonoBehaviour
         }
         return indexes;
     }
+    /// <summary>
+    /// Once the pathfinding algorithm is finished construct a path using WorldNodes and signal the manager.
+    /// </summary>
+    /// <param name="nodes">All available nodes</param>
+    /// <param name="cameFrom">Array of indexes pointing to the previous node in the path</param>
+    /// <param name="current">Current(final) node index</param>
+    /// <param name="flagIndex">Index of this specific pathfinder flag assgined by the manager</param>
     void ReconstructPath(Node[] nodes, int[] cameFrom, int current,int flagIndex)
     {
         if(path.Count > 0) 
@@ -214,14 +171,12 @@ public class EnemyPathFinding : MonoBehaviour
         }
         pathfindingManager.PathfinderFinished(flagIndex);
     }
-    //WorldNode ConvertToWorldNode(Node node)
-    //{
-    //    Vector3 position = tilemap.CellToWorld(new Vector3Int(node.GetX(), node.GetY()));
-    //    WorldNode newNode = new WorldNode(position.x,position.y,node.GetMovementSpeedCoef()); 
-    //    return newNode; 
-    //}
+    /// <summary>
+    /// Called by the enemy class to recive the path
+    /// </summary>
+    /// <returns>A copy of the path Stack</returns>
     public Stack<WorldNode> GetPath()
     {
-        return path;
+        return Utility.CloneStack(path);
     }
 }

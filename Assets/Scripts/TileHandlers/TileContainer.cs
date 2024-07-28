@@ -2,14 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+/// <summary>
+/// Singleton holding information about the different in game tile types
+/// </summary>
 public class TileContainer 
 {
     private static TileContainer instance;
     private static object threadLock = new object();
 
-    //public List<Tile> tiles = new List<Tile>();
     public List<Tile> tiles = new List<Tile>();
 
+    /// <summary>
+    /// (Should be) The only way to gain access to the TileContainer 
+    /// </summary>
+    /// <returns></returns>
     public static TileContainer getInstance()
     {
 
@@ -31,15 +37,17 @@ public class TileContainer
         JsonParser parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         tiles = parser.LoadTileList();
     }
-    //public void PrintTiles()
-    //{
-    //    this.tiles
-    //}
+    /// <summary>
+    /// List of tile types used by jsonParser to gather and return values of each tile type
+    /// </summary>
     [System.Serializable]
     public class TileList
     {
         public List<Tile> tiles = new List<Tile>();
     }
+    /// <summary>
+    /// Tile class(not built-in) holding the stats of a tile type
+    /// </summary>
     [System.Serializable]
     public class Tile
     {

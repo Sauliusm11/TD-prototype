@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+/// <summary>
+/// Node using the tilemap grid coordinate system.
+/// Used to calculate the path for each enemy type
+/// </summary>
 public class Node : IComparable<Node>
 {
     int X, Y;
@@ -29,6 +32,10 @@ public class Node : IComparable<Node>
     {
         return MovementSpeedCoef;
     }
+    /// <summary>
+    /// Sets the current weight of the node(length of path to the node + movement speed coeficient)
+    /// </summary>
+    /// <param name="newWeight"></param>
     public void SetCurrentWeight(float newWeight)
     {
         currentWeight = newWeight;
@@ -37,21 +44,4 @@ public class Node : IComparable<Node>
     {
         return currentWeight.CompareTo(other.currentWeight);
     }
-    //TileContainer tileContainer;
-    //List<Tile> tiles = new List<Tile>();
-
-    //public void BuildGraph(List<Tile> tiles)
-    //{
-    //    foreach (Tile tile in tiles) 
-    //    {
-    //        foreach (TileContainer.Tile tileInfo in tileContainer.tiles)
-    //        {
-    //            if (tileInfo.name.Equals(tile.name))
-    //            {
-    //                tiles.Add(tile);//??
-    //            }
-    //        }
-    //    }
-
-    //}
 }

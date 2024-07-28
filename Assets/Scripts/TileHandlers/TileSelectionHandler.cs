@@ -5,7 +5,10 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.Tilemaps;
 using System;
-
+/// <summary>
+/// Class responsible for selecting tiles to place in the level editor
+/// (Can probably use for towers too)
+/// </summary>
 public class TileSelectionHandler : MonoBehaviour
 {
     GameManager manager;
@@ -19,12 +22,11 @@ public class TileSelectionHandler : MonoBehaviour
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    /// <summary>
+    /// Method called by each of the tile selection buttons.
+    /// Sets the currently selected stored in the GameManager.
+    /// (References do not show up, it is working)
+    /// </summary>
     public void SelectSquare()
     {
         if (tileContainer == null)
@@ -41,7 +43,11 @@ public class TileSelectionHandler : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Method called when placing the tile, should only be called by TilePlacement
+    /// </summary>
+    /// <param name="selection">The selected tile type</param>
+    /// <returns>Actual tile object to place in the grid</returns>
     public Tile GetTileFromSelection(TileContainer.Tile selection)
     {
         foreach (Tile tile in Tiles)
@@ -54,6 +60,10 @@ public class TileSelectionHandler : MonoBehaviour
         //Removal
         return null;
     }
+    /// <summary>
+    /// Called by methods loading the level (should be only JsonParser)
+    /// </summary>
+    /// <returns>List of all unique tile objects</returns>
     public List<Tile> GetTileList()
     {
         return Tiles;

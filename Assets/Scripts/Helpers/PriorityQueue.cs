@@ -13,6 +13,10 @@ public class PriorityQueue<T> where T : IComparable<T>
     {
         data = new List<T>();
     }
+    /// <summary>
+    /// Add an item and re-structure the queue if needed to keep the priorities sorted
+    /// </summary>
+    /// <param name="item"></param>
     public void Enqueue(T item)
     {
         // item Insertion
@@ -33,6 +37,10 @@ public class PriorityQueue<T> where T : IComparable<T>
             currentIndex = parentIndex;
         }
     }
+    /// <summary>
+    /// Remove the first element and re-structure the queue if needed to keep the priorities sorted
+    /// </summary>
+    /// <returns>The removed element</returns>
     public T Dequeue()
     {
         // deleting top element of pq
@@ -69,6 +77,10 @@ public class PriorityQueue<T> where T : IComparable<T>
         }
         return firstItem;
     }
+    /// <summary>
+    /// Look at the first element without removing it
+    /// </summary>
+    /// <returns>The first element</returns>
     public T Peek()
     {
         return data[0];
