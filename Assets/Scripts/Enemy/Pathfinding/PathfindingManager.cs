@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static JsonParser;
 /// <summary>
 /// Pathfinder manager acting as a mediator between all different pathfinding classes 
 /// </summary>
@@ -17,6 +14,7 @@ public class PathfindingManager : MonoBehaviour
     Node target;
     Node start;
     List<bool> PathfinderFlags = new List<bool>();
+    private static object threadLock = new object();
 
     Tilemap tilemap;
     float xOffset;
@@ -92,20 +90,23 @@ public class PathfindingManager : MonoBehaviour
     /// <param name="index">Index of the flag assigned to the pathfinder</param>
     public void PathfinderFinished(int index)
     {
-        PathfinderFlags[index] = true;
-        bool goodToGo = true;
-        for (int i = 0; i < PathfinderFlags.Count; i++)
+        lock (threadLock)
         {
-            if (!PathfinderFlags[i])
+            PathfinderFlags[index] = true;
+            bool goodToGo = true;
+            for (int i = 0; i < PathfinderFlags.Count; i++)
             {
-                goodToGo = false;
-                break;
+                if (!PathfinderFlags[i])
+                {
+                    goodToGo = false;
+                    break;
+                }
             }
-        }
-        if (goodToGo)
-        { 
-            //Place wave starting call here
-            Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
+            if (goodToGo)
+            {
+                //Place wave starting call here
+                Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
+            }
         }
     }
     /// <summary>
@@ -113,9 +114,12 @@ public class PathfindingManager : MonoBehaviour
     /// </summary>
     void ResetFlags()
     {
-        for (int i = 0; i < PathfinderFlags.Count; i++)
+        lock (threadLock)
         {
-            PathfinderFlags[i] = false;
+            for (int i = 0; i < PathfinderFlags.Count; i++)
+            {
+                PathfinderFlags[i] = false;
+            }
         } 
     }
     /// <summary>
