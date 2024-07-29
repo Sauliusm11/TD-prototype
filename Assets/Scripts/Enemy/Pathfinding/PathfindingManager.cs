@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,10 +30,6 @@ public class PathfindingManager : MonoBehaviour
         PathfinderFlags.Add(false);
 
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        tilemap.CompressBounds();
-        BoundsInt bounds = tilemap.cellBounds;
-        xOffset = bounds.position.x + 0.5f;
-        yOffset = bounds.position.y + 0.5f;
     }
     /// <summary>
     /// Builds a 'graph' using the Node class from the tiles of the loaded level.
@@ -69,7 +66,33 @@ public class PathfindingManager : MonoBehaviour
                 Nodes[x + y * size.x] = node;
             }
         }
+
+        tilemap.CompressBounds();
+        BoundsInt bounds = tilemap.cellBounds;
+        xOffset = bounds.position.x + 0.5f;
+        yOffset = bounds.position.y + 0.5f;
+
         tilesSize = size;
+    }
+    public void AddTowerToNode(Vector3Int position)
+    {
+        //position = new Vector3Int(position.x + 9, position.y + 5, position.z);
+        //Debug.Log(position);
+        //Debug.Log(xOffset);
+        //Debug.Log(yOffset);
+        //Debug.Log(tilesSize.x);
+        //Debug.Log(Mathf.CeilToInt(xOffset));
+        //Debug.Log(position.x - Mathf.CeilToInt(xOffset) + (position.y - Mathf.CeilToInt(yOffset)) * tilesSize.x);
+        Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(true);
+    }
+    public void RemoveTowerFromNode(Vector3Int position)
+    {
+        Nodes[position.x + position.y * tilesSize.x].SetHasTower(false);
+    }
+    public void CallWave()
+    {
+        Debug.Log("Wave called");
+        //TODO: add checks to prevent spamming
         StartCoroutine(PreparePathFinding());
     }
     /// <summary>

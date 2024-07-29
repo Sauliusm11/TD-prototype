@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour
         parser.LoadLevelTiles(filename);
         CloseFilePrompt();
     }
+    public void ConfirmLoading(string filename)
+    {
+        parser.LoadLevelTiles(filename);
+        CloseFilePrompt();
+    }
     /// <summary>
     /// Stores the selected tile internally for the TilePlacement to access 
     /// </summary>

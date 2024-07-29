@@ -46,6 +46,7 @@ public class TowerSelectionHandler : MonoBehaviour
     {
         foreach (GameObject tower in TowerPrefabs)
         {
+            Debug.Log(tower.name);
             if (tower.name.Equals(selection.name))
             {
                 return tower;

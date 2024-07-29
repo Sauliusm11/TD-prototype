@@ -12,6 +12,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
     Tilemap tilemap;
     GameManager manager;
+    PathfindingManager pathfindingManager;
     TileSelectionHandler tileSelectionHandler;
     TowerSelectionHandler towerSelectionHandler;
     bool devMode;
@@ -19,16 +20,14 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         devMode = false;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
-        if(tileSelectionHandler == null)
+        GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
+        if (towerManagerObject != null) 
         {
             devMode = false;
-        }
-        towerSelectionHandler = GameObject.Find("TowerSelectionManager").GetComponent<TowerSelectionHandler>();
-        if (towerSelectionHandler == null) 
-        {
-            devMode = true;
+            towerSelectionHandler = towerManagerObject.GetComponent<TowerSelectionHandler>();
         }
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
     }
@@ -76,6 +75,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                 if (tower != null)
                 {
                     Instantiate(tower, position, new Quaternion());
+                    pathfindingManager.AddTowerToNode(cellPosition);
                 }
                 //TODO: consider adding object pooling
             }

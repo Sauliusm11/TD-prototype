@@ -74,6 +74,10 @@ public class EnemyPathFinding : MonoBehaviour
             foreach (int neighbourIndex in GetNeighbourIndexes(currentIndex,size))
             {
                 float tenative_gScore = gScore[currentIndex] + Mathf.Pow((1/nodes[currentIndex].GetMovementSpeedCoef()), 2);
+                if (nodes[currentIndex].GetHasTower())
+                {
+                    tenative_gScore += 1000000000;
+                }
                 if(tenative_gScore < gScore[neighbourIndex])
                 {
                     cameFrom[neighbourIndex] = currentIndex;
@@ -168,6 +172,7 @@ public class EnemyPathFinding : MonoBehaviour
             currentNode = nodes[current];
             path.Push(pathfindingManager.ConvertToWorldNode(currentNode));
         }
+        pathfindingManager.PathfinderFinished(flagIndex);
     }
     /// <summary>
     /// Called by the enemy class to recive the path

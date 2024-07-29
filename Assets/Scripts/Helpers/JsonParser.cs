@@ -134,6 +134,7 @@ public class JsonParser : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(savedTiles.x[i], savedTiles.y[i]), null);
             }
         }
+        bounds = tilemap.cellBounds;
         pathfindingManager.LoadLevelTileList(tilemap.GetTilesBlock(bounds), bounds.size);
     }
     /// <summary>
