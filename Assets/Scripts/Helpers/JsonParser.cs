@@ -21,9 +21,30 @@ public class JsonParser : MonoBehaviour
         public float damageResistance;
         public float attackRange;
     }
-    TileList list = new TileList();
+    TileList tileList = new TileList();
     [System.Serializable]
     class SavedTiles
+    {
+        public List<int> x = new List<int>();
+        public List<int> y = new List<int>();
+        public List<string> Name = new List<string>();
+    }
+    [System.Serializable]
+    internal class TowerList
+    {
+        public List<TowerInfo> Towers = new List<TowerInfo>();
+    }
+    [System.Serializable]
+    internal class TowerInfo
+    {
+        public string name;
+        public double attackSpeed;
+        public int attackDamage;
+        public double attackRange;
+    }
+    TowerList towerList = new TowerList();
+    [System.Serializable]
+    class SavedTowers
     {
         public List<int> x = new List<int>();
         public List<int> y = new List<int>();
@@ -124,18 +145,36 @@ public class JsonParser : MonoBehaviour
     {
         //Android(and build) version
         //TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData") as TextAsset;
-        //list = JsonUtility.FromJson<TileList>(file.ToString());
+        //tileList = JsonUtility.FromJson<TileList>(file.ToString());
 
         //Editor version
         string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json");
-        list = JsonUtility.FromJson<TileList>(json);
+        tileList = JsonUtility.FromJson<TileList>(json);
 
         List<TileContainer.Tile> tiles = new List<TileContainer.Tile>();
-        foreach (TileInfo tileInfo in list.Tiles) 
+        foreach (TileInfo tileInfo in tileList.Tiles) 
         {
             TileContainer.Tile tile = new TileContainer.Tile(tileInfo.name,tileInfo.movementSpeed,tileInfo.damageResistance,tileInfo.attackRange);
             tiles.Add(tile);
         }
         return tiles;
+    }
+    public List<TowerContainer.Tower> LoadTowerList()
+    {
+        //Android(and build) version
+        //TextAsset file = Resources.Load("/Towers/" + "TowerData") as TextAsset;
+        //towerList = JsonUtility.FromJson<TowerList>(file.ToString());
+
+        //Editor version
+        string json = File.ReadAllText(Application.dataPath + "/Prefabs/Towers/" + "TowerData.json");
+        towerList = JsonUtility.FromJson<TowerList>(json);
+
+        List<TowerContainer.Tower> towers = new List<TowerContainer.Tower>();
+        foreach (TowerInfo towerInfo in towerList.Towers)
+        {
+            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange);
+            towers.Add(tower);
+        }
+        return towers;
     }
 }

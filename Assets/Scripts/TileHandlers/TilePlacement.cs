@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.PlayerLoop;
 using UnityEngine.Tilemaps;
 /// <summary>
 /// Class responsible for tile placement, attached to the grid on which the tiles will be placed
@@ -11,12 +12,24 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
     Tilemap tilemap;
     GameManager manager;
-    TileSelectionHandler selectionHandler;
+    TileSelectionHandler tileSelectionHandler;
+    TowerSelectionHandler towerSelectionHandler;
+    bool devMode;
     // Start is called before the first frame update
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        selectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
+        devMode = false;
+        tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
+        if(tileSelectionHandler == null)
+        {
+            devMode = false;
+        }
+        towerSelectionHandler = GameObject.Find("TowerSelectionManager").GetComponent<TowerSelectionHandler>();
+        if (towerSelectionHandler == null) 
+        {
+            devMode = true;
+        }
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
     }
     /// <summary>
@@ -48,9 +61,24 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         if (!PointerOverUI(eventData))//Do not place if pointer is on UI
         {
             Vector3Int cellPosition = tilemap.WorldToCell(position);
-            TileContainer.Tile selection = manager.GetSelectedTile();
-            Tile tile = selectionHandler.GetTileFromSelection(selection);
-            tilemap.SetTile(cellPosition, tile);
+            if (devMode)
+            {
+                TileContainer.Tile selection = manager.GetSelectedTile();
+                Tile tile = tileSelectionHandler.GetTileFromSelection(selection);
+                tilemap.SetTile(cellPosition, tile);
+            }
+            else 
+            {
+                TowerContainer.Tower selection = manager.GetSelectedTower();
+                GameObject tower = towerSelectionHandler.GetTowerFromSelection(selection);
+                position = tilemap.CellToWorld(cellPosition);
+                position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
+                if (tower != null)
+                {
+                    Instantiate(tower, position, new Quaternion());
+                }
+                //TODO: consider adding object pooling
+            }
         }
     }
     /// <summary>

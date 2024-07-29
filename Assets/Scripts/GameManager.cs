@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public TileContainer.Tile selectedTile;
+    [HideInInspector]
+    public TowerContainer.Tower selectedTower;
     // Start is called before the first frame update
     void Start()
     {
@@ -159,5 +161,21 @@ public class GameManager : MonoBehaviour
     public TileContainer.Tile GetSelectedTile()
     {
         return selectedTile;
+    }
+    /// <summary>
+    /// Stores the selected tile internally for the TilePlacement to access 
+    /// </summary>
+    /// <param name="selection">The new selected tile coming from TileSelectionHandler</param>
+    public void SetSelectedTower(TowerContainer.Tower selection)
+    {
+        selectedTower = selection;
+    }
+    /// <summary>
+    /// Returns the selected tile for the TilePlacement to access 
+    /// </summary>
+    /// <returns></returns>
+    public TowerContainer.Tower GetSelectedTower()
+    {
+        return selectedTower;
     }
 }

@@ -1,0 +1,10 @@
+{
+  "Towers": [
+    {
+      "name": "Cannon",
+      "attackSpeed": 0.5,
+      "attackDamage": 20,
+      "attackRange": 2.0
+    }
+  ]
+}
