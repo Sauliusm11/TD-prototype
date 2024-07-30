@@ -60,7 +60,6 @@ public class EnemyPathFinding : MonoBehaviour
             nodes[i].SetCurrentWeight(fScore[i]);
             
         }
-        Debug.Log(1000000 > float.PositiveInfinity);
         int counter = 0;
         priorityQueue.Enqueue(start);
         bool pathFound = false;
@@ -68,10 +67,6 @@ public class EnemyPathFinding : MonoBehaviour
         while(priorityQueue.Count() > 0)
         {
             counter++;
-            if(counter > 10000)
-            {
-                Debug.Log(priorityQueue.Count());
-            }
             Node currentNode = priorityQueue.Dequeue();
             int currentIndex = currentNode.GetX()+currentNode.GetY()*size.x;
             int distanceToTarget = CalculateDistanceToTarget(currentNode);
