@@ -76,7 +76,7 @@ public class EnemyPathFinding : MonoBehaviour
                 float tenative_gScore = gScore[currentIndex] + Mathf.Pow((1/nodes[currentIndex].GetMovementSpeedCoef()), 2);
                 if (nodes[currentIndex].GetHasTower())
                 {
-                    tenative_gScore += 1000000000;
+                    tenative_gScore += 1000000;
                 }
                 if(tenative_gScore < gScore[neighbourIndex])
                 {
@@ -160,13 +160,10 @@ public class EnemyPathFinding : MonoBehaviour
     /// <param name="flagIndex">Index of this specific pathfinder flag assgined by the manager</param>
     void ReconstructPath(Node[] nodes, int[] cameFrom, int current,int flagIndex)
     {
-        if(path.Count > 0) 
-        {
-            path.Clear();
-        }
+        path.Clear();    
         Node currentNode = nodes[current];
         path.Push(pathfindingManager.ConvertToWorldNode(currentNode));
-        while (cameFrom[current] > 0)
+        while (cameFrom[current] > -1)
         {
             current = cameFrom[current];
             currentNode = nodes[current];
