@@ -30,6 +30,39 @@ public class PathfindingManager : MonoBehaviour
         PathfinderFlags.Add(false);
 
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+
+
+
+        //Delete later
+        PriorityQueue<Node> queue = new PriorityQueue<Node>();
+        Node node = new Node(0, 0, 1);
+        Node node2 = new Node(1, 0, 1000000);
+        Node node3 = new Node(2, 0, 10);
+        Node node21 = new Node(1, 0, 1000000);
+        Node node22 = new Node(1, 0, 1000000);
+        Node node23 = new Node(1, 0, 1000000);
+        node.SetCurrentWeight(1);
+        queue.Enqueue(node);
+        node21.SetCurrentWeight(1000000);
+        queue.Enqueue(node21);
+        node3.SetCurrentWeight(10);
+        queue.Enqueue(node3);
+        node2.SetCurrentWeight(1000000);
+        queue.Enqueue(node2);
+        node22.SetCurrentWeight(1000000);
+        queue.Enqueue(node22);
+        node23.SetCurrentWeight(1000000);
+        queue.Enqueue(node23);
+        Node temp = queue.Dequeue();
+        Debug.Log(string.Format("Node x:{0} y{1} {2}", temp.GetX(), temp.GetY(), temp.GetMovementSpeedCoef()));
+        temp = queue.Dequeue();
+        Debug.Log(string.Format("Node x:{0} y{1} {2}", temp.GetX(), temp.GetY(), temp.GetMovementSpeedCoef()));
+        temp = queue.Dequeue();
+        Debug.Log(string.Format("Node x:{0} y{1} {2}", temp.GetX(), temp.GetY(), temp.GetMovementSpeedCoef()));
+        temp = queue.Dequeue();
+        Debug.Log(string.Format("Node x:{0} y{1} {2}", temp.GetX(), temp.GetY(), temp.GetMovementSpeedCoef()));
+        temp = queue.Dequeue();
+        Debug.Log(string.Format("Node x:{0} y{1} {2}", temp.GetX(), temp.GetY(), temp.GetMovementSpeedCoef()));
     }
     /// <summary>
     /// Builds a 'graph' using the Node class from the tiles of the loaded level.

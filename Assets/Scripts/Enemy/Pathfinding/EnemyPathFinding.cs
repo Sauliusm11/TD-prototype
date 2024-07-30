@@ -58,19 +58,39 @@ public class EnemyPathFinding : MonoBehaviour
                 fScore[i] = CalculateDistanceToTarget(nodes[i]);
             }
             nodes[i].SetCurrentWeight(fScore[i]);
+            
         }
-
+        Debug.Log(1000000 > float.PositiveInfinity);
+        int counter = 0;
         priorityQueue.Enqueue(start);
+        bool pathFound = false;
+        int targetIndex = -1;
         while(priorityQueue.Count() > 0)
         {
+            counter++;
+            if(counter > 10000)
+            {
+                Debug.Log(priorityQueue.Count());
+            }
             Node currentNode = priorityQueue.Dequeue();
             int currentIndex = currentNode.GetX()+currentNode.GetY()*size.x;
             int distanceToTarget = CalculateDistanceToTarget(currentNode);
-            if(distanceToTarget <= 0)
+            if( distanceToTarget <= 0)
+            {
+                pathFound = true;
+                targetIndex = currentIndex;
+            }
+            if(distanceToTarget <= 0 && (fScore[currentIndex] < 1000000 || priorityQueue.Count() == 0 || counter > 10000))
             {
                 ReconstructPath(nodes,cameFrom,currentIndex,flagIndex);
                 break;
             }
+            if (priorityQueue.Count() == 0 && pathFound) 
+            {
+                ReconstructPath(nodes, cameFrom, targetIndex, flagIndex);
+                break;
+            }
+
             foreach (int neighbourIndex in GetNeighbourIndexes(currentIndex,size))
             {
                 float tenative_gScore = gScore[currentIndex] + Mathf.Pow((1/nodes[currentIndex].GetMovementSpeedCoef()), 2);
@@ -80,18 +100,25 @@ public class EnemyPathFinding : MonoBehaviour
                 }
                 if(tenative_gScore < gScore[neighbourIndex])
                 {
+
                     cameFrom[neighbourIndex] = currentIndex;
                     gScore[neighbourIndex] = tenative_gScore;
                     fScore[neighbourIndex] = tenative_gScore + distanceToTarget;
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
                     if (!priorityQueue.Contains(nodes[neighbourIndex]))
                     {
+                        
                         priorityQueue.Enqueue(nodes[neighbourIndex]);
+                        if (tenative_gScore >= 1000000)
+                        {
+                            //Debug.Log(string.Format("Node x:{0} y{1} {2}", priorityQueue.Peek().GetX(), priorityQueue.Peek().GetY(), priorityQueue.Peek().GetHasTower()));
+                        }
                     }
                 }
             } 
             
         }
+        Debug.Log("Trollolololo");
         yield return null;
     }
 
