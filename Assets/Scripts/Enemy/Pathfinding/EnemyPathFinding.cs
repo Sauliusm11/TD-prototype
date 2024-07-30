@@ -85,11 +85,7 @@ public class EnemyPathFinding : MonoBehaviour
                 ReconstructPath(nodes,cameFrom,currentIndex,flagIndex);
                 break;
             }
-            if (priorityQueue.Count() == 0 && pathFound) 
-            {
-                ReconstructPath(nodes, cameFrom, targetIndex, flagIndex);
-                break;
-            }
+
 
             foreach (int neighbourIndex in GetNeighbourIndexes(currentIndex,size))
             {
@@ -115,8 +111,13 @@ public class EnemyPathFinding : MonoBehaviour
                         }
                     }
                 }
-            } 
-            
+            }
+            if (priorityQueue.Count() == 0 && pathFound)
+            {
+                ReconstructPath(nodes, cameFrom, targetIndex, flagIndex);
+                break;
+            }
+
         }
         Debug.Log("Trollolololo");
         yield return null;
