@@ -15,12 +15,14 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     PathfindingManager pathfindingManager;
     TileSelectionHandler tileSelectionHandler;
     TowerSelectionHandler towerSelectionHandler;
+    Money moneyHandler;
     bool devMode;
     // Start is called before the first frame update
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
+        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         devMode = false;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
@@ -68,16 +70,22 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             }
             else 
             {
-                TowerContainer.Tower selection = manager.GetSelectedTower();
-                GameObject tower = towerSelectionHandler.GetTowerFromSelection(selection);
-                position = tilemap.CellToWorld(cellPosition);
-                position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
-                if (tower != null)
+                if (!PointerOverTower(eventData))
                 {
-                    Instantiate(tower, position, new Quaternion());
-                    pathfindingManager.AddTowerToNode(cellPosition);
+                    TowerContainer.Tower selection = manager.GetSelectedTower();
+                    if (moneyHandler.RemoveMoney(selection.cost))
+                    {
+                        GameObject tower = towerSelectionHandler.GetTowerFromSelection(selection);
+                        position = tilemap.CellToWorld(cellPosition);
+                        position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
+                        if (tower != null)
+                        {
+                            Instantiate(tower, position, new Quaternion());
+                            pathfindingManager.AddTowerToNode(cellPosition);
+                        }
+                        //TODO: consider adding object pooling
+                    }
                 }
-                //TODO: consider adding object pooling
             }
         }
     }
@@ -94,6 +102,26 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         {
             RaycastResult curRaysastResult = raycastResults[index];
             if (curRaysastResult.gameObject.layer == 5)//5 is UI value
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    /// <summary>
+    /// Checks if pointer is hovering over a Tower object
+    /// </summary>
+    /// <param name="eventData"></param>
+    /// <returns>True if it is</returns>
+    bool PointerOverTower(PointerEventData eventData)
+    {
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+        for (int index = 0; index < raycastResults.Count; index++)
+        {
+            RaycastResult curRaysastResult = raycastResults[index];
+            Debug.Log(curRaysastResult.gameObject.name);
+            if (curRaysastResult.gameObject.layer == 3)//3 is Tower value
             {
                 return true;
             }

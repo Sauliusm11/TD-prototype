@@ -41,6 +41,7 @@ public class JsonParser : MonoBehaviour
         public double attackSpeed;
         public int attackDamage;
         public double attackRange;
+        public int cost;
     }
     TowerList towerList = new TowerList();
     [System.Serializable]
@@ -173,7 +174,7 @@ public class JsonParser : MonoBehaviour
         List<TowerContainer.Tower> towers = new List<TowerContainer.Tower>();
         foreach (TowerInfo towerInfo in towerList.Towers)
         {
-            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange);
+            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost);
             towers.Add(tower);
         }
         return towers;

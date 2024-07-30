@@ -48,12 +48,14 @@ public class TowerContainer
         public double attackSpeed;
         public int attackDamage;
         public double attackRange;
-        public Tower(string name, double attackSpeed, int attackDamage, double attackRange)
+        public int cost;
+        public Tower(string name, double attackSpeed, int attackDamage, double attackRange, int cost)
         {
             this.name = name;
             this.attackSpeed = attackSpeed;
             this.attackDamage = attackDamage;
             this.attackRange = attackRange;
+            this.cost = cost;
         }
     }
     // Start is called before the first frame update
