@@ -30,7 +30,6 @@ public class BaseEnemy : MonoBehaviour
         while (path.Count > 0)
         {
             WorldNode node = path.Pop();
-            Debug.Log(path.Count);
             yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()));
         }
         yield return null;
@@ -47,7 +46,7 @@ public class BaseEnemy : MonoBehaviour
         Vector3 oldPos = enemy.transform.position;
         Vector3 path = oldPos - goTo;//This is close but not quite right (I might need to flip what is left over after this operation)
         path *= -1;//Flipping because we are -1 away from destination
-        float totalTime = 0.1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+        float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
         if (speed != 0f)
         {
             totalTime /= speed;

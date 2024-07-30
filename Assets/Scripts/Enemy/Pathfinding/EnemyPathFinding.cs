@@ -105,10 +105,6 @@ public class EnemyPathFinding : MonoBehaviour
                     {
                         
                         priorityQueue.Enqueue(nodes[neighbourIndex]);
-                        if (tenative_gScore >= 1000000)
-                        {
-                            //Debug.Log(string.Format("Node x:{0} y{1} {2}", priorityQueue.Peek().GetX(), priorityQueue.Peek().GetY(), priorityQueue.Peek().GetHasTower()));
-                        }
                     }
                 }
             }
@@ -119,7 +115,6 @@ public class EnemyPathFinding : MonoBehaviour
             }
 
         }
-        Debug.Log("Trollolololo");
         yield return null;
     }
 
