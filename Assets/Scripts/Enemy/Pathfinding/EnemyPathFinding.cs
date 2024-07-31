@@ -98,7 +98,6 @@ public class EnemyPathFinding : MonoBehaviour
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
                     if (!priorityQueue.Contains(nodes[neighbourIndex]))
                     {
-                        
                         priorityQueue.Enqueue(nodes[neighbourIndex]);
                     }
                 }

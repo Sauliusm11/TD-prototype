@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     GameObject saveConfirmPanel;
     [SerializeField]
     GameObject loadConfirmPanel;
+    [SerializeField]
+    GameObject towerConfirmationPanel;
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
     JsonParser parser;
@@ -182,5 +184,19 @@ public class GameManager : MonoBehaviour
     public TowerContainer.Tower GetSelectedTower()
     {
         return selectedTower;
+    }
+    public void MoveTowerConfirmation(Vector3 towerPos)
+    {
+        towerPos = new Vector3(towerPos.x, towerPos.y + 1);
+        towerConfirmationPanel.transform.position = towerPos;
+    }
+    public void ActivateTowerConfirmation(Vector3 towerPos)
+    {
+        towerConfirmationPanel.SetActive(true);
+        MoveTowerConfirmation(towerPos);
+    }
+    public void DeactivateTowerConfirmation()
+    {
+        towerConfirmationPanel.SetActive(false);
     }
 }

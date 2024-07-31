@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 /// <summary>
 /// Class responsible for tile placement, attached to the grid on which the tiles will be placed
 /// </summary>
@@ -17,6 +18,13 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     TowerSelectionHandler towerSelectionHandler;
     Money moneyHandler;
     bool devMode;
+
+
+    GameObject currentTower;
+    Vector3Int currentTowerCellPosition;
+    Vector3 currentTowerPosition;
+    Color defaultColor;
+    Color partiallyTransparenent;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +40,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             towerSelectionHandler = towerManagerObject.GetComponent<TowerSelectionHandler>();
         }
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
+        defaultColor = Color.white;
+        partiallyTransparenent = new Color(defaultColor.r, defaultColor.g, defaultColor.b,0.5f);
     }
     /// <summary>
     /// Called when the grid is clicked (references do not show up, it is working)
@@ -73,21 +83,66 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                 if (!PointerOverTower(eventData))
                 {
                     TowerContainer.Tower selection = manager.GetSelectedTower();
-                    if (moneyHandler.RemoveMoney(selection.cost))
+                    if (moneyHandler.HasEnoughMoney(selection.cost))
                     {
                         GameObject tower = towerSelectionHandler.GetTowerFromSelection(selection);
                         position = tilemap.CellToWorld(cellPosition);
                         position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
-                        if (tower != null)
+                        
+                        if (tower != null && currentTower == null)
                         {
-                            Instantiate(tower, position, new Quaternion());
-                            pathfindingManager.AddTowerToNode(cellPosition);
+                            currentTower = Instantiate(tower, position, new Quaternion());
+                            currentTowerPosition = position;
+                            currentTowerCellPosition = cellPosition;
+                            SetParentAndChildrenColors(partiallyTransparenent);
+                            manager.ActivateTowerConfirmation(position);
+                        }
+                        else
+                        {
+                            if(currentTower != null) 
+                            { 
+                                currentTowerPosition = position;
+                                currentTowerCellPosition = cellPosition;
+                                currentTower.transform.position = position;
+                                position = tilemap.CellToWorld(cellPosition);
+                                position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
+                                manager.MoveTowerConfirmation(position);
+                            }
                         }
                         //TODO: consider adding object pooling
                     }
                 }
             }
         }
+    }
+
+    public void ConfirmPlacement()
+    {
+        TowerContainer.Tower selection = manager.GetSelectedTower();
+        if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
+        {
+            SetParentAndChildrenColors(defaultColor);
+            currentTower = null;
+            pathfindingManager.AddTowerToNode(currentTowerCellPosition);
+            manager.DeactivateTowerConfirmation();
+        }
+    }
+    public void CancelPlacement()
+    {
+        if (currentTower != null)
+        {
+            Destroy(currentTower);//Again, object pooling ftw, but this is easier
+            manager.DeactivateTowerConfirmation();
+        }
+    }
+    void SetParentAndChildrenColors(Color newColor)
+    {
+        currentTower.GetComponent<SpriteRenderer>().color = newColor;
+        foreach (SpriteRenderer renderer in currentTower.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.color = newColor;
+        }
+
     }
     /// <summary>
     /// Checks if pointer is hovering over a UI object
