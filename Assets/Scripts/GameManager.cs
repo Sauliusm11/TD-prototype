@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-
+/// <summary>
+/// GameManager class, responsible for managing most UI elements and states.
+/// Acts as a bridge between most class calls allowing to execute additional code before passing requests. 
+/// </summary>
 public class GameManager : MonoBehaviour
 {
     public enum State { Saving, Loading, Playing};
@@ -13,65 +17,23 @@ public class GameManager : MonoBehaviour
     GameObject saveConfirmPanel;
     [SerializeField]
     GameObject loadConfirmPanel;
+    [SerializeField]
+    GameObject towerConfirmationPanel;
+    TMP_InputField saveFileInputField;
+    TMP_InputField loadFileInputField;
     JsonParser parser;
 
     [HideInInspector]
     public TileContainer.Tile selectedTile;
-    Tilemap tilemap;
-    class TileInfo
-    {
-        public int X;
-        public int Y;
-        public TileBase Tile;
-
-        public TileInfo(int x, int y, TileBase tile)
-        {
-            X = x;
-            Y = y;
-            Tile = tile;
-        }
-    }
-    TileInfo portal;
-    TileInfo castle;
-    float xOffset;
-    float yOffset;
-
-    [SerializeField]
-    GameObject enemyPrefab;
+    [HideInInspector]
+    public TowerContainer.Tower selectedTower;
     // Start is called before the first frame update
     void Start()
     {
         SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
-        //tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
-        //tilemap.CompressBounds();
-        //BoundsInt bounds = tilemap.cellBounds;
-        //TileBase[] allTiles = tilemap.GetTilesBlock(bounds);
-        //for (int x = 0; x < bounds.size.x; x++)
-        //{
-        //    for (int y = 0; y < bounds.size.y; y++)
-        //    {
-        //        TileBase tile = allTiles[x + y * bounds.size.x];
-        //        if (tile != null)
-        //        {
-        //            if (tile.name.Contains("Portal"))
-        //            {
-        //                portal = new TileInfo(x,y,tile);
-        //            }
-        //            if (tile.name.Contains("Castle"))
-        //            {
-        //                castle = new TileInfo(x, y, tile);
-        //            }
-
-        //        }
-        //    }
-        //}
-        //Debug.Log(string.Format("{0}, {1}, {2}",portal.Tile, portal.X, portal.Y));
-        //Debug.Log(string.Format("{0}, {1}, {2}", castle.Tile, castle.X, castle.Y));
-        //xOffset = bounds.position.x + 0.5f;
-        //yOffset = bounds.position.y + 0.5f;
-        //Instantiate(enemyPrefab, new Vector3(portal.X + xOffset, portal.Y + yOffset, 0), new Quaternion());//+- 0.5f to center the enemy on the tile
-        //Debug.Log(tilemap.CellToWorld(new Vector3Int(portal.X, portal.Y, 0)));
+        saveFileInputField = saveConfirmPanel.GetComponentInChildren<TMP_InputField>();
+        loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
 
         TileContainer tileContainer = TileContainer.getInstance();
     }
@@ -81,11 +43,19 @@ public class GameManager : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Internal method to smoothly switch between states
+    /// </summary>
+    /// <param name="newState"></param>
     void SwitchState(State newState)
     {
         EndState();
         BeginState(newState);
     }
+    /// <summary>
+    /// Internal method for executing code when entering a new state
+    /// </summary>
+    /// <param name="newState"></param>
     void BeginState(State newState)
     {
         switch (newState)
@@ -102,7 +72,10 @@ public class GameManager : MonoBehaviour
                 break;
         }
         currentState = newState;
-    }
+    }    
+    /// <summary>
+    /// Internal method for executing code when exiting the current state
+    /// </summary>
     void EndState()
     {
         switch (currentState)
@@ -119,6 +92,9 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Sets the game state to playing if it was saving or loading
+    /// </summary>
     public void CloseFilePrompt()
     {
         if (currentState == State.Saving || currentState == State.Loading)
@@ -126,6 +102,11 @@ public class GameManager : MonoBehaviour
             SwitchState(State.Playing);
         }
     }
+    /// <summary>
+    /// Method called when clicking the save button in the dev ui.
+    /// Activates saving state(and prompt)
+    /// (References do not show up, it is working)
+    /// </summary>
     public void StartSaving()
     {
         if(currentState != State.Saving)
@@ -133,11 +114,22 @@ public class GameManager : MonoBehaviour
             SwitchState(State.Saving);
         }
     }
+    /// <summary>
+    /// Method called when clicking the confirm save button in the dev ui.
+    /// De-activates saving state(and prompt) and calls json parser to save the file
+    /// (References do not show up, it is working)
+    /// </summary>
     public void ConfirmSaving()
     {
-        parser.SaveLevelTiles();
+        string filename = saveFileInputField.text + ".json";
+        parser.SaveLevelTiles(filename);
         CloseFilePrompt();
     }
+    /// <summary>
+    /// Method called when clicking the load button in the dev ui.
+    /// Activates loading state(and prompt)
+    /// (References do not show up, it is working)
+    /// </summary>
     public void StartLoading()
     {
         if (currentState != State.Loading)
@@ -145,21 +137,66 @@ public class GameManager : MonoBehaviour
             SwitchState(State.Loading);
         }
     }
+    /// <summary>
+    /// Method called when clicking the confirm load button in the dev ui.
+    /// De-activates loading state(and prompt) and calls json parser to load the file
+    /// (References do not show up, it is working)
+    /// </summary>
     public void ConfirmLoading()
     {
-        parser.LoadLevelTiles();
+        string filename = loadFileInputField.text;
+        parser.LoadLevelTiles(filename);
         CloseFilePrompt();
     }
+    public void ConfirmLoading(string filename)
+    {
+        parser.LoadLevelTiles(filename);
+        CloseFilePrompt();
+    }
+    /// <summary>
+    /// Stores the selected tile internally for the TilePlacement to access 
+    /// </summary>
+    /// <param name="selection">The new selected tile coming from TileSelectionHandler</param>
     public void SetSelectedTile(TileContainer.Tile selection)
     {
         selectedTile = selection;
     }
+    /// <summary>
+    /// Returns the selected tile for the TilePlacement to access 
+    /// </summary>
+    /// <returns></returns>
     public TileContainer.Tile GetSelectedTile()
     {
         return selectedTile;
     }
-    public Vector3 GetCastleLocation()
+    /// <summary>
+    /// Stores the selected tile internally for the TilePlacement to access 
+    /// </summary>
+    /// <param name="selection">The new selected tile coming from TileSelectionHandler</param>
+    public void SetSelectedTower(TowerContainer.Tower selection)
     {
-        return new Vector3(castle.X + xOffset, castle.Y + yOffset, 0);
+        selectedTower = selection;
+    }
+    /// <summary>
+    /// Returns the selected tile for the TilePlacement to access 
+    /// </summary>
+    /// <returns></returns>
+    public TowerContainer.Tower GetSelectedTower()
+    {
+        return selectedTower;
+    }
+    public void MoveTowerConfirmation(Vector3 towerPos)
+    {
+        towerPos = new Vector3(towerPos.x, towerPos.y + 1);
+        towerConfirmationPanel.transform.position = towerPos;
+    }
+    public void ActivateTowerConfirmation(Vector3 towerPos)
+    {
+        towerConfirmationPanel.SetActive(true);
+        MoveTowerConfirmation(towerPos);
+    }
+    public void DeactivateTowerConfirmation()
+    {
+        towerConfirmationPanel.SetActive(false);
     }
 }

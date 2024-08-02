@@ -21,7 +21,7 @@ public class JsonParser : MonoBehaviour
         public float damageResistance;
         public float attackRange;
     }
-    TileList list = new TileList();
+    TileList tileList = new TileList();
     [System.Serializable]
     class SavedTiles
     {
@@ -29,28 +29,43 @@ public class JsonParser : MonoBehaviour
         public List<int> y = new List<int>();
         public List<string> Name = new List<string>();
     }
-
+    [System.Serializable]
+    internal class TowerList
+    {
+        public List<TowerInfo> Towers = new List<TowerInfo>();
+    }
+    [System.Serializable]
+    internal class TowerInfo
+    {
+        public string name;
+        public double attackSpeed;
+        public int attackDamage;
+        public double attackRange;
+        public int cost;
+    }
+    TowerList towerList = new TowerList();
+    [System.Serializable]
+    class SavedTowers
+    {
+        public List<int> x = new List<int>();
+        public List<int> y = new List<int>();
+        public List<string> Name = new List<string>();
+    }
 
     Tilemap tilemap;
     TileSelectionHandler tileSelectionHandler;
     PathfindingManager pathfindingManager;
-    //Text input fields for filenames 
-    //Maybe these should be handled by gamemanager?
-    TMP_InputField saveFileInputField;
-    TMP_InputField loadFileInputField;
-    [SerializeField]
-    GameObject saveFilePrompt;
-    [SerializeField]
-    GameObject loadFilePrompt;
     void Start()
     {
-        saveFileInputField = saveFilePrompt.GetComponentInChildren<TMP_InputField>();
-        loadFileInputField = loadFilePrompt.GetComponentInChildren<TMP_InputField>();
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
     }
-    public void SaveLevelTiles()
+    /// <summary>
+    /// Saves the current tile arrangement into a json file
+    /// </summary>
+    /// <param name="filename">Name of the file</param>
+    public void SaveLevelTiles(string filename)
     {
         tilemap.CompressBounds();
         BoundsInt bounds = tilemap.cellBounds;
@@ -74,18 +89,22 @@ public class JsonParser : MonoBehaviour
             }
         }
         string jsonData = JsonUtility.ToJson(savedTiles);
-        string filename = saveFileInputField.text + ".json";
         File.WriteAllText(Application.dataPath + "/Levels/" + filename, jsonData);
     }
-    public void LoadLevelTiles()
+    /// <summary>
+    /// Loads the tile arrangement for a level from a Json file
+    /// </summary>
+    /// <param name="filename">Name of the file without the extention</param>
+    public void LoadLevelTiles(string filename)
     {
-        string filename = loadFileInputField.text;
-        TextAsset file = Resources.Load("Levels/" + filename) as TextAsset;
-        SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
-        //string filename = loadFileInputField.text + ".json";
-        //string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename);
-        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
+        //Android(and build) version
+        //TextAsset file = Resources.Load("Levels/" + filename) as TextAsset;
+        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
 
+        //Editor version
+        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename+".json");
+        SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
+        
         List<Tile> Tiles = tileSelectionHandler.GetTileList();
         //Clear out current level
         tilemap.CompressBounds();
@@ -116,25 +135,48 @@ public class JsonParser : MonoBehaviour
                 tilemap.SetTile(new Vector3Int(savedTiles.x[i], savedTiles.y[i]), null);
             }
         }
+        bounds = tilemap.cellBounds;
         pathfindingManager.LoadLevelTileList(tilemap.GetTilesBlock(bounds), bounds.size);
     }
-
+    /// <summary>
+    /// Loads all unique tiles and their values from the TileData.json file.
+    /// Should only be called by the TileContainer
+    /// </summary>
+    /// <returns>A list of tile types used by TileContainer to store values for each tile type</returns>
     public List<TileContainer.Tile> LoadTileList() 
     {
-        //return File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json"/*filename*/);
+        //Android(and build) version
+        //TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData") as TextAsset;
+        //tileList = JsonUtility.FromJson<TileList>(file.ToString());
 
-        //string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json"/*filename*/);
-        //list = JsonUtility.FromJson<TileList>(json); 
-        
-        TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData"/*filename*/) as TextAsset;
-        list = JsonUtility.FromJson<TileList>(file.ToString());
+        //Editor version
+        string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json");
+        tileList = JsonUtility.FromJson<TileList>(json);
 
         List<TileContainer.Tile> tiles = new List<TileContainer.Tile>();
-        foreach (TileInfo tileInfo in list.Tiles) 
+        foreach (TileInfo tileInfo in tileList.Tiles) 
         {
             TileContainer.Tile tile = new TileContainer.Tile(tileInfo.name,tileInfo.movementSpeed,tileInfo.damageResistance,tileInfo.attackRange);
             tiles.Add(tile);
         }
         return tiles;
+    }
+    public List<TowerContainer.Tower> LoadTowerList()
+    {
+        //Android(and build) version
+        //TextAsset file = Resources.Load("/Towers/" + "TowerData") as TextAsset;
+        //towerList = JsonUtility.FromJson<TowerList>(file.ToString());
+
+        //Editor version
+        string json = File.ReadAllText(Application.dataPath + "/Prefabs/Towers/" + "TowerData.json");
+        towerList = JsonUtility.FromJson<TowerList>(json);
+
+        List<TowerContainer.Tower> towers = new List<TowerContainer.Tower>();
+        foreach (TowerInfo towerInfo in towerList.Towers)
+        {
+            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost);
+            towers.Add(tower);
+        }
+        return towers;
     }
 }

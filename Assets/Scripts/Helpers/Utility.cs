@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Utility class providing universal useful methods
 /// </summary>
-public class Utility
+public static class Utility
 {
     /// <summary>
     /// Float equals method to go around the problem of 2.000000000 != 2.000000001
@@ -24,5 +25,19 @@ public class Utility
         {
             return false;
         }
+    }
+    /// <summary>
+    /// Clones a stack while keeping the original order.
+    /// From https://stackoverflow.com/a/45200965
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="original"></param>
+    /// <returns></returns>
+    public static Stack<T> CloneStack<T>(this Stack<T> original)
+    {
+        var arr = new T[original.Count];
+        original.CopyTo(arr, 0);
+        Array.Reverse(arr);
+        return new Stack<T>(arr);
     }
 }

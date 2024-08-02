@@ -2,68 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
-using UnityEngine.Tilemaps;
-using System;
-/// <summary>
-/// Class responsible for selecting tiles to place in the level editor
-/// (Can probably use for towers too)
-/// </summary>
-public class TileSelectionHandler : MonoBehaviour
+
+public class TowerSelectionHandler : MonoBehaviour
 {
     GameManager manager;
     [SerializeField]
-    List<Tile> Tiles;
-    TileContainer tileContainer;
+    List<GameObject> TowerPrefabs;
+    TowerContainer towerContainer;
     // Start is called before the first frame update
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
+
     /// <summary>
     /// Method called by each of the tile selection buttons.
     /// Sets the currently selected stored in the GameManager.
     /// (References do not show up, it is working)
     /// </summary>
-    public void SelectSquare()
+    public void SelectTower()
     {
-        if (tileContainer == null)
+        if (towerContainer == null)
         {
-            tileContainer = TileContainer.getInstance();
+            towerContainer = TowerContainer.getInstance();
         }
         string name = EventSystem.current.currentSelectedGameObject.name;
         name = name.Substring(6);
-        foreach (TileContainer.Tile tile in tileContainer.tiles)
+        foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
-            if (name.Equals(tile.name))
+            if (name.Equals(tower.name))
             {
-                manager.SetSelectedTile(tile);
+                manager.SetSelectedTower(tower);
             }
         }
     }
+
     /// <summary>
     /// Method called when placing the tile, should only be called by TilePlacement
     /// </summary>
     /// <param name="selection">The selected tile type</param>
     /// <returns>Actual tile object to place in the grid</returns>
-    public Tile GetTileFromSelection(TileContainer.Tile selection)
+    public GameObject GetTowerFromSelection(TowerContainer.Tower selection)
     {
-        foreach (Tile tile in Tiles)
+        foreach (GameObject tower in TowerPrefabs)
         {
-            if (tile.name.Equals(selection.name))
+            if (tower.name.Equals(selection.name))
             {
-                return tile;
+                return tower;
             }
         }
-        //Removal
+        //Removal, should never be called
         return null;
     }
     /// <summary>
     /// Called by methods loading the level (should be only JsonParser)
     /// </summary>
-    /// <returns>List of all unique tile objects</returns>
-    public List<Tile> GetTileList()
+    /// <returns>List of all unique tower objects</returns>
+    public List<GameObject> GetTileList()
     {
-        return Tiles;
+        return TowerPrefabs;
     }
 }
