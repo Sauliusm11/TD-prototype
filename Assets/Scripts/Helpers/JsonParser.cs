@@ -98,12 +98,12 @@ public class JsonParser : MonoBehaviour
     public void LoadLevelTiles(string filename)
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("Levels/" + filename) as TextAsset;
-        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
+        TextAsset file = Resources.Load("Levels/" + filename) as TextAsset;
+        SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
 
-        //Editor version
-        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename+".json");
-        SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
+        ////Editor version
+        //string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename+".json");
+        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
         
         List<Tile> Tiles = tileSelectionHandler.GetTileList();
         //Clear out current level
@@ -146,12 +146,12 @@ public class JsonParser : MonoBehaviour
     public List<TileContainer.Tile> LoadTileList() 
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData") as TextAsset;
-        //tileList = JsonUtility.FromJson<TileList>(file.ToString());
+        TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData") as TextAsset;
+        tileList = JsonUtility.FromJson<TileList>(file.ToString());
 
         //Editor version
-        string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json");
-        tileList = JsonUtility.FromJson<TileList>(json);
+        //string json = File.ReadAllText(Application.dataPath + "/TileMaps/Tiles/" + "TileData.json");
+        //tileList = JsonUtility.FromJson<TileList>(json);
 
         List<TileContainer.Tile> tiles = new List<TileContainer.Tile>();
         foreach (TileInfo tileInfo in tileList.Tiles) 
@@ -164,12 +164,12 @@ public class JsonParser : MonoBehaviour
     public List<TowerContainer.Tower> LoadTowerList()
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("/Towers/" + "TowerData") as TextAsset;
-        //towerList = JsonUtility.FromJson<TowerList>(file.ToString());
+        TextAsset file = Resources.Load("Towers/" + "TowerData") as TextAsset;
+        towerList = JsonUtility.FromJson<TowerList>(file.ToString());
 
         //Editor version
-        string json = File.ReadAllText(Application.dataPath + "/Prefabs/Towers/" + "TowerData.json");
-        towerList = JsonUtility.FromJson<TowerList>(json);
+        //string json = File.ReadAllText(Application.dataPath + "/Prefabs/Towers/" + "TowerData.json");
+        //towerList = JsonUtility.FromJson<TowerList>(json);
 
         List<TowerContainer.Tower> towers = new List<TowerContainer.Tower>();
         foreach (TowerInfo towerInfo in towerList.Towers)
