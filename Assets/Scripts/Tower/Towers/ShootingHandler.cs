@@ -17,6 +17,7 @@ public class ShootingHandler : MonoBehaviour
     float coolDown;
     float range;
     int damage;
+    bool enabled;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,19 +33,22 @@ public class ShootingHandler : MonoBehaviour
                 damage = tower.attackDamage;
             }
         }
-        timeSinceShot = 0;
-        InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
+        timeSinceShot = coolDown;
+        enabled = false;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        timeSinceShot += Time.deltaTime;
-        if(timeSinceShot > coolDown) 
-        {
-            timeSinceShot = 0;
-            Shoot();
+        if (enabled) 
+        { 
+            timeSinceShot += Time.deltaTime;
+            if(timeSinceShot > coolDown) 
+            {
+                timeSinceShot = 0;
+                Shoot();
+            }
         }
     }
     void Shoot()
@@ -109,7 +113,15 @@ public class ShootingHandler : MonoBehaviour
             }
         }
     }
-
+    public void EnableTower() 
+    {
+        if (!enabled) 
+        { 
+            enabled = true;
+            Debug.Log("NANI?");
+            InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
+        }
+    }
     IEnumerator MoveBulletTo(GameObject target, GameObject bullet, float speed)
     {
         Vector3 oldPos = bullet.transform.position;

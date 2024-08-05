@@ -122,9 +122,10 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
             SetParentAndChildrenColors(defaultColor);
-            currentTower = null;
             pathfindingManager.AddTowerToNode(currentTowerCellPosition);
             manager.DeactivateTowerConfirmation();
+            currentTower.GetComponent<ShootingHandler>().EnableTower();
+            currentTower = null;
         }
     }
     public void CancelPlacement()
