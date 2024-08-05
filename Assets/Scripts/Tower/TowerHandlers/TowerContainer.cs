@@ -49,13 +49,15 @@ public class TowerContainer
         public int attackDamage;
         public float attackRange;
         public int cost;
-        public Tower(string name, float attackSpeed, int attackDamage, float attackRange, int cost)
+        public float projectileSpeed;
+        public Tower(string name, float attackSpeed, int attackDamage, float attackRange, int cost, float projectileSpeed)
         {
             this.name = name;
             this.attackSpeed = attackSpeed;
             this.attackDamage = attackDamage;
             this.attackRange = attackRange;
             this.cost = cost;
+            this.projectileSpeed = projectileSpeed;
         }
     }
 }

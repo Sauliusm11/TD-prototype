@@ -5,6 +5,7 @@
       "attackSpeed": 0.5,
       "attackDamage": 20,
       "attackRange": 2.0,
+      "projectileSpeed": 5.0,
       "cost": 50
     }
   ]

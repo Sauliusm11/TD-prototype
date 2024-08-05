@@ -6,6 +6,9 @@ using UnityEngine;
 public class ShootingHandler : MonoBehaviour
 {
     GameObject partToRotate;
+    [SerializeField]
+    GameObject bulletPrefab;
+    GameObject shootingPoint;
     List<GameObject> EnemyObjects = new List<GameObject>();
     List<BaseEnemy> baseEnemies = new List<BaseEnemy>();
     int currentTarget;
@@ -18,6 +21,7 @@ public class ShootingHandler : MonoBehaviour
     void Start()
     {
         partToRotate = transform.Find("TowerCannon").gameObject;
+        shootingPoint = partToRotate.transform.Find("ShootingPoint").gameObject;
         TowerContainer towerContainer = TowerContainer.getInstance();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
@@ -48,9 +52,12 @@ public class ShootingHandler : MonoBehaviour
         AimAtTarget();
         if (currentTarget > -1)
         {
+
             GameObject targetObject = EnemyObjects[currentTarget];
             BaseEnemy enemy = targetObject.GetComponent<BaseEnemy>();
-            enemy.ReduceHealth(damage);
+            //enemy.ReduceHealth(damage);
+            GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform);//This REALLY needs object pooling
+            StartCoroutine(MoveBulletTo(targetObject, bullet, 5));
             Debug.Log("Shoot?");
         }
     }
@@ -103,7 +110,52 @@ public class ShootingHandler : MonoBehaviour
         }
     }
 
+    IEnumerator MoveBulletTo(GameObject target, GameObject bullet, float speed)
+    {
+        Vector3 oldPos = bullet.transform.position;
+        Vector3 goTo;
+        if (target != null)
+        {
+            goTo = target.transform.position;
+            Vector3 path = oldPos - goTo;//This is close but not quite right (I might need to flip what is left over after this operation)
+            path *= -1;//Flipping because we are -1 away from destination
+            float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+            if (speed != 0f)
+            {
+                totalTime /= speed;
+                float timeElapsed = Time.deltaTime;
+                while (timeElapsed < totalTime)
+                {
+                    if (target != null)
+                    {
+                        goTo = target.transform.position;
+                    }
+                    else
+                    {
+                        Destroy(bullet);
+                        break;
+                    }
+                    float timeDelta = Time.deltaTime;
+                    timeElapsed += timeDelta;
+                    bullet.transform.position += path * (timeDelta / totalTime);
+                    if (timeElapsed / totalTime > 1)
+                    {
+                        bullet.transform.position = goTo;
+                        Destroy(bullet);
+                        BaseEnemy enemy = target.GetComponent<BaseEnemy>();
+                        enemy.ReduceHealth(damage);
 
+                    }
+                    yield return null;
+                }
+            }
+        }
+        else
+        {
+            Destroy(bullet);
+        }
+        
+    }
     //private void OnCollisionEnter2D(Collision2D collision)
     //{
     //    Debug.Log("At least I collided");
