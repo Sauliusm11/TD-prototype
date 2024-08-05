@@ -31,7 +31,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
-        devMode = false;
+        devMode = true;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null) 
@@ -74,13 +74,16 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             Vector3Int cellPosition = tilemap.WorldToCell(position);
             if (devMode)
             {
-                TileContainer.Tile selection = manager.GetSelectedTile();
-                Tile tile = tileSelectionHandler.GetTileFromSelection(selection);
-                tilemap.SetTile(cellPosition, tile);
+                if(manager.GetSelectedTile() != null) 
+                { 
+                    TileContainer.Tile selection = manager.GetSelectedTile();
+                    Tile tile = tileSelectionHandler.GetTileFromSelection(selection);
+                    tilemap.SetTile(cellPosition, tile);
+                }
             }
             else 
             {
-                if (!PointerOverTower(eventData) && PointerOverTile(cellPosition))
+                if (!PointerOverTower(eventData) && PointerOverTile(cellPosition) && manager.GetSelectedTower() != null)
                 {
                     TowerContainer.Tower selection = manager.GetSelectedTower();
                     if (moneyHandler.HasEnoughMoney(selection.cost))
@@ -126,6 +129,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             manager.DeactivateTowerConfirmation();
             currentTower.GetComponent<ShootingHandler>().EnableTower();
             currentTower = null;
+            manager.SetSelectedTower(null);
+            towerSelectionHandler.DeactivateSelectionHighlighter();
         }
     }
     public void CancelPlacement()

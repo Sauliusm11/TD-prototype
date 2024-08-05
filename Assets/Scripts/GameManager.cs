@@ -35,7 +35,10 @@ public class GameManager : MonoBehaviour
         saveFileInputField = saveConfirmPanel.GetComponentInChildren<TMP_InputField>();
         loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
 
-        TileContainer tileContainer = TileContainer.getInstance();
+        selectedTile = null;
+        selectedTower = null;
+
+        //TileContainer tileContainer = TileContainer.getInstance();
     }
 
     // Update is called once per frame
