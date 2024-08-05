@@ -87,7 +87,7 @@ public class PathfindingManager : MonoBehaviour
     }
     public void RemoveTowerFromNode(Vector3Int position)
     {
-        Nodes[position.x + position.y * tilesSize.x].SetHasTower(false);
+        Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(false);
     }
     public void CallWave()
     {

@@ -38,9 +38,9 @@ public class JsonParser : MonoBehaviour
     internal class TowerInfo
     {
         public string name;
-        public double attackSpeed;
+        public float attackSpeed;
         public int attackDamage;
-        public double attackRange;
+        public float attackRange;
         public int cost;
     }
     TowerList towerList = new TowerList();

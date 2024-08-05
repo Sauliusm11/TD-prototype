@@ -8,6 +8,8 @@ public class BaseEnemy : MonoBehaviour
 {
     EnemyPathFinding pathFinder;
     Stack<WorldNode> path;
+    float timeElapsed = 0f;
+    float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,14 @@ public class BaseEnemy : MonoBehaviour
     void Update()
     {
         
+    }
+    public float GetProgress()
+    {
+        if (timeElapsed != 0)
+        {
+            return path.Count + totalTime / timeElapsed;
+        }
+        return path.Count;
     }
     /// <summary>
     /// Move the enemy one tile at a time along the path
@@ -46,11 +56,11 @@ public class BaseEnemy : MonoBehaviour
         Vector3 oldPos = enemy.transform.position;
         Vector3 path = oldPos - goTo;//This is close but not quite right (I might need to flip what is left over after this operation)
         path *= -1;//Flipping because we are -1 away from destination
-        float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+        totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
         if (speed != 0f)
         {
             totalTime /= speed;
-            float timeElapsed = 0f;
+            timeElapsed = 0.000000000001f;
             while (timeElapsed < totalTime)
             {
                 float timeDelta = Time.deltaTime;
