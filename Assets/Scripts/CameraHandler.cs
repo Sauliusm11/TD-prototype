@@ -11,7 +11,7 @@ public class CameraHandler : MonoBehaviour
     //The x,y bounds might be off a bit
     private static readonly float[] BoundsX = new float[] { -11f, 11f };//Subject to change
     private static readonly float[] BoundsY = new float[] { -10f, 11f };//Subject to change 
-    private static readonly float[] ZoomBounds = new float[] { 3f, 15f };//Subject to change
+    private static readonly float[] ZoomBounds = new float[] { 2f, 10f };//Subject to change
 
     private Camera cam;
 
