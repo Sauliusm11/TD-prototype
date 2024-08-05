@@ -80,7 +80,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             }
             else 
             {
-                if (!PointerOverTower(eventData))
+                if (!PointerOverTower(eventData) && PointerOverTile(cellPosition))
                 {
                     TowerContainer.Tower selection = manager.GetSelectedTower();
                     if (moneyHandler.HasEnoughMoney(selection.cost))
@@ -182,6 +182,22 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                 return true;
             }
         }
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if pointer is hovering over a valid tile
+    /// </summary>
+    /// <param name="cellPosition"></param>
+    /// <returns>True if it is</returns>
+    bool PointerOverTile(Vector3Int cellPosition)
+    {
+        if (tilemap.GetTile(cellPosition) != null)
+        {
+
+            return true; 
+        }
+
         return false;
     }
 
