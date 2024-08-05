@@ -7,7 +7,7 @@ public class EnemyContainer
     private static EnemyContainer instance;
     private static object threadLock = new object();
 
-    public List<Enemy> Enemies = new List<Enemy>();
+    public List<Enemy> enemies = new List<Enemy>();
 
     /// <summary>
     /// (Should be) The only way to gain access to the EnemyContainer 
@@ -32,7 +32,7 @@ public class EnemyContainer
     {
         instance = this;
         JsonParser parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
-        Enemies = parser.LoadEnemyList();
+        enemies = parser.LoadEnemyList();
     }
 
     [System.Serializable]

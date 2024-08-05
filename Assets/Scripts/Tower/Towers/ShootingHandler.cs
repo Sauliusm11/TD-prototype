@@ -48,6 +48,9 @@ public class ShootingHandler : MonoBehaviour
         AimAtTarget();
         if (currentTarget > -1)
         {
+            GameObject targetObject = EnemyObjects[currentTarget];
+            BaseEnemy enemy = targetObject.GetComponent<BaseEnemy>();
+            enemy.ReduceHealth(damage);
             Debug.Log("Shoot?");
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 /// <summary>
 /// Class for the basic movement enemy type (might become abstract later :p)
@@ -12,9 +13,22 @@ public class BaseEnemy : MonoBehaviour
     float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
     int maxHealth;
     int currentHealth;
+    float walkingSpeed;
+    int livesCost;
     // Start is called before the first frame update
     void Start()
     {
+        EnemyContainer enemyContainer = EnemyContainer.getInstance();
+        foreach (EnemyContainer.Enemy enemy in enemyContainer.enemies)
+        {
+            if (this.name.Contains(enemy.name))
+            {
+                maxHealth = enemy.health;
+                currentHealth = enemy.health;
+                walkingSpeed = enemy.speedCoef;
+                livesCost = enemy.livesCost;
+            }
+        }
         pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         path = pathFinder.GetPath();
         StartCoroutine(FollowPath());
@@ -33,6 +47,15 @@ public class BaseEnemy : MonoBehaviour
         }
         return path.Count;
     }
+    public void ReduceHealth(int damage)
+    {
+        currentHealth -= damage;
+        Debug.Log(currentHealth);
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
     /// <summary>
     /// Move the enemy one tile at a time along the path
     /// </summary>
@@ -42,7 +65,7 @@ public class BaseEnemy : MonoBehaviour
         while (path.Count > 0)
         {
             WorldNode node = path.Pop();
-            yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()));
+            yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()*walkingSpeed));
         }
         yield return null;
     }
