@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 /// <summary>
 /// Class for the basic movement enemy type (might become abstract later :p)
 /// </summary>
@@ -16,9 +17,19 @@ public class BaseEnemy : MonoBehaviour
     int currentHealth;
     float walkingSpeed;
     int livesCost;
+    [SerializeField]
+    GameObject healthBarPrefab;
+    GameObject healthBarParent;
+    GameObject healthBarObject;
+    Slider healthBarSlider;
     // Start is called before the first frame update
     void Start()
     {
+        //TODO: again, object pooling is waiting
+        healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
+        healthBarObject = Instantiate(healthBarPrefab,healthBarParent.transform);
+        UpdateHealthBarPosition();
+        healthBarSlider = healthBarObject.GetComponent<Slider>();
         EnemyContainer enemyContainer = EnemyContainer.getInstance();
         foreach (EnemyContainer.Enemy enemy in enemyContainer.enemies)
         {
@@ -52,12 +63,18 @@ public class BaseEnemy : MonoBehaviour
     public void ReduceHealth(int damage)
     {
         currentHealth -= damage;
-        Debug.Log(currentHealth);
+        healthBarSlider.value = (float)currentHealth / maxHealth;
         if (currentHealth <= 0)
         {
             moneyHandler.AddMoney(10);
+            Destroy(healthBarObject);
             Destroy(gameObject);
         }
+    }
+    void UpdateHealthBarPosition() 
+    {
+        Vector3 position = gameObject.transform.position;
+        healthBarObject.transform.position = new Vector3(position.x, position.y+0.3f, position.z);
     }
     /// <summary>
     /// Move the enemy one tile at a time along the path
@@ -98,6 +115,7 @@ public class BaseEnemy : MonoBehaviour
                 {
                     enemy.transform.position = goTo;
                 }
+                UpdateHealthBarPosition();
                 yield return null;
             }
         }
