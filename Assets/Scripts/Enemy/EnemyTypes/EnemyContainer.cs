@@ -48,13 +48,15 @@ public class EnemyContainer
         public int livesCost;
         public float speedCoef;
         public string type;
-            public Enemy(string name, int health, int livesCost, float speedCoef, string type)
-            {
-                this.name = name;
-                this.health = health;
-                this.livesCost = livesCost;
-                this.speedCoef = speedCoef;
-                this.type = type;
-            }
+        public int reward;
+        public Enemy(string name, int health, int livesCost, float speedCoef, string type,int reward)
+        {
+            this.name = name;
+            this.health = health;
+            this.livesCost = livesCost;
+            this.speedCoef = speedCoef;
+            this.type = type;
+            this.reward = reward;
+        }
     }
 }

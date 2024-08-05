@@ -64,6 +64,7 @@ public class JsonParser : MonoBehaviour
         public int livesCost;
         public float speedCoef;
         public string type;
+        public int reward;
     }
     EnemyList enemyList = new EnemyList();
 
@@ -208,7 +209,7 @@ public class JsonParser : MonoBehaviour
         List<EnemyContainer.Enemy> enemies = new List<EnemyContainer.Enemy>();
         foreach (EnemyInfo enemyInfo in enemyList.Enemies)
         {
-            EnemyContainer.Enemy enemy = new EnemyContainer.Enemy(enemyInfo.name, enemyInfo.health, enemyInfo.livesCost, enemyInfo.speedCoef, enemyInfo.type);
+            EnemyContainer.Enemy enemy = new EnemyContainer.Enemy(enemyInfo.name, enemyInfo.health, enemyInfo.livesCost, enemyInfo.speedCoef, enemyInfo.type, enemyInfo.reward);
             enemies.Add(enemy);
         }
         return enemies;

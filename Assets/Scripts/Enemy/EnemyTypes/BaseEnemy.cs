@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class BaseEnemy : MonoBehaviour
 {
+    Money moneyHandler;
     EnemyPathFinding pathFinder;
     Stack<WorldNode> path;
     float timeElapsed = 0f;
@@ -29,6 +30,7 @@ public class BaseEnemy : MonoBehaviour
                 livesCost = enemy.livesCost;
             }
         }
+        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         path = pathFinder.GetPath();
         StartCoroutine(FollowPath());
@@ -53,6 +55,7 @@ public class BaseEnemy : MonoBehaviour
         Debug.Log(currentHealth);
         if (currentHealth <= 0)
         {
+            moneyHandler.AddMoney(10);
             Destroy(gameObject);
         }
     }
