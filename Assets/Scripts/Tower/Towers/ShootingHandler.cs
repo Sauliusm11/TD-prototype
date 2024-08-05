@@ -9,9 +9,11 @@ public class ShootingHandler : MonoBehaviour
     List<GameObject> EnemyObjects = new List<GameObject>();
     List<BaseEnemy> baseEnemies = new List<BaseEnemy>();
     int currentTarget;
-    float coolDown;
     float timeSinceShot;
+
+    float coolDown;
     float range;
+    int damage;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,7 @@ public class ShootingHandler : MonoBehaviour
             {
                 coolDown = tower.attackSpeed;
                 range = tower.attackRange;
+                damage = tower.attackDamage;
             }
         }
         timeSinceShot = 0;

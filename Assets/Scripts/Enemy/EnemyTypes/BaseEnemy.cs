@@ -10,6 +10,8 @@ public class BaseEnemy : MonoBehaviour
     Stack<WorldNode> path;
     float timeElapsed = 0f;
     float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+    int maxHealth;
+    int currentHealth;
     // Start is called before the first frame update
     void Start()
     {

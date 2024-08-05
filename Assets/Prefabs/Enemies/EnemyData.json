@@ -1,0 +1,11 @@
+{
+  "Enemies": [
+    {
+      "name": "BasicEnemy",
+      "health": 100,
+      "livesCost": 1,
+      "speedCoef": 1.0,
+      "type": "base"
+    }
+  ]
+}

@@ -51,6 +51,21 @@ public class JsonParser : MonoBehaviour
         public List<int> y = new List<int>();
         public List<string> Name = new List<string>();
     }
+    [System.Serializable]
+    internal class EnemyList
+    {
+        public List<EnemyInfo> Enemies = new List<EnemyInfo>();
+    }
+    [System.Serializable]
+    internal class EnemyInfo
+    {
+        public string name;
+        public int health;
+        public int livesCost;
+        public float speedCoef;
+        public string type;
+    }
+    EnemyList enemyList = new EnemyList();
 
     Tilemap tilemap;
     TileSelectionHandler tileSelectionHandler;
@@ -178,5 +193,24 @@ public class JsonParser : MonoBehaviour
             towers.Add(tower);
         }
         return towers;
+    }
+
+    public List<EnemyContainer.Enemy> LoadEnemyList()
+    {
+        //Android(and build) version
+        //TextAsset file = Resources.Load("/Enemies/" + "EnemyData") as TextAsset;
+        //enemyList = JsonUtility.FromJson<EnemyList>(file.ToString());
+
+        //Editor version
+        string json = File.ReadAllText(Application.dataPath + "/Prefabs/Enemies/" + "EnemyData.json");
+        enemyList = JsonUtility.FromJson<EnemyList>(json);
+
+        List<EnemyContainer.Enemy> enemies = new List<EnemyContainer.Enemy>();
+        foreach (EnemyInfo enemyInfo in enemyList.Enemies)
+        {
+            EnemyContainer.Enemy enemy = new EnemyContainer.Enemy(enemyInfo.name, enemyInfo.health, enemyInfo.livesCost, enemyInfo.speedCoef, enemyInfo.type);
+            enemies.Add(enemy);
+        }
+        return enemies;
     }
 }
