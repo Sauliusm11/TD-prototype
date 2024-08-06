@@ -1,0 +1,41 @@
+{
+  "Waves": [
+    {
+      "id": 0,
+      "Enemies": [
+        {
+          "name": "BasicEnemy",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "Enemies": [
+        {
+          "name": "BasicEnemy",
+          "count": 30
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "Enemies": [
+        {
+          "name": "BasicEnemy",
+          "count": 60
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "Enemies": [
+        {
+          "name": "BasicEnemy",
+          "count": 100
+        }
+      ]
+    }
+
+  ]
+}

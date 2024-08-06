@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
     JsonParser parser;
+    WaveHandler waveHandler;
 
     [HideInInspector]
     public TileContainer.Tile selectedTile;
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
+        waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
         saveFileInputField = saveConfirmPanel.GetComponentInChildren<TMP_InputField>();
         loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
 
@@ -149,11 +151,13 @@ public class GameManager : MonoBehaviour
     {
         string filename = loadFileInputField.text;
         parser.LoadLevelTiles(filename);
+        waveHandler.LoadWaves(filename);
         CloseFilePrompt();
     }
     public void ConfirmLoading(string filename)
     {
         parser.LoadLevelTiles(filename);
+        waveHandler.LoadWaves(filename);
         CloseFilePrompt();
     }
     /// <summary>

@@ -56,7 +56,6 @@ public class BaseEnemy : MonoBehaviour
     {
         if (timeElapsed != 0)
         {
-            Debug.Log(string.Format("{0}, {1}", path.Count + 1 * (1 - timeElapsed / totalTime), this.gameObject.name));
             return path.Count + 1 * (1 - timeElapsed / totalTime);
         }
         return path.Count + 1;

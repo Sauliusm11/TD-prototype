@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 /// </summary>
 public class PathfindingManager : MonoBehaviour
 {
+    WaveHandler waveHandler;
     EnemyPathFinding baseEnemyPathFinder;
     Vector3Int tilesSize;
     TileContainer tileContainer;
@@ -20,14 +21,13 @@ public class PathfindingManager : MonoBehaviour
     Tilemap tilemap;
     float xOffset;
     float yOffset;
-    [SerializeField]
-    GameObject enemyPrefab;
     // Start is called before the first frame update
     void Start()
     {
         tileContainer = TileContainer.getInstance();
         baseEnemyPathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         PathfinderFlags.Add(false);
+        waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
 
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
     }
@@ -128,7 +128,7 @@ public class PathfindingManager : MonoBehaviour
             if (goodToGo)
             {
                 //Place wave starting call here
-                Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
+                waveHandler.StartWave(start,xOffset,yOffset);
             }
         }
     }

@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TMPro;
+using UnityEngine.UIElements;
 
 
 public class JsonParser : MonoBehaviour
@@ -68,6 +69,15 @@ public class JsonParser : MonoBehaviour
         public int reward;
     }
     EnemyList enemyList = new EnemyList();
+    [System.Serializable]
+    internal class WaveList
+    {
+        public List<Wave> Waves = new List<Wave>();
+    }
+
+
+    WaveList waveList = new WaveList();
+
 
     Tilemap tilemap;
     TileSelectionHandler tileSelectionHandler;
@@ -154,6 +164,19 @@ public class JsonParser : MonoBehaviour
         }
         bounds = tilemap.cellBounds;
         pathfindingManager.LoadLevelTileList(tilemap.GetTilesBlock(bounds), bounds.size);
+    }
+    public List<Wave> LoadLevelWaves(string filename)
+    {
+        //Android(and build) version
+        //TextAsset file = Resources.Load("Levels/LevelData/" + filename) as TextAsset;
+        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
+
+        //Editor version
+        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/LevelData/" + filename + ".json");
+        WaveList waveList = JsonUtility.FromJson<WaveList>(jsonData);
+
+        return waveList.Waves;
+
     }
     /// <summary>
     /// Loads all unique tiles and their values from the TileData.json file.
