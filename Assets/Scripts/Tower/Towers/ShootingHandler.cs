@@ -68,15 +68,17 @@ public class ShootingHandler : MonoBehaviour
     void AimAtTarget() 
     {
         UpdateTargets();
-        float closestToExit = float.MinValue;
+        float closestToExit = float.MaxValue;//Flip for last
         int closestIndex = 0;
         if (baseEnemies.Count > 0)
         {
             for (int i = 0; i < baseEnemies.Count; i++)
             {
-                if (baseEnemies[i].GetProgress() > closestToExit)
+                float progress = baseEnemies[i].GetProgress();
+                if (progress < closestToExit)//Flip for last
                 {
                     closestIndex = i;
+                    closestToExit = progress;
                 }
             }
             currentTarget = closestIndex;

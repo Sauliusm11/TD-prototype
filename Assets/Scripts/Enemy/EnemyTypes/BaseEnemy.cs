@@ -56,9 +56,10 @@ public class BaseEnemy : MonoBehaviour
     {
         if (timeElapsed != 0)
         {
-            return path.Count + totalTime / timeElapsed;
+            Debug.Log(string.Format("{0}, {1}", path.Count + 1 * (1 - timeElapsed / totalTime), this.gameObject.name));
+            return path.Count + 1 * (1 - timeElapsed / totalTime);
         }
-        return path.Count;
+        return path.Count + 1;
     }
     public void ReduceHealth(int damage)
     {
