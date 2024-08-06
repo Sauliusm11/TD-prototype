@@ -31,11 +31,10 @@ public class WaveHandler : MonoBehaviour
     }
     public void StartWave(Node start, float xOffset, float yOffset)
     {
-        if (!sending && currentWave < waves.Count)
+        if (!sending && currentWave < waves.Count)//Could this be a race condition?
         {
             sending = true;
             StartCoroutine(SendWave(currentWave,start,xOffset,yOffset));
-            Debug.Log(sending);
             currentWave++;
         }
     }
@@ -48,6 +47,7 @@ public class WaveHandler : MonoBehaviour
             WaveEnemy enemy = enemies[0];
             while (enemy.count > 0) 
             {
+                //Need to add some variance to enemies(but also their target then)(prob stored in the enemy itself)
                 Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
                 enemy.count--;
                 yield return new WaitForSeconds(0.1f);
