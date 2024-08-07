@@ -41,6 +41,10 @@ public class Node : IComparable<Node>
     {
         currentWeight = newWeight;
     }
+    public float GetCurrentWeight()
+    {
+        return currentWeight;
+    }
     public int CompareTo(Node other)
     {
         return currentWeight.CompareTo(other.currentWeight);

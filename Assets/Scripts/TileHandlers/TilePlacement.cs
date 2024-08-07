@@ -129,8 +129,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             manager.DeactivateTowerConfirmation();
             currentTower.GetComponent<ShootingHandler>().EnableTower();
             currentTower = null;
-            manager.SetSelectedTower(null);
-            towerSelectionHandler.DeactivateSelectionHighlighter();
+            //manager.SetSelectedTower(null);
+            //towerSelectionHandler.DeactivateSelectionHighlighter();
         }
     }
     public void CancelPlacement()
