@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class BaseEnemy : MonoBehaviour
 {
     Money moneyHandler;
+    Lives livesHandler;
     EnemyPathFinding pathFinder;
     Stack<WorldNode> path;
     float timeElapsed = 0f;
@@ -41,7 +42,8 @@ public class BaseEnemy : MonoBehaviour
                 livesCost = enemy.livesCost;
             }
         }
-        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
+        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();        
+        livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
         pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         path = pathFinder.GetPath();
         StartCoroutine(FollowPath());
@@ -67,14 +69,18 @@ public class BaseEnemy : MonoBehaviour
         if (currentHealth <= 0)
         {
             moneyHandler.AddMoney(10);
-            Destroy(healthBarObject);
-            Destroy(gameObject);
+            Death();
         }
     }
     void UpdateHealthBarPosition() 
     {
         Vector3 position = gameObject.transform.position;
         healthBarObject.transform.position = new Vector3(position.x, position.y+0.3f, position.z);
+    }
+    void Death()
+    {
+        Destroy(healthBarObject);
+        Destroy(gameObject);
     }
     /// <summary>
     /// Move the enemy one tile at a time along the path
@@ -87,6 +93,8 @@ public class BaseEnemy : MonoBehaviour
             WorldNode node = path.Pop();
             yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()*walkingSpeed));
         }
+        livesHandler.RemoveLives(livesCost);
+        Death();
         yield return null;
     }
     /// <summary>
