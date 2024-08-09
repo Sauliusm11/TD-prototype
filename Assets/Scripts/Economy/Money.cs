@@ -39,6 +39,11 @@ public class Money : MonoBehaviour
         return false;
 
     }
+    public void AddMoney(int gains)
+    {
+        money += gains;
+        UpdateMoneyDisplay();
+    }
     void UpdateMoneyDisplay()
     {
         if (moneyDisplay == null)

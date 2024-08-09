@@ -1,16 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 /// <summary>
 /// Class for the basic movement enemy type (might become abstract later :p)
 /// </summary>
 public class BaseEnemy : MonoBehaviour
 {
+    Money moneyHandler;
+    Lives livesHandler;
     EnemyPathFinding pathFinder;
     Stack<WorldNode> path;
+    float timeElapsed = 0f;
+    float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+    int maxHealth;
+    int currentHealth;
+    float walkingSpeed;
+    int livesCost;
+    [SerializeField]
+    GameObject healthBarPrefab;
+    GameObject healthBarParent;
+    GameObject healthBarObject;
+    Slider healthBarSlider;
     // Start is called before the first frame update
     void Start()
     {
+        //TODO: again, object pooling is waiting
+        healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
+        healthBarObject = Instantiate(healthBarPrefab,healthBarParent.transform);
+        UpdateHealthBarPosition();
+        healthBarSlider = healthBarObject.GetComponent<Slider>();
+        EnemyContainer enemyContainer = EnemyContainer.getInstance();
+        foreach (EnemyContainer.Enemy enemy in enemyContainer.enemies)
+        {
+            if (this.name.Contains(enemy.name))
+            {
+                maxHealth = enemy.health;
+                currentHealth = enemy.health;
+                walkingSpeed = enemy.speedCoef;
+                livesCost = enemy.livesCost;
+            }
+        }
+        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();        
+        livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
         pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         path = pathFinder.GetPath();
         StartCoroutine(FollowPath());
@@ -21,6 +54,34 @@ public class BaseEnemy : MonoBehaviour
     {
         
     }
+    public float GetProgress()
+    {
+        if (timeElapsed != 0)
+        {
+            return path.Count + 1 * (1 - timeElapsed / totalTime);
+        }
+        return path.Count + 1;
+    }
+    public void ReduceHealth(int damage)
+    {
+        currentHealth -= damage;
+        healthBarSlider.value = (float)currentHealth / maxHealth;
+        if (currentHealth <= 0)
+        {
+            moneyHandler.AddMoney(10);
+            Death();
+        }
+    }
+    void UpdateHealthBarPosition() 
+    {
+        Vector3 position = gameObject.transform.position;
+        healthBarObject.transform.position = new Vector3(position.x, position.y+0.3f, position.z);
+    }
+    void Death()
+    {
+        Destroy(healthBarObject);
+        Destroy(gameObject);
+    }
     /// <summary>
     /// Move the enemy one tile at a time along the path
     /// </summary>
@@ -30,8 +91,10 @@ public class BaseEnemy : MonoBehaviour
         while (path.Count > 0)
         {
             WorldNode node = path.Pop();
-            yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()));
+            yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()*walkingSpeed));
         }
+        livesHandler.RemoveLives(livesCost);
+        Death();
         yield return null;
     }
     /// <summary>
@@ -46,11 +109,11 @@ public class BaseEnemy : MonoBehaviour
         Vector3 oldPos = enemy.transform.position;
         Vector3 path = oldPos - goTo;//This is close but not quite right (I might need to flip what is left over after this operation)
         path *= -1;//Flipping because we are -1 away from destination
-        float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+        totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
         if (speed != 0f)
         {
             totalTime /= speed;
-            float timeElapsed = 0f;
+            timeElapsed = 0.000000000001f;
             while (timeElapsed < totalTime)
             {
                 float timeDelta = Time.deltaTime;
@@ -60,6 +123,7 @@ public class BaseEnemy : MonoBehaviour
                 {
                     enemy.transform.position = goTo;
                 }
+                UpdateHealthBarPosition();
                 yield return null;
             }
         }

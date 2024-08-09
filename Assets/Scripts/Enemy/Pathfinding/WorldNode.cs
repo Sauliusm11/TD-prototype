@@ -31,7 +31,7 @@ public class WorldNode
     /// <returns></returns>
     public Vector3 GetVector3()
     {
-        return new Vector3(X, Y);
+        return new Vector3(X, Y, 1);//All enemies should be at z=1(could do 2 for flying?)
     }
     public float GetMovementSpeedCoef()
     {

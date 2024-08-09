@@ -89,17 +89,21 @@ public class EnemyPathFinding : MonoBehaviour
                 {
                     tenative_gScore += 1000000;
                 }
+
                 if(tenative_gScore < gScore[neighbourIndex])
                 {
-
                     cameFrom[neighbourIndex] = currentIndex;
                     gScore[neighbourIndex] = tenative_gScore;
                     fScore[neighbourIndex] = tenative_gScore + distanceToTarget;
+                    //I guess I need to update the queue separately?
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
-                    if (!priorityQueue.Contains(nodes[neighbourIndex]))
-                    {
-                        priorityQueue.Enqueue(nodes[neighbourIndex]);
-                    }
+                    //I mean, this works but space complexity grows a lot (or does it?)
+                    priorityQueue.Enqueue(nodes[neighbourIndex]);
+                    Debug.Log(string.Format("Size: {0}", priorityQueue.Count()));
+                    //if (!priorityQueue.Contains(nodes[neighbourIndex]))
+                    //{
+                    //    priorityQueue.Enqueue(nodes[neighbourIndex]);
+                    //}
                 }
             }
             if (priorityQueue.Count() == 0 && pathFound)
@@ -165,6 +169,10 @@ public class EnemyPathFinding : MonoBehaviour
                     indexes.Add(index + 1);
                 }
             }
+        }
+        if(index == 120)
+        {
+            Debug.Log(indexes.Count);
         }
         return indexes;
     }

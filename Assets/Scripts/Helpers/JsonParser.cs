@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TMPro;
+using UnityEngine.UIElements;
 
 
 public class JsonParser : MonoBehaviour
@@ -38,10 +39,11 @@ public class JsonParser : MonoBehaviour
     internal class TowerInfo
     {
         public string name;
-        public double attackSpeed;
+        public float attackSpeed;
         public int attackDamage;
-        public double attackRange;
+        public float attackRange;
         public int cost;
+        public float projectileSpeed;
     }
     TowerList towerList = new TowerList();
     [System.Serializable]
@@ -51,6 +53,31 @@ public class JsonParser : MonoBehaviour
         public List<int> y = new List<int>();
         public List<string> Name = new List<string>();
     }
+    [System.Serializable]
+    internal class EnemyList
+    {
+        public List<EnemyInfo> Enemies = new List<EnemyInfo>();
+    }
+    [System.Serializable]
+    internal class EnemyInfo
+    {
+        public string name;
+        public int health;
+        public int livesCost;
+        public float speedCoef;
+        public string type;
+        public int reward;
+    }
+    EnemyList enemyList = new EnemyList();
+    [System.Serializable]
+    internal class WaveList
+    {
+        public List<Wave> Waves = new List<Wave>();
+    }
+
+
+    WaveList waveList = new WaveList();
+
 
     Tilemap tilemap;
     TileSelectionHandler tileSelectionHandler;
@@ -138,6 +165,19 @@ public class JsonParser : MonoBehaviour
         bounds = tilemap.cellBounds;
         pathfindingManager.LoadLevelTileList(tilemap.GetTilesBlock(bounds), bounds.size);
     }
+    public List<Wave> LoadLevelWaves(string filename)
+    {
+        //Android(and build) version
+        //TextAsset file = Resources.Load("Levels/LevelData/" + filename) as TextAsset;
+        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
+
+        //Editor version
+        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/LevelData/" + filename + ".json");
+        WaveList waveList = JsonUtility.FromJson<WaveList>(jsonData);
+
+        return waveList.Waves;
+
+    }
     /// <summary>
     /// Loads all unique tiles and their values from the TileData.json file.
     /// Should only be called by the TileContainer
@@ -174,9 +214,28 @@ public class JsonParser : MonoBehaviour
         List<TowerContainer.Tower> towers = new List<TowerContainer.Tower>();
         foreach (TowerInfo towerInfo in towerList.Towers)
         {
-            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost);
+            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost,towerInfo.projectileSpeed);
             towers.Add(tower);
         }
         return towers;
+    }
+
+    public List<EnemyContainer.Enemy> LoadEnemyList()
+    {
+        //Android(and build) version
+        //TextAsset file = Resources.Load("/Enemies/" + "EnemyData") as TextAsset;
+        //enemyList = JsonUtility.FromJson<EnemyList>(file.ToString());
+
+        //Editor version
+        string json = File.ReadAllText(Application.dataPath + "/Prefabs/Enemies/" + "EnemyData.json");
+        enemyList = JsonUtility.FromJson<EnemyList>(json);
+
+        List<EnemyContainer.Enemy> enemies = new List<EnemyContainer.Enemy>();
+        foreach (EnemyInfo enemyInfo in enemyList.Enemies)
+        {
+            EnemyContainer.Enemy enemy = new EnemyContainer.Enemy(enemyInfo.name, enemyInfo.health, enemyInfo.livesCost, enemyInfo.speedCoef, enemyInfo.type, enemyInfo.reward);
+            enemies.Add(enemy);
+        }
+        return enemies;
     }
 }

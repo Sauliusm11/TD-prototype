@@ -45,28 +45,19 @@ public class TowerContainer
     public class Tower
     {
         public string name;
-        public double attackSpeed;
+        public float attackSpeed;
         public int attackDamage;
-        public double attackRange;
+        public float attackRange;
         public int cost;
-        public Tower(string name, double attackSpeed, int attackDamage, double attackRange, int cost)
+        public float projectileSpeed;
+        public Tower(string name, float attackSpeed, int attackDamage, float attackRange, int cost, float projectileSpeed)
         {
             this.name = name;
             this.attackSpeed = attackSpeed;
             this.attackDamage = attackDamage;
             this.attackRange = attackRange;
             this.cost = cost;
+            this.projectileSpeed = projectileSpeed;
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

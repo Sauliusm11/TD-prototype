@@ -9,10 +9,14 @@ public class TowerSelectionHandler : MonoBehaviour
     [SerializeField]
     List<GameObject> TowerPrefabs;
     TowerContainer towerContainer;
+    TilePlacement placemetHandler;
+    [SerializeField]
+    GameObject selectionHighlighter;
     // Start is called before the first frame update
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        placemetHandler = GameObject.Find("Grid").GetComponent<TilePlacement>();
     }
 
     /// <summary>
@@ -26,17 +30,33 @@ public class TowerSelectionHandler : MonoBehaviour
         {
             towerContainer = TowerContainer.getInstance();
         }
-        string name = EventSystem.current.currentSelectedGameObject.name;
+        GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
+        string name = buttonObject.name;
         name = name.Substring(6);
+        placemetHandler.CancelPlacement();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
             if (name.Equals(tower.name))
             {
-                manager.SetSelectedTower(tower);
+                TowerContainer.Tower selectedTower = manager.GetSelectedTower();
+                if (selectedTower != null && selectedTower.name.Equals(tower.name)) 
+                {
+                    manager.SetSelectedTower(null);
+                    DeactivateSelectionHighlighter();
+                }
+                else 
+                { 
+                    manager.SetSelectedTower(tower);
+                    selectionHighlighter.SetActive(true);
+                    selectionHighlighter.transform.position = buttonObject.transform.position;
+                }
             }
         }
     }
-
+    public void DeactivateSelectionHighlighter()
+    {
+        selectionHighlighter.SetActive(false);
+    }
     /// <summary>
     /// Method called when placing the tile, should only be called by TilePlacement
     /// </summary>

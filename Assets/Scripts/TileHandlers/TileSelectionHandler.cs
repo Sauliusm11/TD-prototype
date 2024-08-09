@@ -37,7 +37,15 @@ public class TileSelectionHandler : MonoBehaviour
         {
             if (name.Equals(tile.name))
             {
-                manager.SetSelectedTile(tile);
+                TileContainer.Tile selectedTile = manager.GetSelectedTile();
+                if (selectedTile != null && selectedTile.name.Equals(tile.name))
+                {
+                    manager.SetSelectedTile(null);
+                }
+                else 
+                { 
+                    manager.SetSelectedTile(tile);
+                }
             }
         }
     }
