@@ -204,7 +204,7 @@ public class JsonParser : MonoBehaviour
     public List<TowerContainer.Tower> LoadTowerList()
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("/Towers/" + "TowerData") as TextAsset;
+        //TextAsset file = Resources.Load("Towers/" + "TowerData") as TextAsset;
         //towerList = JsonUtility.FromJson<TowerList>(file.ToString());
 
         //Editor version
@@ -223,7 +223,7 @@ public class JsonParser : MonoBehaviour
     public List<EnemyContainer.Enemy> LoadEnemyList()
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("/Enemies/" + "EnemyData") as TextAsset;
+        //TextAsset file = Resources.Load("Enemies/" + "EnemyData") as TextAsset;
         //enemyList = JsonUtility.FromJson<EnemyList>(file.ToString());
 
         //Editor version
