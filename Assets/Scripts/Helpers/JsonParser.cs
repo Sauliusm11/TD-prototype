@@ -223,12 +223,12 @@ public class JsonParser : MonoBehaviour
     public List<EnemyContainer.Enemy> LoadEnemyList()
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("/Enemies/" + "EnemyData") as TextAsset;
-        //enemyList = JsonUtility.FromJson<EnemyList>(file.ToString());
+        TextAsset file = Resources.Load("Enemies/" + "EnemyData") as TextAsset;
+        enemyList = JsonUtility.FromJson<EnemyList>(file.ToString());
 
         //Editor version
-        string json = File.ReadAllText(Application.dataPath + "/Prefabs/Enemies/" + "EnemyData.json");
-        enemyList = JsonUtility.FromJson<EnemyList>(json);
+        //string json = File.ReadAllText(Application.dataPath + "/Prefabs/Enemies/" + "EnemyData.json");
+        //enemyList = JsonUtility.FromJson<EnemyList>(json);
 
         List<EnemyContainer.Enemy> enemies = new List<EnemyContainer.Enemy>();
         foreach (EnemyInfo enemyInfo in enemyList.Enemies)
