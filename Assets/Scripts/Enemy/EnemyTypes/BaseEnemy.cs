@@ -29,6 +29,7 @@ public class BaseEnemy : MonoBehaviour
         //TODO: again, object pooling is waiting
         healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
         healthBarObject = Instantiate(healthBarPrefab,healthBarParent.transform);
+        healthBarObject.transform.SetAsFirstSibling();
         UpdateHealthBarPosition();
         healthBarSlider = healthBarObject.GetComponent<Slider>();
         EnemyContainer enemyContainer = EnemyContainer.getInstance();
@@ -64,12 +65,16 @@ public class BaseEnemy : MonoBehaviour
     }
     public void ReduceHealth(int damage)
     {
-        currentHealth -= damage;
-        healthBarSlider.value = (float)currentHealth / maxHealth;
-        if (currentHealth <= 0)
-        {
-            moneyHandler.AddMoney(10);
-            Death();
+        //Probably safer to use proper locks
+        if(currentHealth > 0) 
+        { 
+            currentHealth -= damage;
+            healthBarSlider.value = (float)currentHealth / maxHealth;
+            if (currentHealth <= 0)
+            {
+                moneyHandler.AddMoney(10);
+                Death();
+            }
         }
     }
     void UpdateHealthBarPosition() 
