@@ -168,12 +168,12 @@ public class JsonParser : MonoBehaviour
     public List<Wave> LoadLevelWaves(string filename)
     {
         //Android(and build) version
-        //TextAsset file = Resources.Load("Levels/LevelData/" + filename) as TextAsset;
-        //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
+        TextAsset file = Resources.Load("Levels/LevelData/" + filename) as TextAsset;
+        WaveList waveList = JsonUtility.FromJson<WaveList>(file.ToString());
 
         //Editor version
-        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/LevelData/" + filename + ".json");
-        WaveList waveList = JsonUtility.FromJson<WaveList>(jsonData);
+        //string jsonData = File.ReadAllText(Application.dataPath + "/Levels/LevelData/" + filename + ".json");
+        //WaveList waveList = JsonUtility.FromJson<WaveList>(jsonData);
 
         return waveList.Waves;
 
