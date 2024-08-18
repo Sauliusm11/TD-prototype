@@ -192,16 +192,27 @@ public class GameManager : MonoBehaviour
     {
         return selectedTower;
     }
+    /// <summary>
+    /// Changes the position of the tower placement confirmation to be above the tower
+    /// </summary>
+    /// <param name="towerPos">Current position of the tower</param>
     public void MoveTowerConfirmation(Vector3 towerPos)
     {
         towerPos = new Vector3(towerPos.x, towerPos.y + 1);
         towerConfirmationPanel.transform.position = towerPos;
     }
+    /// <summary>
+    /// Activates the confirmation+cancelation panel and calls MoveTowerConfirmation to update the position
+    /// </summary>
+    /// <param name="towerPos">Position of the tower</param>
     public void ActivateTowerConfirmation(Vector3 towerPos)
     {
         towerConfirmationPanel.SetActive(true);
         MoveTowerConfirmation(towerPos);
     }
+    /// <summary>
+    /// Deactivates the confirmation+cancelation panel
+    /// </summary>
     public void DeactivateTowerConfirmation()
     {
         towerConfirmationPanel.SetActive(false);

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// Shooting handler class attached to each tower (TODO: consider making this abstract?)
+/// </summary>
 public class ShootingHandler : MonoBehaviour
 {
     GameObject partToRotate;
@@ -41,6 +44,7 @@ public class ShootingHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //TODO: Ehm, so it resets the cooldown even when no targets?
         if (enabled) 
         { 
             timeSinceShot += Time.deltaTime;
@@ -51,15 +55,15 @@ public class ShootingHandler : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Called internally when the shot cooldown has reset
+    /// </summary>
     void Shoot()
     {
         AimAtTarget();
         if (currentTarget > -1)
         {
-
             GameObject targetObject = EnemyObjects[currentTarget];
-            BaseEnemy enemy = targetObject.GetComponent<BaseEnemy>();
-            //enemy.ReduceHealth(damage);
             GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform);//This REALLY needs object pooling
             StartCoroutine(MoveBulletTo(targetObject, bullet, 5));
             Debug.Log("Shoot?");
