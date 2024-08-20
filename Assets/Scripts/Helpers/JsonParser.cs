@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 
 public class JsonParser : MonoBehaviour
 {
+    #region
     [System.Serializable]
     internal class TileList
     {
@@ -75,9 +76,8 @@ public class JsonParser : MonoBehaviour
         public List<Wave> Waves = new List<Wave>();
     }
 
-
     WaveList waveList = new WaveList();
-
+    #endregion
 
     Tilemap tilemap;
     TileSelectionHandler tileSelectionHandler;
@@ -165,6 +165,12 @@ public class JsonParser : MonoBehaviour
         bounds = tilemap.cellBounds;
         pathfindingManager.LoadLevelTileList(tilemap.GetTilesBlock(bounds), bounds.size);
     }
+    /// <summary>
+    /// Loads Wave information of a level from a json file
+    /// Should only be called by wave manager
+    /// </summary>
+    /// <param name="filename">Name of the file without the extention</param>
+    /// <returns>A list of Wave objects</returns>
     public List<Wave> LoadLevelWaves(string filename)
     {
         //Android(and build) version
@@ -201,6 +207,11 @@ public class JsonParser : MonoBehaviour
         }
         return tiles;
     }
+    /// <summary>
+    /// Loads all unique towers and their values from the TowerData.json file.
+    /// Should only be called by the TowerContainer
+    /// </summary>
+    /// <returns>A list of tower types used by TowerContainer to store values for each tower type</returns>
     public List<TowerContainer.Tower> LoadTowerList()
     {
         //Android(and build) version
@@ -219,7 +230,11 @@ public class JsonParser : MonoBehaviour
         }
         return towers;
     }
-
+    /// <summary>
+    /// Loads all unique enemies and their values from the EnemyData.json file.
+    /// Should only be called by the EnemyContainer
+    /// </summary>
+    /// <returns>A list of enemy types used by EnemyContainer to store values for each enemy type</returns>
     public List<EnemyContainer.Enemy> LoadEnemyList()
     {
         //Android(and build) version

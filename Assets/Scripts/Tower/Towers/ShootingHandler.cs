@@ -60,6 +60,7 @@ public class ShootingHandler : MonoBehaviour
     /// </summary>
     void Shoot()
     {
+        //Update target right before shooting
         AimAtTarget();
         if (currentTarget > -1)
         {
@@ -69,8 +70,12 @@ public class ShootingHandler : MonoBehaviour
             Debug.Log("Shoot?");
         }
     }
+    /// <summary>
+    /// Finds the enemy cloest to the exit within range and points the part to rotate at it.
+    /// </summary>
     void AimAtTarget() 
     {
+        //Update target list before picking target
         UpdateTargets();
         float closestToExit = float.MaxValue;//Flip for last
         int closestIndex = 0;
@@ -87,6 +92,7 @@ public class ShootingHandler : MonoBehaviour
             }
             currentTarget = closestIndex;
             GameObject targetObject = EnemyObjects[currentTarget];
+            //Rotates the gun to point at the target
             Vector2 direction = partToRotate.transform.position - targetObject.transform.position;
             Quaternion rotation = new Quaternion();
             rotation.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) + 90);//Idk why, but + 90 helps
@@ -98,9 +104,12 @@ public class ShootingHandler : MonoBehaviour
         }
         
     }
+    /// <summary>
+    /// Uses a physics2D OverlapCircleAll to find all enemies within range
+    /// </summary>
     void UpdateTargets()
     {
-        //Change the second one to 2 for ground+air guns and both for air only guns
+        //Change the second one to 2 for ground+air guns and both for air only guns?
         Collider2D[] colliders = Physics2D.OverlapCircleAll(this.transform.position, range, 1 << 6, 1, 1);
         //There has to be a better way, right?
         EnemyObjects.Clear();
@@ -119,15 +128,24 @@ public class ShootingHandler : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Activates the tower once it's purchase has been confirmed
+    /// </summary>
     public void EnableTower() 
     {
         if (!enabled) 
         { 
             enabled = true;
-            Debug.Log("NANI?");
             InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
         }
     }
+    /// <summary>
+    /// Coroutine which moves the bullet to the target
+    /// </summary>
+    /// <param name="target">Object the bullet is targeting</param>
+    /// <param name="bullet">Bullet object</param>
+    /// <param name="speed">Speed at which the bullet moves (should always be faster than fastest enemy)</param>
+    /// <returns></returns>
     IEnumerator MoveBulletTo(GameObject target, GameObject bullet, float speed)
     {
         Vector3 oldPos = bullet.transform.position;
@@ -174,32 +192,4 @@ public class ShootingHandler : MonoBehaviour
         }
         
     }
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    Debug.Log("At least I collided");
-    //    GameObject collisionGameObject = collision.gameObject;
-    //    if (!EnemyObjects.Contains(collisionGameObject))
-    //    {
-    //        BaseEnemy baseEnemy = collisionGameObject.GetComponent<BaseEnemy>();
-    //        if(baseEnemy != null) 
-    //        { 
-    //            EnemyObjects.Add(collision.gameObject);
-    //            baseEnemies.Add(baseEnemy);
-    //            Debug.Log("At least I added");
-    //        }
-    //    }
-    //}
-    //private void OnCollisionExit2D(Collision2D collision)
-    //{
-    //    GameObject collisionGameObject = collision.gameObject;
-    //    if (EnemyObjects.Contains(collisionGameObject))
-    //    {
-    //        BaseEnemy baseEnemy = collisionGameObject.GetComponent<BaseEnemy>();
-    //        if (baseEnemy != null)
-    //        {
-    //            EnemyObjects.Remove(collision.gameObject);
-    //            baseEnemies.Remove(baseEnemy);
-    //        }
-    //    }
-    //}
 }

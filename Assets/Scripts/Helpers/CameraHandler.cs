@@ -1,7 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Camera handler class made using 
+/// https://kylewbanks.com/blog/unity3d-panning-and-pinch-to-zoom-camera-with-touch-and-mouse-input 
+/// as a base and adapted to personal preference
+/// TODO: rewrite yourself if using for uni
+/// </summary>
 public class CameraHandler : MonoBehaviour
 {
     private static readonly float PanSpeed = 4.5f;//5 works on pc, is playable on andoroid but a bit fast. 4.5 looks good.
@@ -17,7 +22,6 @@ public class CameraHandler : MonoBehaviour
 
     private Vector3 lastPanPosition;
     private int panFingerId; // Touch mode only
-
     private bool wasZoomingLastFrame; // Touch mode only
     private Vector2[] lastZoomPositions; // Touch mode only
 
@@ -74,8 +78,9 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
-
-
+    /// <summary>
+    /// Camera controls for devices not supporting touch
+    /// </summary>
     void HandleMouse()
     {
         // On mouse down, capture it's position.
@@ -94,6 +99,9 @@ public class CameraHandler : MonoBehaviour
         ZoomCamera(scroll, ZoomSpeedMouse);
     }
 
+    /// <summary>
+    /// Camera controls for devices  supporting touch
+    /// </summary>
     void HandleTouch()
     {
 

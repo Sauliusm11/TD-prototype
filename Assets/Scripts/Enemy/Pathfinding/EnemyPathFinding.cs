@@ -99,11 +99,6 @@ public class EnemyPathFinding : MonoBehaviour
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
                     //I mean, this works but space complexity grows a lot (or does it?)
                     priorityQueue.Enqueue(nodes[neighbourIndex]);
-                    Debug.Log(string.Format("Size: {0}", priorityQueue.Count()));
-                    //if (!priorityQueue.Contains(nodes[neighbourIndex]))
-                    //{
-                    //    priorityQueue.Enqueue(nodes[neighbourIndex]);
-                    //}
                 }
             }
             if (priorityQueue.Count() == 0 && pathFound)

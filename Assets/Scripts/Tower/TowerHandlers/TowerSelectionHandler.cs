@@ -53,6 +53,9 @@ public class TowerSelectionHandler : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Deactivates the selection highlighter panel
+    /// </summary>
     public void DeactivateSelectionHighlighter()
     {
         selectionHighlighter.SetActive(false);

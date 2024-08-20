@@ -55,6 +55,10 @@ public class BaseEnemy : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Calculates how far away from the castle is the enemy
+    /// </summary>
+    /// <returns>Distance in tiles?(or time?) from the castle</returns>
     public float GetProgress()
     {
         if (timeElapsed != 0)
@@ -63,6 +67,10 @@ public class BaseEnemy : MonoBehaviour
         }
         return path.Count + 1;
     }
+    /// <summary>
+    /// Damage the enemy and do enemy death related checks
+    /// </summary>
+    /// <param name="damage">Amount of damage to deal</param>
     public void ReduceHealth(int damage)
     {
         //Probably safer to use proper locks
@@ -77,11 +85,17 @@ public class BaseEnemy : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Move the health bar attached to the enemy to position
+    /// </summary>
     void UpdateHealthBarPosition() 
     {
         Vector3 position = gameObject.transform.position;
         healthBarObject.transform.position = new Vector3(position.x, position.y+0.3f, position.z);
     }
+    /// <summary>
+    /// Method called once the enemy health reaches 0
+    /// </summary>
     void Death()
     {
         Destroy(healthBarObject);

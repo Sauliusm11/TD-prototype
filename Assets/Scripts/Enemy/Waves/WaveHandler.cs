@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-
+/// <summary>
+/// Wave handler class responsible for managing waves and spawning enemies
+/// Should only be attached to the WaveManager object
+/// </summary>
 public class WaveHandler : MonoBehaviour
 {
     JsonParser parser;
@@ -24,11 +27,22 @@ public class WaveHandler : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Loads the wave information
+    /// </summary>
+    /// <param name="fileName">Name of the level wave file</param>
     public void LoadWaves(string fileName)
     {
         currentWave = 0;
         waves = parser.LoadLevelWaves(fileName);
     }
+    /// <summary>
+    /// Starts the next wave if the current wave is finished
+    /// Should only be called by PathFindingManager once all the pathfinders have finished
+    /// </summary>
+    /// <param name="start">Node object of the portal</param>
+    /// <param name="xOffset">xOffset value saved in the PathfindingManager</param>
+    /// <param name="yOffset">yOffset value saved in the PathfindingManager</param>
     public void StartWave(Node start, float xOffset, float yOffset)
     {
         if (!sending && currentWave < waves.Count)//Could this be a race condition?
@@ -38,6 +52,14 @@ public class WaveHandler : MonoBehaviour
             currentWave++;
         }
     }
+    /// <summary>
+    /// Coroutine responsible for spawning the enemies of a wave
+    /// </summary>
+    /// <param name="waveNumber">Number of the wave</param>
+    /// <param name="start">Starting node</param>
+    /// <param name="xOffset">base xOffset value saved in the PathfindingManager</param>
+    /// <param name="yOffset">base yOffset value saved in the PathfindingManager</param>
+    /// <returns></returns>
     IEnumerator SendWave(int waveNumber, Node start, float xOffset, float yOffset)
     {
         Wave wave = waves[waveNumber];

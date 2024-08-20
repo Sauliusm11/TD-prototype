@@ -7,7 +7,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 /// <summary>
 /// GameManager class, responsible for managing most UI elements and states.
-/// Acts as a bridge between most class calls allowing to execute additional code before passing requests. 
+/// Acts as a bridge between most class calls allowing to execute additional code before passing requests.
+/// Should only be attached to the GameManager object
 /// </summary>
 public class GameManager : MonoBehaviour
 {

@@ -40,4 +40,18 @@ public static class Utility
         Array.Reverse(arr);
         return new Stack<T>(arr);
     }
+    /// <summary>
+    /// Sets the color for an object and all children with a SpriteRenderer component
+    /// </summary>
+    /// <param name="parent">Parent object</param>
+    /// <param name="newColor">New color</param>
+    public static void SetParentAndChildrenColors(GameObject parent, Color newColor)
+    {
+        parent.GetComponent<SpriteRenderer>().color = newColor;
+        foreach (SpriteRenderer renderer in parent.GetComponentsInChildren<SpriteRenderer>())
+        {
+            renderer.color = newColor;
+        }
+
+    }
 }

@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 /// <summary>
-/// Pathfinder manager acting as a mediator between all different pathfinding classes 
+/// Pathfinder manager acting as a mediator between all different pathfinding classes
+/// Should only be attached to the PathFindingManager object
 /// </summary>
 public class PathfindingManager : MonoBehaviour
 {
@@ -74,24 +75,28 @@ public class PathfindingManager : MonoBehaviour
 
         tilesSize = size;
     }
+    /// <summary>
+    /// Adds a flag to one of the internal nodes where the tower was placed
+    /// </summary>
+    /// <param name="position">Cell position of the tower</param>
     public void AddTowerToNode(Vector3Int position)
     {
-        //position = new Vector3Int(position.x + 9, position.y + 5, position.z);
-        //Debug.Log(position);
-        //Debug.Log(xOffset);
-        //Debug.Log(yOffset);
-        //Debug.Log(tilesSize.x);
-        //Debug.Log(Mathf.CeilToInt(xOffset));
         //Debug.Log(position.x - Mathf.CeilToInt(xOffset) + (position.y - Mathf.CeilToInt(yOffset)) * tilesSize.x);
         Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(true);
     }
+    /// <summary>
+    /// Removes a flag from one of the internal nodes where the tower was placed
+    /// </summary>
+    /// <param name="position">Cell position of the tower</param>
     public void RemoveTowerFromNode(Vector3Int position)
     {
         Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(false);
     }
+    /// <summary>
+    /// Called by the next wave button to indicate that the player wants to start the next wave
+    /// </summary>
     public void CallWave()
     {
-        Debug.Log("Wave called");
         //TODO: add checks to prevent spamming
         StartCoroutine(PreparePathFinding());
     }

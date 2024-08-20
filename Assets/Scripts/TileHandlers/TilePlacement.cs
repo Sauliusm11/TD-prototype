@@ -7,7 +7,8 @@ using UnityEngine.PlayerLoop;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 /// <summary>
-/// Class responsible for tile placement, attached to the grid on which the tiles will be placed
+/// Class responsible for tile and tower placement, attached to the grid on which the tiles will be placed
+/// (Note: probably a bad idea to have both in the same class)
 /// </summary>
 public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
 {
@@ -72,7 +73,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         if (!PointerOverUI(eventData))//Do not place if pointer is on UI
         {
             Vector3Int cellPosition = tilemap.WorldToCell(position);
-            if (devMode)
+            if (devMode)//Placing tiles
             {
                 if(manager.GetSelectedTile() != null) 
                 { 
@@ -81,7 +82,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     tilemap.SetTile(cellPosition, tile);
                 }
             }
-            else 
+            else //Placing towers
             {
                 if (!PointerOverTower(eventData) && PointerOverTile(cellPosition) && manager.GetSelectedTower() != null)
                 {
@@ -92,15 +93,15 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                         position = tilemap.CellToWorld(cellPosition);
                         position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
                         
-                        if (tower != null && currentTower == null)
+                        if (tower != null && currentTower == null)//No ghost tower yet
                         {
                             currentTower = Instantiate(tower, position, new Quaternion());
                             currentTowerPosition = position;
                             currentTowerCellPosition = cellPosition;
-                            SetParentAndChildrenColors(partiallyTransparenent);
+                            Utility.SetParentAndChildrenColors(currentTower,partiallyTransparenent);
                             manager.ActivateTowerConfirmation(position);
                         }
-                        else
+                        else //Move existing placement
                         {
                             if(currentTower != null) 
                             { 
@@ -118,37 +119,38 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             }
         }
     }
-
+    /// <summary>
+    /// Finalize placement of the tower
+    /// </summary>
     public void ConfirmPlacement()
     {
         TowerContainer.Tower selection = manager.GetSelectedTower();
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
-            SetParentAndChildrenColors(defaultColor);
+            Utility.SetParentAndChildrenColors(currentTower, defaultColor);
             pathfindingManager.AddTowerToNode(currentTowerCellPosition);
             manager.DeactivateTowerConfirmation();
             currentTower.GetComponent<ShootingHandler>().EnableTower();
             currentTower = null;
+
+            //Uncomment these to deselect after buying a tower(should be a setting in the future)
             //manager.SetSelectedTower(null);
             //towerSelectionHandler.DeactivateSelectionHighlighter();
         }
     }
+    /// <summary>
+    /// Cancels the placement of the currently placed(but not confirmed) tower
+    /// </summary>
     public void CancelPlacement()
     {
         if (currentTower != null)
         {
             Destroy(currentTower);//Again, object pooling ftw, but this is easier
             manager.DeactivateTowerConfirmation();
+            //These kind of make the cancel button make sense (deselecting)
+            manager.SetSelectedTower(null);
+            towerSelectionHandler.DeactivateSelectionHighlighter();
         }
-    }
-    void SetParentAndChildrenColors(Color newColor)
-    {
-        currentTower.GetComponent<SpriteRenderer>().color = newColor;
-        foreach (SpriteRenderer renderer in currentTower.GetComponentsInChildren<SpriteRenderer>())
-        {
-            renderer.color = newColor;
-        }
-
     }
     /// <summary>
     /// Checks if pointer is hovering over a UI object
