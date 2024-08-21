@@ -32,7 +32,7 @@ public class Lives : MonoBehaviour
     }
     /// <summary>
     /// Checks if the player has enough lives to survive an enemy
-    /// TODO: might want to make it return false if it is the same
+    /// TODO: might want to make it return false if it hits 0
     /// </summary>
     /// <param name="cost">Lives cost of the enemy</param>
     /// <returns>True if the player has enough lives, false if not</returns>
