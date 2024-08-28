@@ -8,6 +8,8 @@ public class TowerSelectionHandler : MonoBehaviour
     GameManager manager;
     [SerializeField]
     List<GameObject> TowerPrefabs;
+    [SerializeField]
+    List<ObjectPooling> ObjectPoolers;
     TowerContainer towerContainer;
     TilePlacement placemetHandler;
     [SerializeField]
@@ -72,6 +74,18 @@ public class TowerSelectionHandler : MonoBehaviour
             if (tower.name.Equals(selection.name))
             {
                 return tower;
+            }
+        }
+        //Removal, should never be called
+        return null;
+    }    
+    public ObjectPooling GetTowerPoolerFromSelection(TowerContainer.Tower selection)
+    {
+        foreach (ObjectPooling pooler in ObjectPoolers)
+        {
+            if (pooler.name.Contains(selection.name))
+            {
+                return pooler;
             }
         }
         //Removal, should never be called

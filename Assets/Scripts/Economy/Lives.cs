@@ -9,10 +9,12 @@ using UnityEngine;
 public class Lives : MonoBehaviour
 {
     int lives;
+    GameManager gameManager;
     TMP_Text livesDisplay;
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         ResetLives();
     }
 
@@ -54,6 +56,7 @@ public class Lives : MonoBehaviour
             UpdateLivesDisplay();
             return true;
         }
+        gameManager.ActivateGameOver();
         return false;
 
     }

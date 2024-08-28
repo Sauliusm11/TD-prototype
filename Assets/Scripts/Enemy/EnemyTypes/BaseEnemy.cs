@@ -23,12 +23,20 @@ public class BaseEnemy : MonoBehaviour
     GameObject healthBarParent;
     GameObject healthBarObject;
     Slider healthBarSlider;
+    ObjectPooling enemyPooler;
+    ObjectPooling enemyHealthBarPooler;
     // Start is called before the first frame update
     void Start()
     {
+        enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
+    }
+    private void OnEnable()
+    {
+        enemyHealthBarPooler = GameObject.Find("EnemyHealthBarPooler").GetComponent<ObjectPooling>();
         //TODO: again, object pooling is waiting
         healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
-        healthBarObject = Instantiate(healthBarPrefab,healthBarParent.transform);
+        //healthBarObject = Instantiate(healthBarPrefab, healthBarParent.transform);
+        healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(healthBarParent.transform);
         healthBarObject.transform.SetAsFirstSibling();
         UpdateHealthBarPosition();
         healthBarSlider = healthBarObject.GetComponent<Slider>();
@@ -43,13 +51,12 @@ public class BaseEnemy : MonoBehaviour
                 livesCost = enemy.livesCost;
             }
         }
-        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();        
+        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
         pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
         path = pathFinder.GetPath();
         StartCoroutine(FollowPath());
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -98,8 +105,11 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     void Death()
     {
-        Destroy(healthBarObject);
-        Destroy(gameObject);
+        healthBarSlider.value = 1;
+        enemyHealthBarPooler.DeactivateObject(healthBarObject);
+        //Destroy(healthBarObject);
+        enemyPooler.DeactivateObject(gameObject);
+        //Destroy(gameObject);
     }
     /// <summary>
     /// Move the enemy one tile at a time along the path

@@ -19,11 +19,16 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject loadConfirmPanel;
     [SerializeField]
+    GameObject gameOverPanel;
+    [SerializeField]
     GameObject towerConfirmationPanel;
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
     JsonParser parser;
     WaveHandler waveHandler;
+    Money moneyHandler;
+    Lives livesHandler;
+    CleanUp objectCleaner;
 
     [HideInInspector]
     public TileContainer.Tile selectedTile;
@@ -35,8 +40,11 @@ public class GameManager : MonoBehaviour
         SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
+        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
+        livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
         saveFileInputField = saveConfirmPanel.GetComponentInChildren<TMP_InputField>();
         loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
+        objectCleaner = GameObject.Find("ObjectPoolers").GetComponent<CleanUp>();
 
         selectedTile = null;
         selectedTower = null;
@@ -151,14 +159,19 @@ public class GameManager : MonoBehaviour
     public void ConfirmLoading()
     {
         string filename = loadFileInputField.text;
-        parser.LoadLevelTiles(filename);
-        waveHandler.LoadWaves(filename);
-        CloseFilePrompt();
+        ConfirmLoading(filename);
+        //parser.LoadLevelTiles(filename);
+        //waveHandler.LoadWaves(filename);
+        //CloseFilePrompt();
     }
     public void ConfirmLoading(string filename)
     {
         parser.LoadLevelTiles(filename);
         waveHandler.LoadWaves(filename);
+        moneyHandler.ResetMoney();
+        livesHandler.ResetLives();
+        objectCleaner.CleanUpObjects();
+        DeactivateGameOver();
         CloseFilePrompt();
     }
     /// <summary>
@@ -218,4 +231,13 @@ public class GameManager : MonoBehaviour
     {
         towerConfirmationPanel.SetActive(false);
     }
+    public void ActivateGameOver()
+    {
+        gameOverPanel.SetActive(true);
+    }
+    void DeactivateGameOver()
+    {
+        gameOverPanel.SetActive(false);
+    }
+
 }

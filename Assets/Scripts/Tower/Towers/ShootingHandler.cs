@@ -16,6 +16,7 @@ public class ShootingHandler : MonoBehaviour
     List<BaseEnemy> baseEnemies = new List<BaseEnemy>();
     int currentTarget;
     float timeSinceShot;
+    ObjectPooling bulletPooler;
 
     float coolDown;
     float range;
@@ -24,6 +25,7 @@ public class ShootingHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bulletPooler = GameObject.Find("CannonBulletPooler").GetComponent<ObjectPooling>();
         partToRotate = transform.Find("TowerCannon").gameObject;
         shootingPoint = partToRotate.transform.Find("ShootingPoint").gameObject;
         TowerContainer towerContainer = TowerContainer.getInstance();
@@ -65,7 +67,8 @@ public class ShootingHandler : MonoBehaviour
         if (currentTarget > -1)
         {
             GameObject targetObject = EnemyObjects[currentTarget];
-            GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform);//This REALLY needs object pooling
+            //GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform);//This REALLY needs object pooling
+            GameObject bullet = bulletPooler.ActivateObject(shootingPoint.transform);//TODO: this is not ideal, would be better to give it the prefab(allowing one pooler to have different objects)
             StartCoroutine(MoveBulletTo(targetObject, bullet, 5));
             Debug.Log("Shoot?");
         }
@@ -168,7 +171,8 @@ public class ShootingHandler : MonoBehaviour
                     }
                     else
                     {
-                        Destroy(bullet);
+                        bulletPooler.DeactivateObject(bullet);
+                        //Destroy(bullet);
                         break;
                     }
                     float timeDelta = Time.deltaTime;
@@ -177,7 +181,8 @@ public class ShootingHandler : MonoBehaviour
                     if (timeElapsed / totalTime > 1)
                     {
                         bullet.transform.position = goTo;
-                        Destroy(bullet);
+                        bulletPooler.DeactivateObject(bullet);
+                        //Destroy(bullet);
                         BaseEnemy enemy = target.GetComponent<BaseEnemy>();
                         enemy.ReduceHealth(damage);
 
@@ -188,8 +193,9 @@ public class ShootingHandler : MonoBehaviour
         }
         else
         {
-            Destroy(bullet);
+            bulletPooler.DeactivateObject(bullet);
+            //Destroy(bullet);
         }
-        
+
     }
 }

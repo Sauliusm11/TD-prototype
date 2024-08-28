@@ -22,6 +22,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
 
 
     GameObject currentTower;
+    ObjectPooling currentPooler;
     Vector3Int currentTowerCellPosition;
     Vector3 currentTowerPosition;
     Color defaultColor;
@@ -90,12 +91,14 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     if (moneyHandler.HasEnoughMoney(selection.cost))
                     {
                         GameObject tower = towerSelectionHandler.GetTowerFromSelection(selection);
+                        currentPooler = towerSelectionHandler.GetTowerPoolerFromSelection(selection);
                         position = tilemap.CellToWorld(cellPosition);
                         position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
                         
                         if (tower != null && currentTower == null)//No ghost tower yet
                         {
-                            currentTower = Instantiate(tower, position, new Quaternion());
+                            //currentTower = Instantiate(tower, position, new Quaternion());
+                            currentTower = currentPooler.ActivateObject(position, new Quaternion());
                             currentTowerPosition = position;
                             currentTowerCellPosition = cellPosition;
                             Utility.SetParentAndChildrenColors(currentTower,partiallyTransparenent);
@@ -145,7 +148,9 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     {
         if (currentTower != null)
         {
-            Destroy(currentTower);//Again, object pooling ftw, but this is easier
+            //Destroy(currentTower);//Again, object pooling ftw, but this is easier
+            currentPooler.DeactivateObject(currentTower);
+            currentTower = null;
             manager.DeactivateTowerConfirmation();
             //These kind of make the cancel button make sense (deselecting)
             manager.SetSelectedTower(null);

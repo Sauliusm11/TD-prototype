@@ -15,9 +15,11 @@ public class WaveHandler : MonoBehaviour
     int currentWave;
     [SerializeField]
     GameObject enemyPrefab;
+    ObjectPooling enemyPooler;
     // Start is called before the first frame update
     void Start()
     {
+        enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         sending = false;
     }
@@ -70,9 +72,10 @@ public class WaveHandler : MonoBehaviour
             while (enemy.count > 0) 
             {
                 //Need to add some variance to enemies(but also their target then)(prob stored in the enemy itself)
-                Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
+                //Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
+                enemyPooler.ActivateObject(new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());
                 enemy.count--;
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.2f);
             }
             enemies.RemoveAt(0);
         }
