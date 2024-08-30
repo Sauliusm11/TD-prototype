@@ -9,12 +9,13 @@ public class WorldNode
 {
     float X, Y;
     float MovementSpeedCoef;
-
-    public WorldNode(float x, float y, float movementSpeedCoef)
+    string name;
+    public WorldNode(float x, float y, float movementSpeedCoef, string name)
     {
         X = x;
         Y = y;
         MovementSpeedCoef = movementSpeedCoef;
+        this.name = name;
     }
 
     public float GetX()
@@ -24,6 +25,10 @@ public class WorldNode
     public float GetY()
     {
         return Y;
+    }
+    public string GetName()
+    {
+        return name;
     }
     /// <summary>
     /// Get the X and Y values in a Vector3

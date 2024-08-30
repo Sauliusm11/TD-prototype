@@ -47,22 +47,22 @@ public class PathfindingManager : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 TileBase tile = tiles[x + y * size.x];
-                Node node = new Node(x,y,Mathf.Infinity);
+                Node node = new Node(x,y,Mathf.Infinity,"");
                 foreach (TileContainer.Tile tileInfo in tileContainer.tiles)
                 {
                     if (tile.name.Equals(tileInfo.name))
                     {
-                        node = new Node(x,y,tileInfo.movementSpeed);
+                        node = new Node(x,y,tileInfo.movementSpeed,tile.name);
                     }
                 }
                 //Reminder: this only really works with one castle and one portal
                 if (tile.name.Contains("Portal"))
                 {
-                    start = new Node(x, y, 1);
+                    start = new Node(x, y, 1, "Portal");
                 }
                 if (tile.name.Contains("Castle"))
                 {
-                    target = new Node(x, y, 1);
+                    target = new Node(x, y, 1, "Castle");
                 }
                 Nodes[x + y * size.x] = node;
             }
@@ -108,7 +108,7 @@ public class PathfindingManager : MonoBehaviour
     public WorldNode ConvertToWorldNode(Node node)
     {
         Vector3 position = tilemap.CellToWorld(new Vector3Int(node.GetX(), node.GetY()));
-        WorldNode newNode = new WorldNode(position.x + xOffset, position.y + yOffset, node.GetMovementSpeedCoef());
+        WorldNode newNode = new WorldNode(position.x + xOffset, position.y + yOffset, node.GetMovementSpeedCoef(),node.GetName());
         return newNode;
     }
     /// <summary>

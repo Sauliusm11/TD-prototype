@@ -12,6 +12,8 @@ public class BaseEnemy : MonoBehaviour
     Lives livesHandler;
     EnemyPathFinding pathFinder;
     Stack<WorldNode> path;
+    TileContainer tileContainer;
+    TileContainer.Tile currentTile;
     float timeElapsed = 0f;
     float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
     int maxHealth;
@@ -29,6 +31,7 @@ public class BaseEnemy : MonoBehaviour
     void Start()
     {
         enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
+        tileContainer = TileContainer.getInstance();
     }
     private void OnEnable()
     {
@@ -83,7 +86,7 @@ public class BaseEnemy : MonoBehaviour
         //Probably safer to use proper locks
         if(currentHealth > 0) 
         { 
-            currentHealth -= damage;
+            currentHealth -= Mathf.RoundToInt(damage/currentTile.damageResistance);
             healthBarSlider.value = (float)currentHealth / maxHealth;
             if (currentHealth <= 0)
             {
@@ -120,6 +123,14 @@ public class BaseEnemy : MonoBehaviour
         while (path.Count > 0)
         {
             WorldNode node = path.Pop();
+            string nodeName = node.GetName();
+            foreach (TileContainer.Tile tile in tileContainer.tiles)
+            {
+                if (tile.name.Equals(nodeName))
+                {
+                    currentTile = tile;
+                }
+            }
             yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()*walkingSpeed));
         }
         livesHandler.RemoveLives(livesCost);

@@ -13,12 +13,14 @@ public class Node : IComparable<Node>
     float MovementSpeedCoef;
     float currentWeight;
     bool hasTower;
-
-    public Node(int x, int y, float movementSpeedCoef)
+    string name;
+    
+    public Node(int x, int y, float movementSpeedCoef, string name)
     {
         X = x;
         Y = y;
         MovementSpeedCoef = movementSpeedCoef;
+        this.name = name;
     }
 
     public int GetX() 
@@ -28,6 +30,10 @@ public class Node : IComparable<Node>
     public int GetY()
     {
         return Y;
+    }
+    public string GetName()
+    {
+        return name;
     }
     public float GetMovementSpeedCoef() 
     {
