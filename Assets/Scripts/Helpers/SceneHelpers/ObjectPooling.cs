@@ -65,6 +65,7 @@ public class ObjectPooling : MonoBehaviour
     {
         if (AvailableObjectIndexes.Count > 0)
         {
+
             GameObject gameObject = ObjectList[AvailableObjectIndexes.Dequeue()];
             gameObject.transform.position = position;
             gameObject.SetActive(true);
@@ -80,12 +81,17 @@ public class ObjectPooling : MonoBehaviour
     }
     public void DeactivateObject(GameObject gameObject)
     {
-        for(int i = 0;i < ObjectList.Count; i++)
+        for(int i = 0; i < ObjectList.Count; i++)
         {
             if(gameObject.GetInstanceID() == ObjectList[i].GetInstanceID())
             {
-                gameObject.SetActive(false);
-                AvailableObjectIndexes.Enqueue(i);
+
+                if (gameObject.activeInHierarchy)
+                {
+                    Debug.Log(i);
+                    gameObject.SetActive(false);
+                    AvailableObjectIndexes.Enqueue(i);
+                }
             }
         }
     }
@@ -93,8 +99,11 @@ public class ObjectPooling : MonoBehaviour
     {
         for (int i = 0; i < ObjectList.Count; i++)
         {
-            ObjectList[i].SetActive(false);
-            AvailableObjectIndexes.Enqueue(i);
+            if (ObjectList[i].activeInHierarchy)
+            {
+                ObjectList[i].SetActive(false);
+                AvailableObjectIndexes.Enqueue(i);
+            }
         }
     }
 }

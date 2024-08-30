@@ -124,7 +124,6 @@ public class BaseEnemy : MonoBehaviour
         {
             WorldNode node = path.Pop();
             string nodeName = node.GetName();
-            Debug.Log(tileContainer);
             foreach (TileContainer.Tile tile in tileContainer.tiles)
             {
                 if (tile.name.Equals(nodeName))
