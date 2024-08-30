@@ -31,10 +31,10 @@ public class BaseEnemy : MonoBehaviour
     void Start()
     {
         enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
-        tileContainer = TileContainer.getInstance();
     }
     private void OnEnable()
     {
+        tileContainer = TileContainer.getInstance();
         enemyHealthBarPooler = GameObject.Find("EnemyHealthBarPooler").GetComponent<ObjectPooling>();
         //TODO: again, object pooling is waiting
         healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
@@ -124,6 +124,7 @@ public class BaseEnemy : MonoBehaviour
         {
             WorldNode node = path.Pop();
             string nodeName = node.GetName();
+            Debug.Log(tileContainer);
             foreach (TileContainer.Tile tile in tileContainer.tiles)
             {
                 if (tile.name.Equals(nodeName))
