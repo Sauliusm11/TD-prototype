@@ -16,6 +16,8 @@ public class WaveHandler : MonoBehaviour
     [SerializeField]
     GameObject enemyPrefab;
     ObjectPooling enemyPooler;
+    [SerializeField]
+    float maxOffset;
     // Start is called before the first frame update
     void Start()
     {
@@ -73,7 +75,12 @@ public class WaveHandler : MonoBehaviour
             {
                 //Need to add some variance to enemies(but also their target then)(prob stored in the enemy itself)
                 //Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
-                enemyPooler.ActivateObject(new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());
+                float additionalXOffset = Random.Range(-maxOffset, maxOffset);
+                float additionalYOffset = Random.Range(-maxOffset, maxOffset);
+                GameObject enemyObject = enemyPooler.ActivateObject(new Vector3(start.GetX() + xOffset + additionalXOffset, start.GetY() + yOffset + additionalYOffset, 1), new Quaternion());
+                BaseEnemy baseEnemy = enemyObject.GetComponent<BaseEnemy>();
+                baseEnemy.UpdateOffsets(additionalXOffset, additionalYOffset);
+                baseEnemy.StartWalking();
                 enemy.count--;
                 yield return new WaitForSeconds(0.2f);
             }

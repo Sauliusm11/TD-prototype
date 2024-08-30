@@ -16,6 +16,8 @@ public class BaseEnemy : MonoBehaviour
     TileContainer.Tile currentTile;
     float timeElapsed = 0f;
     float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
+    float xOffset;
+    float yOffset;
     int maxHealth;
     int currentHealth;
     float walkingSpeed;
@@ -31,6 +33,7 @@ public class BaseEnemy : MonoBehaviour
     void Start()
     {
         enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
+
     }
     private void OnEnable()
     {
@@ -57,13 +60,21 @@ public class BaseEnemy : MonoBehaviour
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
         pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
-        path = pathFinder.GetPath();
-        StartCoroutine(FollowPath());
     }
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void StartWalking()
+    {
+        path = pathFinder.GetPath();
+        StartCoroutine(FollowPath());
+    }
+    public void UpdateOffsets(float X, float Y)
+    {
+        xOffset = X;
+        yOffset = Y;
     }
     /// <summary>
     /// Calculates how far away from the castle is the enemy
@@ -120,6 +131,7 @@ public class BaseEnemy : MonoBehaviour
     /// <returns></returns>
     IEnumerator FollowPath()
     {
+        path.Pop();//Don't need to go to the portal
         while (path.Count > 0)
         {
             WorldNode node = path.Pop();
@@ -131,7 +143,11 @@ public class BaseEnemy : MonoBehaviour
                     currentTile = tile;
                 }
             }
-            yield return StartCoroutine(MoveTo(node.GetVector3(), node.GetMovementSpeedCoef()*walkingSpeed));
+            Vector3 target = node.GetVector3();
+            Debug.Log(target);
+            target.x += xOffset;
+            target.y += yOffset;
+            yield return StartCoroutine(MoveTo(target, node.GetMovementSpeedCoef()*walkingSpeed));
         }
         livesHandler.RemoveLives(livesCost);
         Death();
