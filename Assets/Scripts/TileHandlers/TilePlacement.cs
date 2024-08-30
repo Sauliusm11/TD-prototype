@@ -17,6 +17,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     PathfindingManager pathfindingManager;
     TileSelectionHandler tileSelectionHandler;
     TowerSelectionHandler towerSelectionHandler;
+    TileContainer tileContainer;
     Money moneyHandler;
     bool devMode;
 
@@ -35,6 +36,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         devMode = true;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
+        tileContainer = TileContainer.getInstance();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null) 
         {
@@ -131,9 +133,19 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
             Utility.SetParentAndChildrenColors(currentTower, defaultColor);
-            pathfindingManager.AddTowerToNode(currentTowerCellPosition);
+            Node node = pathfindingManager.AddTowerToNode(currentTowerCellPosition);
+            string name = node.GetName();
+            ShootingHandler handler = currentTower.GetComponent<ShootingHandler>();
+            foreach (TileContainer.Tile tile in tileContainer.tiles)
+            {
+                if (tile.name.Equals(name))
+                {
+                    handler.ApplyBuff(tile);
+                    break;
+                }
+            }
             manager.DeactivateTowerConfirmation();
-            currentTower.GetComponent<ShootingHandler>().EnableTower();
+            handler.EnableTower();
             currentTower = null;
 
             //Uncomment these to deselect after buying a tower(should be a setting in the future)

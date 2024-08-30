@@ -79,10 +79,12 @@ public class PathfindingManager : MonoBehaviour
     /// Adds a flag to one of the internal nodes where the tower was placed
     /// </summary>
     /// <param name="position">Cell position of the tower</param>
-    public void AddTowerToNode(Vector3Int position)
+    public Node AddTowerToNode(Vector3Int position)
     {
         //Debug.Log(position.x - Mathf.CeilToInt(xOffset) + (position.y - Mathf.CeilToInt(yOffset)) * tilesSize.x);
-        Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(true);
+        Node node = Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x];
+        node.SetHasTower(true);
+        return node;
     }
     /// <summary>
     /// Removes a flag from one of the internal nodes where the tower was placed

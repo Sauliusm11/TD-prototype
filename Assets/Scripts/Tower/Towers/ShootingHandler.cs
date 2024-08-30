@@ -41,7 +41,19 @@ public class ShootingHandler : MonoBehaviour
         timeSinceShot = coolDown;
         enabled = false;
     }
-
+    private void OnDisable()
+    {
+        TowerContainer towerContainer = TowerContainer.getInstance();
+        foreach (TowerContainer.Tower tower in towerContainer.towers)
+        {
+            if (this.name.Contains(tower.name))
+            {
+                coolDown = tower.attackSpeed;
+                range = tower.attackRange;
+                damage = tower.attackDamage;
+            }
+        }
+    }
 
     // Update is called once per frame
     void Update()

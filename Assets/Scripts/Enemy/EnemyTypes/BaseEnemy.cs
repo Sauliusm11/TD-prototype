@@ -44,8 +44,9 @@ public class BaseEnemy : MonoBehaviour
         //healthBarObject = Instantiate(healthBarPrefab, healthBarParent.transform);
         healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(healthBarParent.transform);
         healthBarObject.transform.SetAsFirstSibling();
-        UpdateHealthBarPosition();
         healthBarSlider = healthBarObject.GetComponent<Slider>();
+        healthBarSlider.value = 1;
+        UpdateHealthBarPosition();
         EnemyContainer enemyContainer = EnemyContainer.getInstance();
         foreach (EnemyContainer.Enemy enemy in enemyContainer.enemies)
         {
@@ -119,7 +120,6 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     void Death()
     {
-        healthBarSlider.value = 1;
         enemyHealthBarPooler.DeactivateObject(healthBarObject);
         //Destroy(healthBarObject);
         enemyPooler.DeactivateObject(gameObject);
