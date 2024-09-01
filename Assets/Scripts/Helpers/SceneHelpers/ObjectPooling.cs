@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Object pooling class used for objects that need to be instantiated often
+/// </summary>
 public class ObjectPooling : MonoBehaviour
 {
     [SerializeField]
@@ -13,6 +15,7 @@ public class ObjectPooling : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Pre-generating objects(does not work for certain types that have on start code dependent on other conditions)
         for (int i = 0; i < countToPool; i++)
         {
             ObjectList.Add(Instantiate(prefab));
@@ -27,6 +30,12 @@ public class ObjectPooling : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Activates an available object at the given transform
+    /// If none are available, instantiates a new one
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <returns>Gameobject that was activated/created</returns>
     public GameObject ActivateObject(Transform transform)
     {
         if (AvailableObjectIndexes.Count > 0)
@@ -44,6 +53,12 @@ public class ObjectPooling : MonoBehaviour
             return gameObject;
         }
     }
+    /// <summary>
+    /// Activates an available object at the given transform and sets the transform object as parent
+    /// If none are available, instantiates a new one
+    /// </summary>
+    /// <param name="transform"></param>
+    /// <returns>Gameobject that was activated/created</returns>
     public GameObject ActivateObjectWithParent(Transform transform)
     {
         if (AvailableObjectIndexes.Count > 0)
@@ -61,6 +76,13 @@ public class ObjectPooling : MonoBehaviour
             return gameObject;
         }
     }
+    /// <summary>
+    /// Activates an available object at the given position and rotation
+    /// If none are available, instantiates a new one
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
+    /// <returns>Gameobject that was activated/created</returns>
     public GameObject ActivateObject(Vector3 position,Quaternion rotation)
     {
         if (AvailableObjectIndexes.Count > 0)
@@ -79,6 +101,10 @@ public class ObjectPooling : MonoBehaviour
             return gameObject;
         }
     }
+    /// <summary>
+    /// Deactivates a given object and adds it to the queue of available objects
+    /// </summary>
+    /// <param name="gameObject">Object to deactivate</param>
     public void DeactivateObject(GameObject gameObject)
     {
         for(int i = 0; i < ObjectList.Count; i++)
@@ -95,6 +121,9 @@ public class ObjectPooling : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Deactivates all active objects that are available to the object pooler
+    /// </summary>
     public void DeactivateAll()
     {
         for (int i = 0; i < ObjectList.Count; i++)

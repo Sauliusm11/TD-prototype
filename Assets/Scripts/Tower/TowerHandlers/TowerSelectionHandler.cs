@@ -78,7 +78,12 @@ public class TowerSelectionHandler : MonoBehaviour
         }
         //Removal, should never be called
         return null;
-    }    
+    }
+    /// <summary>
+    /// Gets the object pooler responsible for the currently selected tower type
+    /// </summary>
+    /// <param name="selection">Currently selected tower type</param>
+    /// <returns>Object pooling object</returns>
     public ObjectPooling GetTowerPoolerFromSelection(TowerContainer.Tower selection)
     {
         foreach (ObjectPooling pooler in ObjectPoolers)

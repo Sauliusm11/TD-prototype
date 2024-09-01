@@ -231,10 +231,16 @@ public class GameManager : MonoBehaviour
     {
         towerConfirmationPanel.SetActive(false);
     }
+    /// <summary>
+    /// Activates the game over panel
+    /// </summary>
     public void ActivateGameOver()
     {
         gameOverPanel.SetActive(true);
     }
+    /// <summary>
+    /// Deactivates the game over panel
+    /// </summary>
     void DeactivateGameOver()
     {
         gameOverPanel.SetActive(false);

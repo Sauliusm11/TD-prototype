@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+/// <summary>
+/// Basic fps counter taken from unity discusions and adapted for the project.
+/// </summary>
 public class FpsCounter : MonoBehaviour
 {
 

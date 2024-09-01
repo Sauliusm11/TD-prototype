@@ -41,6 +41,9 @@ public class ShootingHandler : MonoBehaviour
         timeSinceShot = coolDown;
         enabled = false;
     }
+    /// <summary>
+    /// Because of object pooling this is needed to set certain attributes back to default
+    /// </summary>
     private void OnDisable()
     {
         TowerContainer towerContainer = TowerContainer.getInstance();
@@ -69,6 +72,10 @@ public class ShootingHandler : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Apply stat changes to the tower based on the given tile. Should be called when the tower is finally placed
+    /// </summary>
+    /// <param name="tile"></param>
     public void ApplyBuff(TileContainer.Tile tile)
     {
         range *= tile.attackRange;

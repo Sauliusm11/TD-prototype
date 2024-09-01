@@ -35,6 +35,9 @@ public class BaseEnemy : MonoBehaviour
         enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
 
     }
+    /// <summary>
+    /// Because of object pooling the same object can be 'created' multiple times
+    /// </summary>
     private void OnEnable()
     {
         tileContainer = TileContainer.getInstance();
@@ -67,11 +70,21 @@ public class BaseEnemy : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Gets the path from it's pathfinding manager and starts the follow path coroutine
+    /// Should only be called from wave manager
+    /// </summary>
     public void StartWalking()
     {
         path = pathFinder.GetPath();
         StartCoroutine(FollowPath());
     }
+    /// <summary>
+    /// Update the offset from the center of the tile, needed to make the path be equal length for all enemies while not walking in a single line
+    /// Should only be called from wave manager
+    /// </summary>
+    /// <param name="X">X coordinate offset</param>
+    /// <param name="Y">Y coordinate offset</param>
     public void UpdateOffsets(float X, float Y)
     {
         xOffset = X;
