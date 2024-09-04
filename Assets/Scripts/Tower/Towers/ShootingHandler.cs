@@ -64,7 +64,6 @@ public class ShootingHandler : MonoBehaviour
             timeSinceShot += Time.deltaTime;
             if(timeSinceShot > coolDown) 
             {
-                timeSinceShot = 0;
                 Shoot();
             }
         }
@@ -86,7 +85,7 @@ public class ShootingHandler : MonoBehaviour
             //GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform);//This REALLY needs object pooling
             GameObject bullet = bulletPooler.ActivateObject(shootingPoint.transform);//TODO: this is not ideal, would be better to give it the prefab(allowing one pooler to have different objects)
             StartCoroutine(MoveBulletTo(targetObject, bullet, 5));
-            Debug.Log("Shoot?");
+            timeSinceShot = 0;
         }
     }
     /// <summary>
