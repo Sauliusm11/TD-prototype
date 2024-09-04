@@ -88,7 +88,6 @@ public class ObjectPooling : MonoBehaviour
 
                 if (gameObject.activeInHierarchy)
                 {
-                    Debug.Log(i);
                     gameObject.SetActive(false);
                     AvailableObjectIndexes.Enqueue(i);
                 }

@@ -144,7 +144,6 @@ public class BaseEnemy : MonoBehaviour
                 }
             }
             Vector3 target = node.GetVector3();
-            Debug.Log(target);
             target.x += xOffset;
             target.y += yOffset;
             yield return StartCoroutine(MoveTo(target, node.GetMovementSpeedCoef()*walkingSpeed));
