@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.PlayerLoop;
@@ -21,13 +22,20 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     Money moneyHandler;
     bool devMode;
 
-
     GameObject currentTower;
     ObjectPooling currentPooler;
     Vector3Int currentTowerCellPosition;
     Vector3 currentTowerPosition;
     Color defaultColor;
     Color partiallyTransparenent;
+
+    [SerializeField]
+    TMP_Text damageResistanceText;
+    [SerializeField]
+    TMP_Text attackRangeText;
+    [SerializeField]
+    TMP_Text movementSpeedText;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -119,6 +127,19 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                             }
                         }
                         //TODO: consider adding object pooling
+                    }
+                }
+                //TODO: Code for tile selection here
+                Node node = pathfindingManager.GetNodeFromCell(cellPosition);
+                string nodeName = node.GetName();
+                foreach (TileContainer.Tile tile in tileContainer.tiles)
+                {
+                    if (tile.name.Equals(nodeName))
+                    {
+                        attackRangeText.text = tile.attackRange.ToString();
+                        damageResistanceText.text = tile.damageResistance.ToString();
+                        movementSpeedText.text = tile.movementSpeed.ToString();
+                        break;
                     }
                 }
             }

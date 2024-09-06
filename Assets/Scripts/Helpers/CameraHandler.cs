@@ -77,7 +77,8 @@ public class CameraHandler : MonoBehaviour
                 noneSelected = true;
             }
         }
-        if (noneSelected && !defaultMaskOn)
+        //None selected is kind of not needed now
+        if (/*noneSelected &&*/ !defaultMaskOn)
         {
             if (Input.touchSupported)
             {
