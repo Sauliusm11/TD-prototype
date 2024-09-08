@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 /// <summary>
 /// Camera handler class made using 
 /// https://kylewbanks.com/blog/unity3d-panning-and-pinch-to-zoom-camera-with-touch-and-mouse-input 
@@ -31,9 +33,19 @@ public class CameraHandler : MonoBehaviour
     TileSelectionHandler tileSelectionHandler;
     TowerSelectionHandler towerSelectionHandler;
     GameManager gameManager;
+
+    LayerMask defaultLayerMask;
+    bool defaultMaskOn;
+    Physics2DRaycaster raycaster;
+    [SerializeField]
+    GameObject cameraOnText;
     // Start is called before the first frame update
     void Start()
     {
+        raycaster = GetComponent<Physics2DRaycaster>();
+        defaultLayerMask = raycaster.eventMask;
+        defaultMaskOn = true;
+        cameraOnText.SetActive(false);
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         devMode = true;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
@@ -65,7 +77,8 @@ public class CameraHandler : MonoBehaviour
                 noneSelected = true;
             }
         }
-        if (noneSelected)
+        //None selected is kind of not needed now
+        if (/*noneSelected &&*/ !defaultMaskOn)
         {
             if (Input.touchSupported)
             {
@@ -78,6 +91,20 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
+    public void EnableControls()
+    {
+        if (defaultMaskOn) 
+        { 
+            raycaster.eventMask = 1 << 5;
+        }
+        else
+        {
+            raycaster.eventMask = defaultLayerMask;
+        }
+        //If mask was on camera was off and will be on now
+        cameraOnText.SetActive(defaultMaskOn);
+        defaultMaskOn = !defaultMaskOn;
+    }
     /// <summary>
     /// Camera controls for devices not supporting touch
     /// </summary>

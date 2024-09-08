@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 /// <summary>
 /// Pathfinder manager acting as a mediator between all different pathfinding classes
 /// Should only be attached to the PathFindingManager object
@@ -93,6 +94,11 @@ public class PathfindingManager : MonoBehaviour
     public void RemoveTowerFromNode(Vector3Int position)
     {
         Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(false);
+    }
+
+    public Node GetNodeFromCell(Vector3Int position)
+    {
+        return Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x];
     }
     /// <summary>
     /// Called by the next wave button to indicate that the player wants to start the next wave
