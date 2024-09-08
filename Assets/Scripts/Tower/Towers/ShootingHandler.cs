@@ -61,7 +61,6 @@ public class ShootingHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: Ehm, so it resets the cooldown even when no targets?
         if (enabled) 
         { 
             timeSinceShot += Time.deltaTime;

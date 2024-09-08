@@ -42,7 +42,6 @@ public class BaseEnemy : MonoBehaviour
     {
         tileContainer = TileContainer.getInstance();
         enemyHealthBarPooler = GameObject.Find("EnemyHealthBarPooler").GetComponent<ObjectPooling>();
-        //TODO: again, object pooling is waiting
         healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
         //healthBarObject = Instantiate(healthBarPrefab, healthBarParent.transform);
         healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(healthBarParent.transform);

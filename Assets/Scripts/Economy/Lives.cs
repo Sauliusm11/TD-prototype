@@ -44,7 +44,6 @@ public class Lives : MonoBehaviour
     }
     /// <summary>
     /// Called by an enemy that has reached the castle
-    /// TODO:add game over check and state
     /// </summary>
     /// <param name="cost">Lives cost of the enemy</param>
     /// <returns>If the player has enough lives</returns>

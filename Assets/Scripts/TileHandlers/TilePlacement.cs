@@ -74,6 +74,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     /// <summary>
     /// Places the selected tile on mouse location(if it is not on UI).
     /// Called by the drag and click handlers
+    /// TODO: this should be split up
     /// </summary>
     /// <param name="position"></param>
     void PlaceTile(Vector3 position)
@@ -126,10 +127,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                                 manager.MoveTowerConfirmation(position);
                             }
                         }
-                        //TODO: consider adding object pooling
-                    }
+                     }
                 }
-                //TODO: Code for tile selection here
                 Node node = pathfindingManager.GetNodeFromCell(cellPosition);
                 string nodeName = node.GetName();
                 foreach (TileContainer.Tile tile in tileContainer.tiles)

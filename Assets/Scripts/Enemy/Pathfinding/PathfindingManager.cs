@@ -95,7 +95,11 @@ public class PathfindingManager : MonoBehaviour
     {
         Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x].SetHasTower(false);
     }
-
+    /// <summary>
+    /// Returns the node object located in a given cell position
+    /// </summary>
+    /// <param name="position">Tilemap cell position</param>
+    /// <returns>Node object</returns>
     public Node GetNodeFromCell(Vector3Int position)
     {
         return Nodes[position.x - Mathf.FloorToInt(xOffset) + (position.y - Mathf.FloorToInt(yOffset)) * tilesSize.x];

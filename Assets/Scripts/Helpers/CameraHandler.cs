@@ -91,6 +91,11 @@ public class CameraHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method called when clicking the camera button, toggles raycast event mask between all and ui only.
+    /// Activates the camera controls when in ui only mode.
+    /// (References do not show up, it is working)
+    /// </summary>
     public void EnableControls()
     {
         if (defaultMaskOn) 
