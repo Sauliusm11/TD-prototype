@@ -35,6 +35,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     TMP_Text attackRangeText;
     [SerializeField]
     TMP_Text movementSpeedText;
+    [SerializeField]
+    GameObject tileSelectionHighlighter;
 
     // Start is called before the first frame update
     void Start()
@@ -130,6 +132,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     }
                 }
                 //TODO: Code for tile selection here
+                tileSelectionHighlighter.transform.position = cellPosition;
                 Node node = pathfindingManager.GetNodeFromCell(cellPosition);
                 string nodeName = node.GetName();
                 foreach (TileContainer.Tile tile in tileContainer.tiles)
