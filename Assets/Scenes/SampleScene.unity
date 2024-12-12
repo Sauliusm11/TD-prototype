@@ -561,7 +561,7 @@ MonoBehaviour:
   selectedTile:
     name: 
     movementSpeed: 0
-    damageResistance: 0
+    damageMultiplier: 0
     attackRange: 0
   selectedTower:
     name: 
@@ -1058,7 +1058,7 @@ GameObject:
   - component: {fileID: 180206255}
   - component: {fileID: 180206254}
   m_Layer: 5
-  m_Name: DamageResistance
+  m_Name: DamageMultiplier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4363,7 +4363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a690fb44e6958e449a84acf3f24b87c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageResistanceText: {fileID: 0}
+  damageMultiplierText: {fileID: 0}
   attackRangeText: {fileID: 0}
   movementSpeedText: {fileID: 0}
   tileSelectionHighlighter: {fileID: 0}
@@ -8160,7 +8160,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1482558593}
   m_Layer: 5
-  m_Name: DamageResistanceGroup
+  m_Name: DamageMultiplierGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10151,7 +10151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a690fb44e6958e449a84acf3f24b87c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageResistanceText: {fileID: 180206254}
+  damageMultiplierText: {fileID: 180206254}
   attackRangeText: {fileID: 1877183729}
   movementSpeedText: {fileID: 1590459368}
   tileSelectionHighlighter: {fileID: 1147704660}

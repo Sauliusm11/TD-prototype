@@ -30,7 +30,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     Color partiallyTransparenent;
 
     [SerializeField]
-    TMP_Text damageResistanceText;
+    TMP_Text damageMultiplierText;
     [SerializeField]
     TMP_Text attackRangeText;
     [SerializeField]
@@ -140,7 +140,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     if (tile.name.Equals(nodeName))
                     {
                         attackRangeText.text = tile.attackRange.ToString();
-                        damageResistanceText.text = tile.damageResistance.ToString();
+                        Debug.Log(tile.damageMultiplier);
+                        damageMultiplierText.text = tile.damageMultiplier.ToString();
                         movementSpeedText.text = tile.movementSpeed.ToString();
                         break;
                     }

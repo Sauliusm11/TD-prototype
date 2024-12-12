@@ -95,10 +95,10 @@ public class BaseEnemy : MonoBehaviour
     /// <param name="damage">Amount of damage to deal</param>
     public void ReduceHealth(int damage)
     {
-        //Probably safer to use proper locks
+        //TODO: Probably safer to use proper locks
         if(currentHealth > 0) 
         { 
-            currentHealth -= Mathf.RoundToInt(damage/currentTile.damageResistance);
+            currentHealth -= Mathf.RoundToInt(damage*currentTile.damageMultiplier);
             healthBarSlider.value = (float)currentHealth / maxHealth;
             if (currentHealth <= 0)
             {
