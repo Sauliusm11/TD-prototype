@@ -140,7 +140,6 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     if (tile.name.Equals(nodeName))
                     {
                         attackRangeText.text = tile.attackRange.ToString();
-                        Debug.Log(tile.damageMultiplier);
                         damageMultiplierText.text = tile.damageMultiplier.ToString();
                         movementSpeedText.text = tile.movementSpeed.ToString();
                         break;
