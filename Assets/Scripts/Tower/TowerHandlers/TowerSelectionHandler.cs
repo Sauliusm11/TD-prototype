@@ -35,7 +35,7 @@ public class TowerSelectionHandler : MonoBehaviour
         GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
         string name = buttonObject.name;
         name = name.Substring(6);
-        placemetHandler.CancelPlacement();
+        manager.CancelTowerPlacement();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
             if (name.Equals(tower.name))

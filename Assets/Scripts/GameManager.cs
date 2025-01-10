@@ -22,14 +22,19 @@ public class GameManager : MonoBehaviour
     GameObject gameOverPanel;
     [SerializeField]
     GameObject towerConfirmationPanel;
+    [SerializeField]
+    GameObject towerMenuPanel;
+    TowerMenuUpdater towerMenuUpdater;
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
     JsonParser parser;
+    TilePlacement placemetHandler;
     WaveHandler waveHandler;
     Money moneyHandler;
     Lives livesHandler;
     CleanUp objectCleaner;
 
+    UpgradeHandler currentUpgradeHandler;
     [HideInInspector]
     public TileContainer.Tile selectedTile;
     [HideInInspector]
@@ -39,6 +44,8 @@ public class GameManager : MonoBehaviour
     {
         SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
+        towerMenuUpdater = towerMenuPanel.GetComponent<TowerMenuUpdater>();
+        placemetHandler = GameObject.Find("Grid").GetComponent<TilePlacement>();
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
@@ -231,6 +238,27 @@ public class GameManager : MonoBehaviour
     {
         towerConfirmationPanel.SetActive(false);
     }
+    public void CancelTowerPlacement()
+    {
+        placemetHandler.CancelPlacement();
+    }
+    public void ActivateTowerMenu(UpgradeHandler tower)
+    {
+        currentUpgradeHandler = tower;
+        towerMenuPanel.SetActive(true);
+        towerMenuUpdater.UpdateTowerMenu(tower.name,tower.GetSellCost());
+        CancelTowerPlacement();
+    }
+    public void InitiateSellTower()
+    {
+        currentUpgradeHandler.SellTower();
+        DeActivateTowerMenu();
+    }
+    public void DeActivateTowerMenu()
+    {
+        towerMenuPanel.SetActive(false);
+    }
+
     public void ActivateGameOver()
     {
         gameOverPanel.SetActive(true);

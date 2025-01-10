@@ -43,6 +43,8 @@ GameObject:
   - component: {fileID: 3722490004178710826}
   - component: {fileID: 7463815162402124468}
   - component: {fileID: 8868522344275685211}
+  - component: {fileID: -8139605921049934815}
+  - component: {fileID: -593941038987981025}
   m_Layer: 3
   m_Name: Cannon
   m_TagString: Untagged
@@ -157,6 +159,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 680909019025044879, guid: c08d5ebd0a707404689a03d6de92f05b, type: 3}
+--- !u!114 &-8139605921049934815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515541212192130132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 249d3324b7bc17d40af94f30fc44f195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-593941038987981025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515541212192130132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc66f48044a3974d9f5a16475c83efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8808752693288092202
 GameObject:
   m_ObjectHideFlags: 0
