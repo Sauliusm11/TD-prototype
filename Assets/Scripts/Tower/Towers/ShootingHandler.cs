@@ -53,6 +53,11 @@ public class ShootingHandler : MonoBehaviour
                 damage = tower.attackDamage;
             }
         }
+        if(partToRotate != null)
+        {
+            Quaternion rotation = new Quaternion();
+            partToRotate.transform.rotation = rotation;
+        }
     }
 
     // Update is called once per frame
