@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class UpgradeHandler : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class UpgradeHandler : MonoBehaviour
     ShootingHandler shootingHandler;
     ObjectPooling currentPooler;
     TowerContainer towerContainer;
+    Tilemap tilemap;
+    PathfindingManager pathfindingManager;
 
 
     int moneySpent;
@@ -19,6 +22,8 @@ public class UpgradeHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         towerContainer = TowerContainer.getInstance();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         shootingHandler = gameObject.GetComponent<ShootingHandler>();
@@ -51,6 +56,8 @@ public class UpgradeHandler : MonoBehaviour
     public void SellTower()
     {
         moneyHandler.AddMoney(GetSellCost());
+        Vector3Int cellPosition = tilemap.WorldToCell(gameObject.transform.position);
+        pathfindingManager.RemoveTowerFromNode(cellPosition);
         currentPooler.DeactivateObject(gameObject);
     }
     public int GetSellCost()
