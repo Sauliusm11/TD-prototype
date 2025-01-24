@@ -73,10 +73,6 @@ public class ShootingHandler : MonoBehaviour
             }
         }
     }
-    public void ApplyBuff(TileContainer.Tile tile)
-    {
-        range *= tile.attackRange;
-    }
     /// <summary>
     /// Called internally when the shot cooldown has reset
     /// </summary>

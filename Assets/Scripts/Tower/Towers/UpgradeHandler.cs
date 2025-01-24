@@ -14,6 +14,7 @@ public class UpgradeHandler : MonoBehaviour
     Tilemap tilemap;
     PathfindingManager pathfindingManager;
 
+    GameObject rangeIndicator;
 
     int moneySpent;
     float coolDown;
@@ -27,6 +28,7 @@ public class UpgradeHandler : MonoBehaviour
         towerContainer = TowerContainer.getInstance();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         shootingHandler = gameObject.GetComponent<ShootingHandler>();
+        rangeIndicator = transform.Find("RangeIndicator").gameObject;
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null)
         {
@@ -53,12 +55,41 @@ public class UpgradeHandler : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Activates the tower once it's purchase has been confirmed
+    /// </summary>
+    public void EnableTower()
+    {
+        shootingHandler.EnableTower();
+    }
+    public void ResetBuffs() 
+    {
+    
+    }
+    public void ApplyBuff(TileContainer.Tile tile)
+    {
+        range *= tile.attackRange;
+        UpdateRangeIndicator();
+    }
+
+    void UpdateRangeIndicator()
+    {
+        rangeIndicator.transform.localScale = new Vector3(range * 2, range * 2, 0);
+    }
     public void SellTower()
     {
         moneyHandler.AddMoney(GetSellCost());
         Vector3Int cellPosition = tilemap.WorldToCell(gameObject.transform.position);
         pathfindingManager.RemoveTowerFromNode(cellPosition);
         currentPooler.DeactivateObject(gameObject);
+    }
+    public void EnableRangeIndicator()
+    {
+        rangeIndicator.SetActive(true);
+    }
+    public void DisableRangeIndicator()
+    {
+        rangeIndicator.SetActive(false);
     }
     public int GetSellCost()
     {

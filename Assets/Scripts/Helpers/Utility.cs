@@ -52,6 +52,24 @@ public static class Utility
         {
             renderer.color = newColor;
         }
+    }
+
+    /// <summary>
+    /// Sets the color for an object and all children with a SpriteRenderer component
+    /// </summary>
+    /// <param name="parent">Parent object</param>
+    /// <param name="newColor">New color</param>
+    /// <param name="namesToExclude">List of object names to exclude</param>
+    public static void SetParentAndChildrenColors(GameObject parent, Color newColor, List<string> namesToExclude)
+    {
+        parent.GetComponent<SpriteRenderer>().color = newColor;
+        foreach (SpriteRenderer renderer in parent.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (!namesToExclude.Contains(renderer.name)) 
+            { 
+                renderer.color = newColor;
+            }
+        }
 
     }
 }

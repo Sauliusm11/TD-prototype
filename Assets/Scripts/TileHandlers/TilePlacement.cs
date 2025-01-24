@@ -140,10 +140,12 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         TowerContainer.Tower selection = manager.GetSelectedTower();
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
-            Utility.SetParentAndChildrenColors(currentTower, defaultColor);
+            List<string> exclude = new List<string>();
+            exclude.Add("RangeIndicator");
+            Utility.SetParentAndChildrenColors(currentTower, defaultColor, exclude);
             Node node = pathfindingManager.AddTowerToNode(currentTowerCellPosition);
             string name = node.GetName();
-            ShootingHandler handler = currentTower.GetComponent<ShootingHandler>();
+            UpgradeHandler handler = currentTower.GetComponent<UpgradeHandler>();
             foreach (TileContainer.Tile tile in tileContainer.tiles)
             {
                 if (tile.name.Equals(name))
@@ -152,6 +154,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     break;
                 }
             }
+            handler.DisableRangeIndicator();
             manager.DeactivateTowerConfirmation();
             handler.EnableTower();
             currentTower = null;
