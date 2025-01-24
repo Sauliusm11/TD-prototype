@@ -56,6 +56,11 @@ public class ShootingHandler : MonoBehaviour
                 damage = tower.attackDamage;
             }
         }
+        if(partToRotate != null)
+        {
+            Quaternion rotation = new Quaternion();
+            partToRotate.transform.rotation = rotation;
+        }
     }
 
     // Update is called once per frame
@@ -69,14 +74,6 @@ public class ShootingHandler : MonoBehaviour
                 Shoot();
             }
         }
-    }
-    /// <summary>
-    /// Apply stat changes to the tower based on the given tile. Should be called when the tower is finally placed
-    /// </summary>
-    /// <param name="tile"></param>
-    public void ApplyBuff(TileContainer.Tile tile)
-    {
-        range *= tile.attackRange;
     }
     /// <summary>
     /// Called internally when the shot cooldown has reset

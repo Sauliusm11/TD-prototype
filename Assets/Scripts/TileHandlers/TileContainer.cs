@@ -53,14 +53,14 @@ public class TileContainer
     {
         public string name;
         public float movementSpeed;
-        public float damageResistance;
+        public float damageMultiplier;
         public float attackRange;
 
-        public Tile(string name, float movementSpeed, float damageResistance, float attackRange)
+        public Tile(string name, float movementSpeed, float damageMultiplier, float attackRange)
         {
             this.name = name;
             this.movementSpeed = movementSpeed;
-            this.damageResistance = damageResistance;
+            this.damageMultiplier = damageMultiplier;
             this.attackRange = attackRange;
         }
 

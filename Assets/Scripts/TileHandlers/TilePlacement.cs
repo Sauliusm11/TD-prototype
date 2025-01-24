@@ -20,6 +20,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     TowerSelectionHandler towerSelectionHandler;
     TileContainer tileContainer;
     Money moneyHandler;
+    TileHighlighter tileHighlighter;
     bool devMode;
 
     GameObject currentTower;
@@ -29,12 +30,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
     Color defaultColor;
     Color partiallyTransparenent;
 
-    [SerializeField]
-    TMP_Text damageResistanceText;
-    [SerializeField]
-    TMP_Text attackRangeText;
-    [SerializeField]
-    TMP_Text movementSpeedText;
+
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +41,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         devMode = true;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         tileContainer = TileContainer.getInstance();
+        tileHighlighter = GameObject.Find("TileHighlighter").GetComponent<TileHighlighter>();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null) 
         {
@@ -96,6 +93,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             }
             else //Placing towers
             {
+                manager.DeActivateTowerMenu();
                 if (!PointerOverTower(eventData) && PointerOverTile(cellPosition) && manager.GetSelectedTower() != null)
                 {
                     TowerContainer.Tower selection = manager.GetSelectedTower();
@@ -129,18 +127,8 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                         }
                      }
                 }
-                Node node = pathfindingManager.GetNodeFromCell(cellPosition);
-                string nodeName = node.GetName();
-                foreach (TileContainer.Tile tile in tileContainer.tiles)
-                {
-                    if (tile.name.Equals(nodeName))
-                    {
-                        attackRangeText.text = tile.attackRange.ToString();
-                        damageResistanceText.text = tile.damageResistance.ToString();
-                        movementSpeedText.text = tile.movementSpeed.ToString();
-                        break;
-                    }
-                }
+                //TODO: Code for tile selection here
+                tileHighlighter.HighlightTileFromCellPos(cellPosition);
             }
         }
     }
@@ -152,10 +140,12 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
         TowerContainer.Tower selection = manager.GetSelectedTower();
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
-            Utility.SetParentAndChildrenColors(currentTower, defaultColor);
+            List<string> exclude = new List<string>();
+            exclude.Add("RangeIndicator");
+            Utility.SetParentAndChildrenColors(currentTower, defaultColor, exclude);
             Node node = pathfindingManager.AddTowerToNode(currentTowerCellPosition);
             string name = node.GetName();
-            ShootingHandler handler = currentTower.GetComponent<ShootingHandler>();
+            UpgradeHandler handler = currentTower.GetComponent<UpgradeHandler>();
             foreach (TileContainer.Tile tile in tileContainer.tiles)
             {
                 if (tile.name.Equals(name))
@@ -164,6 +154,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
                     break;
                 }
             }
+            handler.DisableRangeIndicator();
             manager.DeactivateTowerConfirmation();
             handler.EnableTower();
             currentTower = null;
@@ -189,6 +180,7 @@ public class TilePlacement : MonoBehaviour, IDragHandler, IPointerClickHandler
             towerSelectionHandler.DeactivateSelectionHighlighter();
         }
     }
+
     /// <summary>
     /// Checks if pointer is hovering over a UI object
     /// </summary>

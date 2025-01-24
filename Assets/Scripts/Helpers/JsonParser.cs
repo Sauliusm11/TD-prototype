@@ -20,7 +20,7 @@ public class JsonParser : MonoBehaviour
     {
         public string name;
         public float movementSpeed;
-        public float damageResistance;
+        public float damageMultiplier;
         public float attackRange;
     }
     TileList tileList = new TileList();
@@ -202,7 +202,7 @@ public class JsonParser : MonoBehaviour
         List<TileContainer.Tile> tiles = new List<TileContainer.Tile>();
         foreach (TileInfo tileInfo in tileList.Tiles) 
         {
-            TileContainer.Tile tile = new TileContainer.Tile(tileInfo.name,tileInfo.movementSpeed,tileInfo.damageResistance,tileInfo.attackRange);
+            TileContainer.Tile tile = new TileContainer.Tile(tileInfo.name,tileInfo.movementSpeed,tileInfo.damageMultiplier, tileInfo.attackRange);
             tiles.Add(tile);
         }
         return tiles;
