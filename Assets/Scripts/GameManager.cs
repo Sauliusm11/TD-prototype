@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
     JsonParser parser;
-    TilePlacement placemetHandler;
+    TowerPlacement placemetHandler;
     WaveHandler waveHandler;
     Money moneyHandler;
     Lives livesHandler;
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         towerMenuUpdater = towerMenuPanel.GetComponent<TowerMenuUpdater>();
-        placemetHandler = GameObject.Find("Grid").GetComponent<TilePlacement>();
+        placemetHandler = GameObject.Find("Grid").GetComponent<TowerPlacement>();
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
