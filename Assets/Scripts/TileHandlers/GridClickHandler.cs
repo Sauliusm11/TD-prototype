@@ -8,46 +8,23 @@ public class GridClickHandler : MonoBehaviour, IDragHandler, IPointerClickHandle
 {
     TilePlacement tilePlacementHandler;
     TowerPlacement towerPlacementHandler;
-    Tilemap tilemap;
-    GameManager manager;
-    PathfindingManager pathfindingManager;
-    TileSelectionHandler tileSelectionHandler;
-    TowerSelectionHandler towerSelectionHandler;
-    TileContainer tileContainer;
-    Money moneyHandler;
     TileHighlighter tileHighlighter;
     bool devMode;
-
-    GameObject currentTower;
-    ObjectPooling currentPooler;
-    Vector3Int currentTowerCellPosition;
-    Vector3 currentTowerPosition;
-    Color defaultColor;
-    Color partiallyTransparenent;
-
   
     // Start is called before the first frame update
     void Start()
     {
-        manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         GameObject gridGameObject = GameObject.Find("Grid");
         tilePlacementHandler = gridGameObject.GetComponent<TilePlacement>();
         towerPlacementHandler = gridGameObject.GetComponent<TowerPlacement>();
-        pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
-        moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         devMode = true;
-        tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
-        tileContainer = TileContainer.getInstance();
         tileHighlighter = GameObject.Find("TileHighlighter").GetComponent<TileHighlighter>();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null)
         {
             devMode = false;
-            towerSelectionHandler = towerManagerObject.GetComponent<TowerSelectionHandler>();
         }
-        tilemap = gameObject.GetComponentInChildren<Tilemap>();
-        defaultColor = Color.white;
-        partiallyTransparenent = new Color(defaultColor.r, defaultColor.g, defaultColor.b, 0.5f);
+
     }
     /// <summary>
     /// Called when the grid is clicked (references do not show up, it is working)

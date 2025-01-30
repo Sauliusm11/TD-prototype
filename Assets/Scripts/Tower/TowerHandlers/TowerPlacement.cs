@@ -9,17 +9,13 @@ public class TowerPlacement : MonoBehaviour
     Tilemap tilemap;
     GameManager manager;
     PathfindingManager pathfindingManager;
-    TileSelectionHandler tileSelectionHandler;
     TowerSelectionHandler towerSelectionHandler;
     TileContainer tileContainer;
     Money moneyHandler;
-    TileHighlighter tileHighlighter;
-    bool devMode;
 
     GameObject currentTower;
     ObjectPooling currentPooler;
     Vector3Int currentTowerCellPosition;
-    Vector3 currentTowerPosition;
     Color defaultColor;
     Color partiallyTransparenent;
 
@@ -29,14 +25,10 @@ public class TowerPlacement : MonoBehaviour
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
-        devMode = true;
-        tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         tileContainer = TileContainer.getInstance();
-        tileHighlighter = GameObject.Find("TileHighlighter").GetComponent<TileHighlighter>();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null)
         {
-            devMode = false;
             towerSelectionHandler = towerManagerObject.GetComponent<TowerSelectionHandler>();
         }
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
@@ -67,7 +59,6 @@ public class TowerPlacement : MonoBehaviour
                 if (tower != null && currentTower == null)//No ghost tower yet
                 {
                     currentTower = currentPooler.ActivateObject(position, new Quaternion());
-                    currentTowerPosition = position;
                     currentTowerCellPosition = cellPosition;
                     Utility.SetParentAndChildrenColors(currentTower, partiallyTransparenent);
                     manager.ActivateTowerConfirmation(position);
@@ -76,7 +67,6 @@ public class TowerPlacement : MonoBehaviour
                 {
                     if (currentTower != null)
                     {
-                        currentTowerPosition = position;
                         currentTowerCellPosition = cellPosition;
                         currentTower.transform.position = position;
                         manager.MoveTowerConfirmation(position);
@@ -109,6 +99,7 @@ public class TowerPlacement : MonoBehaviour
         TowerContainer.Tower selection = manager.GetSelectedTower();
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
+            //Range indicator needs to stay transparent
             List<string> exclude = new List<string>
             {
                 "RangeIndicator"
