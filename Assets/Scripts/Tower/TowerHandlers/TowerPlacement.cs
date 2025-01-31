@@ -51,7 +51,7 @@ public class TowerPlacement : MonoBehaviour
             if (moneyHandler.HasEnoughMoney(selection.cost))
             {
                 GameObject tower = towerSelectionHandler.GetTowerFromSelection(selection);
-                currentPooler = towerSelectionHandler.GetTowerPoolerFromSelection(selection);
+                currentPooler = towerSelectionHandler.GetTowerPoolerFromBaseTower(selection);
                 //Need to normalize wherever the user clicked into the middle of the cell
                 position = tilemap.CellToWorld(cellPosition);
                 position = new Vector3(position.x + 0.5f, position.y + 0.5f, position.z);//Adding 0.5 to place on the center of the tile
@@ -70,6 +70,22 @@ public class TowerPlacement : MonoBehaviour
                         currentTowerCellPosition = cellPosition;
                         currentTower.transform.position = position;
                         manager.MoveTowerConfirmation(position);
+                    }
+                }
+                if(tower != null)
+                {
+                    //Figure out best way to get tile name and to reset->apply buff
+                    Node node = pathfindingManager.GetNodeFromCell(cellPosition);
+                    string name = node.GetName();
+                    UpgradeHandler handler = currentTower.GetComponent<UpgradeHandler>();
+                    foreach (TileContainer.Tile tile in tileContainer.tiles)
+                    {
+                        if (tile.name.Equals(name))
+                        {
+                            handler.ResetBuffs();
+                            handler.ApplyBuff(tile);
+                            break;
+                        }
                     }
                 }
             }
@@ -112,6 +128,7 @@ public class TowerPlacement : MonoBehaviour
             {
                 if (tile.name.Equals(name))
                 {
+                    handler.ResetBuffs();
                     handler.ApplyBuff(tile);
                     break;
                 }

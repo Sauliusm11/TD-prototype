@@ -160,6 +160,10 @@ public class ShootingHandler : MonoBehaviour
             InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
         }
     }
+    public void SetRange(float newRange)
+    {
+        range = newRange;
+    }
     /// <summary>
     /// Coroutine which moves the bullet to the target
     /// </summary>

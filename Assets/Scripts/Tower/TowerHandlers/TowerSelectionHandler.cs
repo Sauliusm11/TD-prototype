@@ -84,7 +84,7 @@ public class TowerSelectionHandler : MonoBehaviour
     /// </summary>
     /// <param name="selection">Currently selected tower type</param>
     /// <returns>Object pooling object</returns>
-    public ObjectPooling GetTowerPoolerFromSelection(TowerContainer.Tower selection)
+    public ObjectPooling GetTowerPoolerFromBaseTower(TowerContainer.Tower selection)
     {
         foreach (ObjectPooling pooler in ObjectPoolers)
         {
