@@ -82,7 +82,10 @@ public class UpgradeHandler : MonoBehaviour
         shootingHandler.SetRange(range);
         UpdateRangeIndicator();
     }
-
+    public bool GetShootingState()
+    {
+        return shootingEnabled;
+    }
     void UpdateRangeIndicator()
     {
         rangeIndicator.transform.localScale = new Vector3(range * 2, range * 2, 0);

@@ -25,7 +25,10 @@ public class TowerClickHandler : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        gameManager.ActivateTowerMenu(upgradeHandler);
-        tileHighlighter.HighlightTileFromPos(gameObject.transform.position);
+        if (upgradeHandler.GetShootingState()) 
+        { 
+            gameManager.ActivateTowerMenu(upgradeHandler);
+            tileHighlighter.HighlightTileFromPos(gameObject.transform.position);
+        }
     }
 }
