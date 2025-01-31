@@ -29,11 +29,12 @@ public class BaseEnemy : MonoBehaviour
     Slider healthBarSlider;
     ObjectPooling enemyPooler;
     ObjectPooling enemyHealthBarPooler;
+    WaveHandler waveHandler;
     // Start is called before the first frame update
     void Start()
     {
         enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
-
+        waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
     }
     /// <summary>
     /// Because of object pooling the same object can be 'created' multiple times
@@ -132,10 +133,9 @@ public class BaseEnemy : MonoBehaviour
     /// </summary>
     void Death()
     {
+        waveHandler.DecreaseEnemyCount();
         enemyHealthBarPooler.DeactivateObject(healthBarObject);
-        //Destroy(healthBarObject);
         enemyPooler.DeactivateObject(gameObject);
-        //Destroy(gameObject);
     }
     /// <summary>
     /// Move the enemy one tile at a time along the path

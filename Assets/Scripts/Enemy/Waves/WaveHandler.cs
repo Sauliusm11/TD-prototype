@@ -13,11 +13,11 @@ public class WaveHandler : MonoBehaviour
     List<Wave> waves;
     bool sending;
     int currentWave;
-    [SerializeField]
-    GameObject enemyPrefab;
     ObjectPooling enemyPooler;
     [SerializeField]
     float maxOffset;
+    int enemyCount;
+    bool waveFinished;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +39,7 @@ public class WaveHandler : MonoBehaviour
     {
         currentWave = 0;
         waves = parser.LoadLevelWaves(fileName);
+        waveFinished = true;
     }
     /// <summary>
     /// Starts the next wave if the current wave is finished
@@ -49,11 +50,22 @@ public class WaveHandler : MonoBehaviour
     /// <param name="yOffset">yOffset value saved in the PathfindingManager</param>
     public void StartWave(Node start, float xOffset, float yOffset)
     {
-        if (!sending && currentWave < waves.Count)//Could this be a race condition?
+        if (waveFinished && !sending && currentWave < waves.Count)//Could this be a race condition?
         {
             sending = true;
+            waveFinished = false;
             StartCoroutine(SendWave(currentWave,start,xOffset,yOffset));
             currentWave++;
+        }
+    }
+    public void DecreaseEnemyCount()
+    {
+        enemyCount--;
+        if (enemyCount == 0 && !sending)
+        {
+            //TODO:Replace with proper ui call
+            Debug.Log("Wave Finished!");
+            waveFinished=true;
         }
     }
     /// <summary>
@@ -66,6 +78,7 @@ public class WaveHandler : MonoBehaviour
     /// <returns></returns>
     IEnumerator SendWave(int waveNumber, Node start, float xOffset, float yOffset)
     {
+        enemyCount = 0;
         Wave wave = waves[waveNumber];
         List<WaveEnemy> enemies = wave.Enemies;
         while (enemies.Count > 0)
@@ -74,7 +87,6 @@ public class WaveHandler : MonoBehaviour
             while (enemy.count > 0) 
             {
                 //Need to add some variance to enemies(but also their target then)(prob stored in the enemy itself)
-                //Instantiate(enemyPrefab, new Vector3(start.GetX() + xOffset, start.GetY() + yOffset, 0), new Quaternion());//+ offset to center the enemy on the tile
                 float additionalXOffset = Random.Range(-maxOffset, maxOffset);
                 float additionalYOffset = Random.Range(-maxOffset, maxOffset);
                 GameObject enemyObject = enemyPooler.ActivateObject(new Vector3(start.GetX() + xOffset + additionalXOffset, start.GetY() + yOffset + additionalYOffset, 1), new Quaternion());
@@ -82,6 +94,7 @@ public class WaveHandler : MonoBehaviour
                 baseEnemy.UpdateOffsets(additionalXOffset, additionalYOffset);
                 baseEnemy.StartWalking();
                 enemy.count--;
+                enemyCount++;
                 yield return new WaitForSeconds(0.2f);
             }
             enemies.RemoveAt(0);
