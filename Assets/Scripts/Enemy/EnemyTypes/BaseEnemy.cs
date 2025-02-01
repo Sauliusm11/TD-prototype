@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
 /// Class for the basic movement enemy type (might become abstract later :p)
 /// </summary>
-public class BaseEnemy : MonoBehaviour
+public abstract class BaseEnemy : MonoBehaviour
 {
     Money moneyHandler;
     Lives livesHandler;
@@ -22,6 +23,7 @@ public class BaseEnemy : MonoBehaviour
     int currentHealth;
     float walkingSpeed;
     int livesCost;
+    int reward;
     [SerializeField]
     GameObject healthBarPrefab;
     GameObject healthBarParent;
@@ -33,9 +35,11 @@ public class BaseEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
+        enemyPooler = getEnemyPooler();
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
     }
+    protected abstract ObjectPooling getEnemyPooler();
+
     /// <summary>
     /// Because of object pooling the same object can be 'created' multiple times
     /// </summary>
@@ -44,7 +48,6 @@ public class BaseEnemy : MonoBehaviour
         tileContainer = TileContainer.getInstance();
         enemyHealthBarPooler = GameObject.Find("EnemyHealthBarPooler").GetComponent<ObjectPooling>();
         healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
-        //healthBarObject = Instantiate(healthBarPrefab, healthBarParent.transform);
         healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(healthBarParent.transform);
         healthBarObject.transform.SetAsFirstSibling();
         healthBarSlider = healthBarObject.GetComponent<Slider>();
@@ -59,16 +62,18 @@ public class BaseEnemy : MonoBehaviour
                 currentHealth = enemy.health;
                 walkingSpeed = enemy.speedCoef;
                 livesCost = enemy.livesCost;
+                reward = enemy.reward;
+                pathFinder = GameObject.Find(enemy.type + "Pathfinder").GetComponent<EnemyPathFinding>();
             }
         }
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
-        pathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
+
     }
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     /// <summary>
     /// Gets the path from it's pathfinding manager and starts the follow path coroutine
@@ -109,13 +114,13 @@ public class BaseEnemy : MonoBehaviour
     public void ReduceHealth(int damage)
     {
         //TODO: Probably safer to use proper locks
-        if(currentHealth > 0) 
-        { 
-            currentHealth -= Mathf.RoundToInt(damage*currentTile.damageMultiplier);
+        if (currentHealth > 0)
+        {
+            currentHealth -= Mathf.RoundToInt(damage * currentTile.damageMultiplier);
             healthBarSlider.value = (float)currentHealth / maxHealth;
             if (currentHealth <= 0)
             {
-                moneyHandler.AddMoney(10);
+                moneyHandler.AddMoney(reward);
                 Death();
             }
         }
@@ -123,10 +128,10 @@ public class BaseEnemy : MonoBehaviour
     /// <summary>
     /// Move the health bar attached to the enemy to position
     /// </summary>
-    void UpdateHealthBarPosition() 
+    void UpdateHealthBarPosition()
     {
         Vector3 position = gameObject.transform.position;
-        healthBarObject.transform.position = new Vector3(position.x, position.y+0.3f, position.z);
+        healthBarObject.transform.position = new Vector3(position.x, position.y + 0.3f, position.z);
     }
     /// <summary>
     /// Method called once the enemy health reaches 0
@@ -137,6 +142,7 @@ public class BaseEnemy : MonoBehaviour
         enemyHealthBarPooler.DeactivateObject(healthBarObject);
         enemyPooler.DeactivateObject(gameObject);
     }
+    protected abstract float GetMoveSpeed(WorldNode node, float walkingSpeed);
     /// <summary>
     /// Move the enemy one tile at a time along the path
     /// </summary>
@@ -158,7 +164,7 @@ public class BaseEnemy : MonoBehaviour
             Vector3 target = node.GetVector3();
             target.x += xOffset;
             target.y += yOffset;
-            yield return StartCoroutine(MoveTo(target, node.GetMovementSpeedCoef()*walkingSpeed));
+            yield return StartCoroutine(MoveTo(target, GetMoveSpeed(node, walkingSpeed)));
         }
         livesHandler.RemoveLives(livesCost);
         Death();

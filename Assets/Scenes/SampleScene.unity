@@ -968,6 +968,7 @@ Transform:
   m_Children:
   - {fileID: 926734967}
   - {fileID: 1098873928}
+  - {fileID: 2079637393}
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4991,7 +4992,7 @@ GameObject:
   - component: {fileID: 848670816}
   - component: {fileID: 848670817}
   m_Layer: 0
-  m_Name: BaseEnemyPooler
+  m_Name: BasicEnemyPooler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5858,9 +5859,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 926734967}
-  - component: {fileID: 926734968}
+  - component: {fileID: 926734969}
   m_Layer: 0
-  m_Name: BasicEnemyPathfinder
+  m_Name: BasePathfinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5881,7 +5882,7 @@ Transform:
   m_Father: {fileID: 119748953}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &926734968
+--- !u!114 &926734969
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5890,7 +5891,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 926734966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58b24b02d3e21734db80483bd540858a, type: 3}
+  m_Script: {fileID: 11500000, guid: 0fca3f0052e76dd42820232be90e5d9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &964093195
@@ -8995,6 +8996,7 @@ Transform:
   - {fileID: 1017469237}
   - {fileID: 848670816}
   - {fileID: 294729330}
+  - {fileID: 2127940381}
   - {fileID: 1919113708}
   m_Father: {fileID: 0}
   m_RootOrder: 14
@@ -10988,7 +10990,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a060827cf3c55489b3de4070b3740c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4955236053924532060, guid: e7a69d8d80d59f9448eaf258b747b7b2, type: 3}
   maxOffset: 0.3
 --- !u!4 &1888857784
 Transform:
@@ -11035,7 +11036,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1503576354}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1919113709
 MonoBehaviour:
@@ -11181,6 +11182,50 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8447048589019093184, guid: ac08555c06d842647b4ca2a860dc73e2, type: 3}
   m_PrefabInstance: {fileID: 1965273247}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2079637392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2079637393}
+  - component: {fileID: 2079637394}
+  m_Layer: 0
+  m_Name: NoTerrainPathfinder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2079637393
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079637392}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 119748953}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2079637394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079637392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21d32cfe4d8871a4c9e49bfbbd1afe35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2090843001
 GameObject:
   m_ObjectHideFlags: 0
@@ -11453,6 +11498,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2105837944}
   m_CullTransparentMesh: 1
+--- !u!1 &2127940380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2127940381}
+  - component: {fileID: 2127940382}
+  m_Layer: 0
+  m_Name: BasicNoTerrainEnemyPooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2127940381
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127940380}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1503576354}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2127940382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127940380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384c9cb77914d844394a084765c7c3cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countToPool: 0
+  prefab: {fileID: 4955236053924532060, guid: c0709221ad1ccda49af7e1cd64d5baaa, type: 3}
 --- !u!1001 &2136877006
 PrefabInstance:
   m_ObjectHideFlags: 0

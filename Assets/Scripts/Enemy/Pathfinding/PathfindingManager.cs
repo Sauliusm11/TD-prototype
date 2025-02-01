@@ -12,6 +12,7 @@ public class PathfindingManager : MonoBehaviour
 {
     WaveHandler waveHandler;
     EnemyPathFinding baseEnemyPathFinder;
+    EnemyPathFinding noTerrainEnemyPathFinder;
     Vector3Int tilesSize;
     TileContainer tileContainer;
     Node[] Nodes;
@@ -27,7 +28,9 @@ public class PathfindingManager : MonoBehaviour
     void Start()
     {
         tileContainer = TileContainer.getInstance();
-        baseEnemyPathFinder = GameObject.Find("BasicEnemyPathfinder").GetComponent<EnemyPathFinding>();
+        baseEnemyPathFinder = GameObject.Find("BasePathfinder").GetComponent<EnemyPathFinding>();
+        PathfinderFlags.Add(false);
+        noTerrainEnemyPathFinder = GameObject.Find("NoTerrainPathfinder").GetComponent<EnemyPathFinding>();
         PathfinderFlags.Add(false);
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
 
@@ -48,22 +51,22 @@ public class PathfindingManager : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 TileBase tile = tiles[x + y * size.x];
-                Node node = new Node(x,y,Mathf.Infinity,"");
+                Node node = new Node(x,y,Mathf.Infinity,Mathf.Infinity,"");
                 foreach (TileContainer.Tile tileInfo in tileContainer.tiles)
                 {
                     if (tile.name.Equals(tileInfo.name))
                     {
-                        node = new Node(x,y,tileInfo.movementSpeed,tile.name);
+                        node = new Node(x,y,tileInfo.movementSpeed,tileInfo.damageMultiplier,tile.name);
                     }
                 }
                 //Reminder: this only really works with one castle and one portal
                 if (tile.name.Contains("Portal"))
                 {
-                    start = new Node(x, y, 1, "Portal");
+                    start = new Node(x, y, 1, 1, "Portal");
                 }
                 if (tile.name.Contains("Castle"))
                 {
-                    target = new Node(x, y, 1, "Castle");
+                    target = new Node(x, y, 1, 1, "Castle");
                 }
                 Nodes[x + y * size.x] = node;
             }
@@ -170,6 +173,7 @@ public class PathfindingManager : MonoBehaviour
     {
         ResetFlags();
         StartCoroutine(baseEnemyPathFinder.CalculatePath(Nodes,start,target,tilesSize,0));
+        StartCoroutine(noTerrainEnemyPathFinder.CalculatePath(Nodes,start,target,tilesSize,1));
         yield return null;
     }
 }

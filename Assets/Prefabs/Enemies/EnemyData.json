@@ -5,8 +5,16 @@
       "health": 100,
       "livesCost": 1,
       "speedCoef": 1.0,
-      "type": "base",
+      "type": "Base",
       "reward": 10
+    },
+    {
+      "name": "BasicNoTerrainEnemy",
+      "health": 300,
+      "livesCost": 2,
+      "speedCoef": 0.8,
+      "type": "NoTerrain",
+      "reward": 20
     }
   ]
 }

@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 /// <summary>
 /// Pathfinding class of the enemies with no movement speed changes
 /// </summary>
-public class EnemyPathFinding : MonoBehaviour
+public abstract class EnemyPathFinding : MonoBehaviour
 {
     GameManager gameManager;
     PathfindingManager pathfindingManager;
@@ -84,7 +84,7 @@ public class EnemyPathFinding : MonoBehaviour
 
             foreach (int neighbourIndex in GetNeighbourIndexes(currentIndex,size))
             {
-                float tenative_gScore = gScore[currentIndex] + Mathf.Pow((1/nodes[currentIndex].GetMovementSpeedCoef()), 2);
+                float tenative_gScore = gScore[currentIndex] + CalculateWeight(nodes[currentIndex]);
                 if (nodes[currentIndex].GetHasTower())
                 {
                     tenative_gScore += 1000000;
@@ -111,6 +111,7 @@ public class EnemyPathFinding : MonoBehaviour
         yield return null;
     }
 
+    protected abstract float CalculateWeight(Node node);
     /// <summary>
     /// Calculates the distance to target from given node(ignoring costs, just pure distance)
     /// </summary>

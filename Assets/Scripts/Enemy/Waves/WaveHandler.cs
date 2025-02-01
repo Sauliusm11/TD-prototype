@@ -13,7 +13,8 @@ public class WaveHandler : MonoBehaviour
     List<Wave> waves;
     bool sending;
     int currentWave;
-    ObjectPooling enemyPooler;
+    List<ObjectPooling> enemyPoolers;
+    ObjectPooling currentEnemyPooler;
     [SerializeField]
     float maxOffset;
     int enemyCount;
@@ -21,7 +22,11 @@ public class WaveHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyPooler = GameObject.Find("BaseEnemyPooler").GetComponent<ObjectPooling>();
+        enemyPoolers = new List<ObjectPooling>
+        {
+            GameObject.Find("BasicEnemyPooler").GetComponent<ObjectPooling>(),
+            GameObject.Find("BasicNoTerrainEnemyPooler").GetComponent<ObjectPooling>()
+        };
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         sending = false;
     }
@@ -84,12 +89,21 @@ public class WaveHandler : MonoBehaviour
         while (enemies.Count > 0)
         {
             WaveEnemy enemy = enemies[0];
+            string enemyName = enemy.name;
+            foreach (ObjectPooling pooler in enemyPoolers)
+            {
+                if (pooler.gameObject.name.Contains(enemyName))
+                {
+                    currentEnemyPooler = pooler;
+                    Debug.Log(pooler.gameObject.name);
+                }
+            }
             while (enemy.count > 0) 
             {
                 //Need to add some variance to enemies(but also their target then)(prob stored in the enemy itself)
                 float additionalXOffset = Random.Range(-maxOffset, maxOffset);
                 float additionalYOffset = Random.Range(-maxOffset, maxOffset);
-                GameObject enemyObject = enemyPooler.ActivateObject(new Vector3(start.GetX() + xOffset + additionalXOffset, start.GetY() + yOffset + additionalYOffset, 1), new Quaternion());
+                GameObject enemyObject = currentEnemyPooler.ActivateObject(new Vector3(start.GetX() + xOffset + additionalXOffset, start.GetY() + yOffset + additionalYOffset, 1), new Quaternion());
                 BaseEnemy baseEnemy = enemyObject.GetComponent<BaseEnemy>();
                 baseEnemy.UpdateOffsets(additionalXOffset, additionalYOffset);
                 baseEnemy.StartWalking();

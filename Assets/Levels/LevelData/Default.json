@@ -6,6 +6,10 @@
         {
           "name": "BasicEnemy",
           "count": 10
+        },
+        {
+          "name": "BasicNoTerrainEnemy",
+          "count": 1
         }
       ]
     },
