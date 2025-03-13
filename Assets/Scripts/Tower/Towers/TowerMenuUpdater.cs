@@ -8,12 +8,19 @@ public class TowerMenuUpdater : MonoBehaviour
     [SerializeField]
     TMP_Text sellPriceText;
     [SerializeField]
-    TMP_Text TowerNameText;
-    
-    public void UpdateTowerMenu(string name, int price)
+    TMP_Text attackDamageText;
+    [SerializeField]
+    TMP_Text attackRangeText;
+    [SerializeField]
+    TMP_Text towerNameText;
+
+
+    public void UpdateTowerMenu(UpgradeHandler tower)
     {
-        sellPriceText.text = "Sell for: " + price.ToString();
+        sellPriceText.text = "Sell for: " + tower.GetSellCost().ToString();
+        attackDamageText.text = "Attack damage:"+ tower.GetAttackDamage().ToString();
+        attackRangeText.text = "Attack range:"+ tower.GetAttackRange().ToString();
         //Full tower object name is "Tower (Clone)", want to show only "Tower"
-        TowerNameText.text = name.Remove(name.Length-7,7);
+        towerNameText.text = tower.name.Remove(tower.name.Length-7,7);
     }
 }

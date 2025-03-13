@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
         currentUpgradeHandler = tower;
         currentUpgradeHandler.EnableRangeIndicator();
         towerMenuPanel.SetActive(true);
-        towerMenuUpdater.UpdateTowerMenu(tower.name,tower.GetSellCost());
+        towerMenuUpdater.UpdateTowerMenu(tower);
         CancelTowerPlacement();
     }
     public void InitiateSellTower()

@@ -109,4 +109,12 @@ public class UpgradeHandler : MonoBehaviour
     {
         return moneySpent / 2;
     }
+    public int GetAttackDamage()
+    {
+        return damage;
+    }
+    public float GetAttackRange()
+    {
+        return range;
+    }
 }
