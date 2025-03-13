@@ -13,6 +13,7 @@ public class TowerMenuUpdater : MonoBehaviour
     public void UpdateTowerMenu(string name, int price)
     {
         sellPriceText.text = "Sell for: " + price.ToString();
-        TowerNameText.text = name;
+        //Full tower object name is "Tower (Clone)", want to show only "Tower"
+        TowerNameText.text = name.Remove(name.Length-7,7);
     }
 }
