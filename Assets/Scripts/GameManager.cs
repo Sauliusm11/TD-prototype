@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour
     TowerMenuUpdater towerMenuUpdater;
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
+    [SerializeField]
+    GameObject callWaveButton;
+    TMP_Text waveCountText;
+
     JsonParser parser;
     TowerPlacement placemetHandler;
     WaveHandler waveHandler;
@@ -52,6 +56,7 @@ public class GameManager : MonoBehaviour
         saveFileInputField = saveConfirmPanel.GetComponentInChildren<TMP_InputField>();
         loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
         objectCleaner = GameObject.Find("ObjectPoolers").GetComponent<CleanUp>();
+        waveCountText = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
 
         selectedTile = null;
         selectedTower = null;
@@ -178,6 +183,7 @@ public class GameManager : MonoBehaviour
         moneyHandler.ResetMoney();
         livesHandler.ResetLives();
         objectCleaner.CleanUpObjects();
+        WaveEnded();
         DeactivateGameOver();
         CloseFilePrompt();
     }
@@ -264,7 +270,15 @@ public class GameManager : MonoBehaviour
             currentUpgradeHandler.DisableRangeIndicator();
         }
     }
-
+    public void WaveStarted(int wave, int totalWaves)
+    {
+        waveCountText.text = string.Format("Wave: {0}/{1}", wave+1, totalWaves);
+        callWaveButton.SetActive(false);
+    }
+    public void WaveEnded()
+    {
+        callWaveButton.SetActive(true);
+    }
     /// <summary>
     /// Activates the game over panel
     /// </summary>

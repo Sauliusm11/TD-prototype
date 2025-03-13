@@ -9,6 +9,7 @@ using UnityEngine;
 /// </summary>
 public class WaveHandler : MonoBehaviour
 {
+    GameManager gameManager;
     JsonParser parser;
     List<Wave> waves;
     bool sending;
@@ -29,6 +30,7 @@ public class WaveHandler : MonoBehaviour
         };
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         sending = false;
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -59,6 +61,7 @@ public class WaveHandler : MonoBehaviour
         {
             sending = true;
             waveFinished = false;
+            gameManager.WaveStarted(currentWave,waves.Count);
             StartCoroutine(SendWave(currentWave,start,xOffset,yOffset));
             currentWave++;
         }
@@ -68,8 +71,7 @@ public class WaveHandler : MonoBehaviour
         enemyCount--;
         if (enemyCount == 0 && !sending)
         {
-            //TODO:Replace with proper ui call
-            Debug.Log("Wave Finished!");
+            gameManager.WaveEnded();
             waveFinished=true;
         }
     }
