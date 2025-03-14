@@ -271,6 +271,10 @@ public class GameManager : MonoBehaviour
             currentUpgradeHandler.DisableRangeIndicator();
         }
     }
+    public void UpgradeTower()
+    {
+        currentUpgradeHandler.UpgradeTower();
+    }
     public void WaveStarted(int wave, int totalWaves)
     {
         waveCountText.text = string.Format("Wave: {0}/{1}", wave+1, totalWaves);

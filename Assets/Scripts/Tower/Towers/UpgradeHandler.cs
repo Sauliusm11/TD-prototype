@@ -82,6 +82,10 @@ public class UpgradeHandler : MonoBehaviour
         shootingHandler.SetRange(range);
         UpdateRangeIndicator();
     }
+    public void UpgradeTower()
+    {
+        Debug.Log("TODO: Implement upgrading");
+    }
     public bool GetShootingState()
     {
         return shootingEnabled;
