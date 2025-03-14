@@ -251,6 +251,7 @@ public class GameManager : MonoBehaviour
     }
     public void ActivateTowerMenu(UpgradeHandler tower)
     {
+        DeActivateTowerMenu();
         currentUpgradeHandler = tower;
         currentUpgradeHandler.EnableRangeIndicator();
         towerMenuPanel.SetActive(true);
