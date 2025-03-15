@@ -92,6 +92,7 @@ public class UpgradeHandler : MonoBehaviour
         if (currentTier < baseTower.maxTier)
         {
             range *= 1+upgradeTree[currentTier].attackRange;
+            UpdateRangeIndicator();
             damage += upgradeTree[currentTier].attackDamage;
             coolDown -= upgradeTree[currentTier].attackSpeed;
             //TODO: Projectile speed?

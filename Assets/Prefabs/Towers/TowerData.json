@@ -22,7 +22,7 @@
           "cost": 30,
           "attackSpeed": 0.05,
           "attackDamage": 5,
-          "attackRange": 0.0,
+          "attackRange": 0.1,
           "projectileSpeed": 0.0
         }
       ]
