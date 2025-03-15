@@ -274,6 +274,7 @@ public class GameManager : MonoBehaviour
     public void UpgradeTower()
     {
         currentUpgradeHandler.UpgradeTower();
+        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     public void WaveStarted(int wave, int totalWaves)
     {

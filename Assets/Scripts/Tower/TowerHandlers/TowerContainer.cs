@@ -50,7 +50,9 @@ public class TowerContainer
         public float attackRange;
         public int cost;
         public float projectileSpeed;
-        public Tower(string name, float attackSpeed, int attackDamage, float attackRange, int cost, float projectileSpeed)
+        public int maxTier;
+        public List<Upgrade> upgrades = new List<Upgrade>();
+        public Tower(string name, float attackSpeed, int attackDamage, float attackRange, int cost, float projectileSpeed, List<Upgrade> upgrades, int maxTier)
         {
             this.name = name;
             this.attackSpeed = attackSpeed;
@@ -58,6 +60,25 @@ public class TowerContainer
             this.attackRange = attackRange;
             this.cost = cost;
             this.projectileSpeed = projectileSpeed;
+            this.upgrades = upgrades;
+            this.maxTier = maxTier;
+        }
+    }
+    [System.Serializable]
+    public class Upgrade
+    {
+        public int tier;
+        public float attackSpeed;
+        public int attackDamage;
+        public float attackRange;
+        public int cost;
+        public Upgrade(int tier, float attackSpeed, int attackDamage, float attackRange, int cost, float projectileSpeed)
+        {
+            this.tier = tier;
+            this.attackSpeed = attackSpeed;
+            this.attackDamage = attackDamage;
+            this.attackRange = attackRange;
+            this.cost = cost;
         }
     }
 }

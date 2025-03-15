@@ -18,6 +18,8 @@ public class UpgradeHandler : MonoBehaviour
     GameObject rangeIndicator;
 
     TowerContainer.Tower baseTower;
+    List<TowerContainer.Upgrade> upgradeTree = new List<TowerContainer.Upgrade>();
+    int currentTier;
     int moneySpent;
     float coolDown;
     float range;
@@ -41,6 +43,8 @@ public class UpgradeHandler : MonoBehaviour
     }
     void GetBaseTower()
     {
+        currentTier = 0;
+
         shootingHandler = gameObject.GetComponent<ShootingHandler>();
         shootingEnabled = false;
         rangeIndicator = transform.Find("RangeIndicator").gameObject;
@@ -56,6 +60,7 @@ public class UpgradeHandler : MonoBehaviour
             {
                 baseTower = tower;
                 currentPooler = towerSelectionHandler.GetTowerPoolerFromBaseTower(baseTower);
+                upgradeTree = tower.upgrades;
                 ResetBuffs();
                 break;
             }
@@ -84,7 +89,17 @@ public class UpgradeHandler : MonoBehaviour
     }
     public void UpgradeTower()
     {
-        Debug.Log("TODO: Implement upgrading");
+        if (currentTier < baseTower.maxTier)
+        {
+            range *= 1+upgradeTree[currentTier].attackRange;
+            damage += upgradeTree[currentTier].attackDamage;
+            coolDown -= upgradeTree[currentTier].attackSpeed;
+            //TODO: Projectile speed?
+            
+            currentTier++;
+            
+        }
+
     }
     public bool GetShootingState()
     {
@@ -116,6 +131,11 @@ public class UpgradeHandler : MonoBehaviour
     public int GetAttackDamage()
     {
         return damage;
+    }
+
+    public float GetAttackSpeed()
+    {
+        return 1 / coolDown;
     }
     public float GetAttackRange()
     {

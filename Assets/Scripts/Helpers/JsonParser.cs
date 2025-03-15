@@ -32,6 +32,16 @@ public class JsonParser : MonoBehaviour
         public List<string> Name = new List<string>();
     }
     [System.Serializable]
+    internal class UpgradeInfo
+    {
+        public int tier;
+        public int cost;
+        public float attackSpeed;
+        public int attackDamage;
+        public float attackRange;
+        public float projectileSpeed;
+    }
+    [System.Serializable]
     internal class TowerList
     {
         public List<TowerInfo> Towers = new List<TowerInfo>();
@@ -45,6 +55,8 @@ public class JsonParser : MonoBehaviour
         public float attackRange;
         public int cost;
         public float projectileSpeed;
+        public int maxTier;
+        public List<UpgradeInfo> Upgrades = new List<UpgradeInfo>();
     }
     TowerList towerList = new TowerList();
     [System.Serializable]
@@ -225,7 +237,13 @@ public class JsonParser : MonoBehaviour
         List<TowerContainer.Tower> towers = new List<TowerContainer.Tower>();
         foreach (TowerInfo towerInfo in towerList.Towers)
         {
-            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost,towerInfo.projectileSpeed);
+            List<TowerContainer.Upgrade> upgrades = new List<TowerContainer.Upgrade>();
+            foreach (UpgradeInfo upgrade in towerInfo.Upgrades)
+            {
+                upgrades.Add(new TowerContainer.Upgrade(upgrade.tier,upgrade.attackSpeed,upgrade.attackDamage,upgrade.attackRange,upgrade.cost,upgrade.projectileSpeed));
+            }
+
+            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost,towerInfo.projectileSpeed, upgrades, towerInfo.maxTier);
             towers.Add(tower);
         }
         return towers;
