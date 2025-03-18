@@ -184,6 +184,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc66f48044a3974d9f5a16475c83efe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tierSprites:
+  - {fileID: 21300000, guid: 8f8c7dd80f779af40a886553935b6043, type: 3}
+  - {fileID: 21300000, guid: 2b6c4f44d407caf48945698340a35fa1, type: 3}
+  - {fileID: 21300000, guid: c6b9a6fbb0adaee4fb612746e275b2cd, type: 3}
 --- !u!1 &5647244713469593638
 GameObject:
   m_ObjectHideFlags: 0

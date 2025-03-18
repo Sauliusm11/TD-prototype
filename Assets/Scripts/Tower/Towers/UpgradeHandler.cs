@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static TowerContainer;
-
 public class UpgradeHandler : MonoBehaviour
 {
     Money moneyHandler;
@@ -19,6 +17,9 @@ public class UpgradeHandler : MonoBehaviour
 
     TowerContainer.Tower baseTower;
     List<TowerContainer.Upgrade> upgradeTree = new List<TowerContainer.Upgrade>();
+    [SerializeField]
+    List<Sprite> tierSprites = new List<Sprite>();
+    SpriteRenderer spriteRenderer;
     int currentTier;
     int moneySpent;
     float coolDown;
@@ -44,7 +45,7 @@ public class UpgradeHandler : MonoBehaviour
     void GetBaseTower()
     {
         currentTier = 0;
-
+        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
         shootingHandler = gameObject.GetComponent<ShootingHandler>();
         shootingEnabled = false;
         rangeIndicator = transform.Find("RangeIndicator").gameObject;
@@ -76,6 +77,8 @@ public class UpgradeHandler : MonoBehaviour
         range = baseTower.attackRange;
         damage = baseTower.attackDamage;
         moneySpent = baseTower.cost;
+        //This is where you reset tower looks
+        UpdateBaseSprite(0);
     }
     public void ApplyBuff(TileContainer.Tile tile)
     {
@@ -95,10 +98,11 @@ public class UpgradeHandler : MonoBehaviour
             UpdateRangeIndicator();
             damage += upgradeTree[currentTier].attackDamage;
             coolDown -= upgradeTree[currentTier].attackSpeed;
+
             //TODO: Projectile speed?
-            
+
             currentTier++;
-            
+            UpdateBaseSprite(currentTier);
         }
 
     }
@@ -109,6 +113,11 @@ public class UpgradeHandler : MonoBehaviour
     void UpdateRangeIndicator()
     {
         rangeIndicator.transform.localScale = new Vector3(range * 2, range * 2, 0);
+    }
+    void UpdateBaseSprite(int tier)
+    {
+       
+        spriteRenderer.sprite = tierSprites[tier];
     }
     public void SellTower()
     {
