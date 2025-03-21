@@ -140,11 +140,32 @@ public class UpgradeHandler : MonoBehaviour
     {
         return moneySpent / 2;
     }
+    public bool IsUpgradeAvailable()
+    {
+        if (currentTier < baseTower.maxTier)
+        {
+            return moneyHandler.HasEnoughMoney(upgradeTree[currentTier].cost);
+        }
+        else 
+        { 
+            return false;
+        }
+    }
+    public TowerContainer.Upgrade GetUpgrade()
+    {
+        if (currentTier < baseTower.maxTier)
+        {
+            return upgradeTree[currentTier];
+        }
+        else
+        {
+            return new TowerContainer.Upgrade(-1,0,0,0,0,0);
+        }
+    }
     public int GetAttackDamage()
     {
         return damage;
     }
-
     public float GetAttackSpeed()
     {
         return 1 / coolDown;
