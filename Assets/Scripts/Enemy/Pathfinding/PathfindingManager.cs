@@ -1,9 +1,8 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
+
 /// <summary>
 /// Pathfinder manager acting as a mediator between all different pathfinding classes
 /// Should only be attached to the PathFindingManager object

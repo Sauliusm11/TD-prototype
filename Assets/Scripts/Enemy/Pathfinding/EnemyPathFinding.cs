@@ -94,7 +94,14 @@ public abstract class EnemyPathFinding : MonoBehaviour
 
                     cameFrom[neighbourIndex] = currentIndex;
                     gScore[neighbourIndex] = tenative_gScore;
-                    fScore[neighbourIndex] = tenative_gScore + CalculateDistanceToTarget(nodes[neighbourIndex]);
+                    //A*
+                    //Hmmmmm, nerfing the heuristic part helped
+                    //https://en.wikipedia.org/wiki/Admissible_heuristic
+                    //https://stackoverflow.com/questions/13031462/difference-and-advantages-between-dijkstra-a-star
+                    fScore[neighbourIndex] = tenative_gScore + (CalculateDistanceToTarget(nodes[neighbourIndex])/2);
+                    //Dijktra
+                    //fScore[neighbourIndex] = tenative_gScore + 0;
+
                     //I guess I need to update the queue separately?
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
                     //I mean, this works but space complexity grows a lot (or does it?)
@@ -119,6 +126,8 @@ public abstract class EnemyPathFinding : MonoBehaviour
     /// <returns></returns>
     int CalculateDistanceToTarget(Node node)
     {
+
+        Debug.Log(string.Format("Time:{0} nodeX{1} nodeY{2} targetX{3} targetY{4}, distance{5}",DateTime.Now,node.GetX(),node.GetY(),Target.GetX(), Target.GetY(), Mathf.Abs(node.GetX() - Target.GetX()) + Mathf.Abs(node.GetY() - Target.GetY())));
         return Mathf.Abs(node.GetX() - Target.GetX()) + Mathf.Abs(node.GetY() - Target.GetY());
     }
     /// <summary>
