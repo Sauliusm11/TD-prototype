@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TowerMenuUpdater : MonoBehaviour
 {
@@ -25,16 +26,40 @@ public class TowerMenuUpdater : MonoBehaviour
     GameObject upgrade1Button;
     [SerializeField]
     GameObject upgrade2Button;
+    Button upgrade1SpriteRenderer;
+    Button upgrade2SpriteRenderer;
     TowerContainer.Upgrade nextUpgrade;
-
     UpgradeHandler currentTower;
 
+    private void Start()
+    {
+        upgrade1SpriteRenderer = upgrade1Button.GetComponent<Button>();
+        upgrade2SpriteRenderer = upgrade2Button.GetComponent<Button>();
+    }
     private void FixedUpdate()
     {
         if (currentTower != null)
         {
-            //This should become function to gray it out
-            upgrade1Button.SetActive(currentTower.IsUpgradeAvailable());
+            SetButtonState(1,currentTower.IsUpgradeAvailable());
+        }
+    }
+    private void SetButtonState(int buttonNumber, bool state)
+    {
+        Color newColor = Color.white;
+        if (!state)
+        {
+            newColor = new Color(1, 1, 1, 0.5f);
+        }
+        switch (buttonNumber)
+        {
+            case 1:
+                upgrade1SpriteRenderer.interactable = state;
+                break;
+            case 2:
+                upgrade2SpriteRenderer.interactable = state;
+                break;
+            default:
+                break;
         }
     }
     public void UpdateTowerMenu(UpgradeHandler tower)
