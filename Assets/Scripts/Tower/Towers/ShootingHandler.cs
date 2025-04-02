@@ -18,10 +18,12 @@ public class ShootingHandler : MonoBehaviour
     float timeSinceShot;
     ObjectPooling bulletPooler;
 
-    float coolDown;
+    float cooldown;
     float range;
     int damage;
+    float projectileSpeed;
     bool enabled;
+    int bulletsOnBoard;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,12 +35,14 @@ public class ShootingHandler : MonoBehaviour
         {
             if (this.name.Contains(tower.name))
             {
-                coolDown = tower.attackSpeed;
+                cooldown = tower.attackSpeed;
                 range = tower.attackRange;
                 damage = tower.attackDamage;
+                projectileSpeed = 5;
             }
         }
-        timeSinceShot = coolDown;
+        bulletsOnBoard = 0;
+        timeSinceShot = cooldown;
         enabled = false;
     }
     /// <summary>
@@ -51,7 +55,7 @@ public class ShootingHandler : MonoBehaviour
         {
             if (this.name.Contains(tower.name))
             {
-                coolDown = tower.attackSpeed;
+                cooldown = tower.attackSpeed;
                 range = tower.attackRange;
                 damage = tower.attackDamage;
             }
@@ -69,7 +73,7 @@ public class ShootingHandler : MonoBehaviour
         if (enabled) 
         { 
             timeSinceShot += Time.deltaTime;
-            if(timeSinceShot > coolDown) 
+            if(timeSinceShot > cooldown) 
             {
                 Shoot();
             }
@@ -85,9 +89,8 @@ public class ShootingHandler : MonoBehaviour
         if (currentTarget > -1)
         {
             GameObject targetObject = EnemyObjects[currentTarget];
-            //GameObject bullet = Instantiate(bulletPrefab, shootingPoint.transform);//This REALLY needs object pooling
-            GameObject bullet = bulletPooler.ActivateObject(shootingPoint.transform);//TODO: this is not ideal, would be better to give it the prefab(allowing one pooler to have different objects)
-            StartCoroutine(MoveBulletTo(targetObject, bullet, 5));
+            GameObject bullet = bulletPooler.ActivateObject(shootingPoint.transform);
+            bullet.GetComponent<BulletHandler>().ShootBullet(targetObject, bullet, projectileSpeed, damage);
             timeSinceShot = 0;
         }
     }
@@ -160,64 +163,29 @@ public class ShootingHandler : MonoBehaviour
             InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
         }
     }
+    public void DisableTower()
+    {
+        //Need to work out coroutines
+        if (enabled)
+        {
+            enabled = false;
+            
+        }
+    }
     public void SetRange(float newRange)
     {
         range = newRange;
     }
-    /// <summary>
-    /// Coroutine which moves the bullet to the target
-    /// </summary>
-    /// <param name="target">Object the bullet is targeting</param>
-    /// <param name="bullet">Bullet object</param>
-    /// <param name="speed">Speed at which the bullet moves (should always be faster than fastest enemy)</param>
-    /// <returns></returns>
-    IEnumerator MoveBulletTo(GameObject target, GameObject bullet, float speed)
+    public void SetDamage(int newDamage)
     {
-        Vector3 oldPos = bullet.transform.position;
-        Vector3 goTo;
-        if (target != null)
-        {
-            goTo = target.transform.position;
-            Vector3 path = oldPos - goTo;//This is close but not quite right (I might need to flip what is left over after this operation)
-            path *= -1;//Flipping because we are -1 away from destination
-            float totalTime = 1f;//Time in seconds at which a base speed unit crosses a base speed tile.
-            if (speed != 0f)
-            {
-                totalTime /= speed;
-                float timeElapsed = Time.deltaTime;
-                while (timeElapsed < totalTime)
-                {
-                    if (target != null)
-                    {
-                        goTo = target.transform.position;
-                    }
-                    else
-                    {
-                        bulletPooler.DeactivateObject(bullet);
-                        //Destroy(bullet);
-                        break;
-                    }
-                    float timeDelta = Time.deltaTime;
-                    timeElapsed += timeDelta;
-                    bullet.transform.position += path * (timeDelta / totalTime);
-                    if (timeElapsed / totalTime > 1)
-                    {
-                        bullet.transform.position = goTo;
-                        bulletPooler.DeactivateObject(bullet);
-                        //Destroy(bullet);
-                        BaseEnemy enemy = target.GetComponent<BaseEnemy>();
-                        enemy.ReduceHealth(damage);
-
-                    }
-                    yield return null;
-                }
-            }
-        }
-        else
-        {
-            bulletPooler.DeactivateObject(bullet);
-            //Destroy(bullet);
-        }
-
+        damage = newDamage;
+    }
+    public void SetCooldown(float newCooldown)
+    {
+        cooldown = newCooldown;
+    }
+    public void SetProjectileSpeed(float newProjectileSpeed)
+    {
+        projectileSpeed = newProjectileSpeed;
     }
 }

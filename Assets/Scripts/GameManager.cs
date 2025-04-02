@@ -273,7 +273,12 @@ public class GameManager : MonoBehaviour
     }
     public void UpgradeTower()
     {
-        currentUpgradeHandler.UpgradeTower();
+        currentUpgradeHandler.UpgradeTower(true);
+        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
+    }
+    public void AlternateUpgradeTower()
+    {
+        currentUpgradeHandler.UpgradeTower(false);
         towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     public void WaveStarted(int wave, int totalWaves)

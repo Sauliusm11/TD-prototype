@@ -71,12 +71,21 @@ public class TowerMenuUpdater : MonoBehaviour
         nextUpgrade = tower.GetUpgrade();
         if (nextUpgrade.tier != -1)
         {
+            upgrade1Button.SetActive(true);
             upgrade1ButtonText.text = "Tier " + nextUpgrade.tier + " upgrade for: " + nextUpgrade.cost;
+            if(nextUpgrade.tier == 3)
+            {
+                upgrade2Button.SetActive(true);
+                upgrade1ButtonText.text = "Elite upgrade for: " + nextUpgrade.cost;
+                upgrade2ButtonText.text = "Alternate elite upgrade for: " + tower.GetSecondaryElite().cost; 
+            }
             tierText.text = "Tier: " + (nextUpgrade.tier-1).ToString();
         }
         else 
         {
             tierText.text = "Tier: max";
+            upgrade1Button.SetActive(false);
+            upgrade2Button.SetActive(false);
         }
         attackDamageText.text = "Attack damage:"+ tower.GetAttackDamage().ToString();
         attackSpeedText.text = "Fire rate:" + tower.GetAttackSpeed().ToString()+"/s";

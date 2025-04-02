@@ -126,8 +126,6 @@ public abstract class EnemyPathFinding : MonoBehaviour
     /// <returns></returns>
     int CalculateDistanceToTarget(Node node)
     {
-
-        Debug.Log(string.Format("Time:{0} nodeX{1} nodeY{2} targetX{3} targetY{4}, distance{5}",DateTime.Now,node.GetX(),node.GetY(),Target.GetX(), Target.GetY(), Mathf.Abs(node.GetX() - Target.GetX()) + Mathf.Abs(node.GetY() - Target.GetY())));
         return Mathf.Abs(node.GetX() - Target.GetX()) + Mathf.Abs(node.GetY() - Target.GetY());
     }
     /// <summary>

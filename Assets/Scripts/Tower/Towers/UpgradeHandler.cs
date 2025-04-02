@@ -18,8 +18,11 @@ public class UpgradeHandler : MonoBehaviour
     TowerContainer.Tower baseTower;
     List<TowerContainer.Upgrade> upgradeTree = new List<TowerContainer.Upgrade>();
     [SerializeField]
+    Sprite defaultTowerSprite;
+    [SerializeField]
     List<Sprite> tierSprites = new List<Sprite>();
-    SpriteRenderer spriteRenderer;
+    SpriteRenderer baseSpriteRenderer;
+    SpriteRenderer rotatingSpriteRenderer;
     int currentTier;
     int moneySpent;
     float coolDown;
@@ -45,7 +48,8 @@ public class UpgradeHandler : MonoBehaviour
     void GetBaseTower()
     {
         currentTier = 0;
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        baseSpriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        rotatingSpriteRenderer = gameObject.transform.GetChild(0).GetComponentInChildren<SpriteRenderer>();
         shootingHandler = gameObject.GetComponent<ShootingHandler>();
         shootingEnabled = false;
         rangeIndicator = transform.Find("RangeIndicator").gameObject;
@@ -79,6 +83,7 @@ public class UpgradeHandler : MonoBehaviour
         moneySpent = baseTower.cost;
         //This is where you reset tower looks
         UpdateBaseSprite(0);
+        UpdateRotatingSprite(0);
     }
     public void ApplyBuff(TileContainer.Tile tile)
     {
@@ -90,21 +95,35 @@ public class UpgradeHandler : MonoBehaviour
         shootingHandler.SetRange(range);
         UpdateRangeIndicator();
     }
-    public void UpgradeTower()
+    public void UpgradeTower(bool primary)
     {
         if (currentTier < baseTower.maxTier)
         {
+            if (!primary)
+            {
+                currentTier++;
+            }
             if (moneyHandler.RemoveMoney(upgradeTree[currentTier].cost)) 
-            { 
+            {
+                moneySpent += upgradeTree[currentTier].cost;
                 range *= 1+upgradeTree[currentTier].attackRange;
                 UpdateRangeIndicator();
+                shootingHandler.SetRange(range);
                 damage += upgradeTree[currentTier].attackDamage;
+                shootingHandler.SetDamage(damage);
                 coolDown -= upgradeTree[currentTier].attackSpeed;
-
+                shootingHandler.SetCooldown(coolDown);
                 //TODO: Projectile speed?
 
                 currentTier++;
-                UpdateBaseSprite(currentTier);
+                if( currentTier >= 3)
+                {
+                    UpdateRotatingSprite(currentTier);
+                }
+                else 
+                { 
+                    UpdateBaseSprite(currentTier);
+                }
             }
         }
 
@@ -119,13 +138,25 @@ public class UpgradeHandler : MonoBehaviour
     }
     void UpdateBaseSprite(int tier)
     {
-        spriteRenderer.sprite = tierSprites[tier];
+        baseSpriteRenderer.sprite = tierSprites[tier];
+    }
+    void UpdateRotatingSprite(int tier)
+    {
+        if (tier == 0)
+        {
+            rotatingSpriteRenderer.sprite = defaultTowerSprite;
+        }
+        else
+        {
+            rotatingSpriteRenderer.sprite = tierSprites[tier];
+        }
     }
     public void SellTower()
     {
         moneyHandler.AddMoney(GetSellCost());
         Vector3Int cellPosition = tilemap.WorldToCell(gameObject.transform.position);
         pathfindingManager.RemoveTowerFromNode(cellPosition);
+        shootingHandler.DisableTower();
         currentPooler.DeactivateObject(gameObject);
     }
     public void EnableRangeIndicator()
@@ -161,6 +192,10 @@ public class UpgradeHandler : MonoBehaviour
         {
             return new TowerContainer.Upgrade(-1,0,0,0,0,0);
         }
+    }
+    public TowerContainer.Upgrade GetSecondaryElite()
+    {
+        return upgradeTree[baseTower.maxTier-1];
     }
     public int GetAttackDamage()
     {
