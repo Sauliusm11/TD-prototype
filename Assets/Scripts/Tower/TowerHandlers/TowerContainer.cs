@@ -72,6 +72,7 @@ public class TowerContainer
         public int attackDamage;
         public float attackRange;
         public int cost;
+        public float projectileSpeed;
         public Upgrade(int tier, float attackSpeed, int attackDamage, float attackRange, int cost, float projectileSpeed)
         {
             this.tier = tier;
@@ -79,6 +80,7 @@ public class TowerContainer
             this.attackDamage = attackDamage;
             this.attackRange = attackRange;
             this.cost = cost;
+            this.projectileSpeed = projectileSpeed;
         }
     }
 }

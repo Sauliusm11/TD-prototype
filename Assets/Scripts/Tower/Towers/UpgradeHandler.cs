@@ -28,6 +28,7 @@ public class UpgradeHandler : MonoBehaviour
     float coolDown;
     float range;
     int damage;
+    float projectileSpeed;
     bool shootingEnabled;
     // Start is called before the first frame update
     void Start()
@@ -81,6 +82,7 @@ public class UpgradeHandler : MonoBehaviour
         range = baseTower.attackRange;
         damage = baseTower.attackDamage;
         moneySpent = baseTower.cost;
+        projectileSpeed = baseTower.projectileSpeed;
         //This is where you reset tower looks
         UpdateBaseSprite(0);
         UpdateRotatingSprite(0);
@@ -114,7 +116,8 @@ public class UpgradeHandler : MonoBehaviour
                 coolDown -= upgradeTree[currentTier].attackSpeed;
                 shootingHandler.SetCooldown(coolDown);
                 //TODO: Projectile speed?
-
+                projectileSpeed += upgradeTree[currentTier].projectileSpeed;
+                shootingHandler.SetProjectileSpeed(projectileSpeed);
                 currentTier++;
                 if( currentTier >= 3)
                 {
