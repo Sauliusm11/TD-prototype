@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Tilemaps;
 /// <summary>
 /// Node using the tilemap grid coordinate system.
 /// Used to calculate the path for each enemy type

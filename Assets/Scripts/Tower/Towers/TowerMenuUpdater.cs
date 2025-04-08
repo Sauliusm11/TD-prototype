@@ -1,9 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-
+/// <summary>
+/// Class responsible for updating the tower menu with statistics of the currently selected tower
+/// </summary>
 public class TowerMenuUpdater : MonoBehaviour
 {
     [SerializeField]
@@ -38,18 +38,19 @@ public class TowerMenuUpdater : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        //Money can always be changing, so we check for updates in update
         if (currentTower != null)
         {
             SetButtonState(1,currentTower.IsUpgradeAvailable());
         }
     }
+    /// <summary>
+    /// Changes the interactable state of the given button
+    /// </summary>
+    /// <param name="buttonNumber">1 - regular upgrade; 2 - alternate elite upgrade</param>
+    /// <param name="state">New state</param>
     private void SetButtonState(int buttonNumber, bool state)
     {
-        Color newColor = Color.white;
-        if (!state)
-        {
-            newColor = new Color(1, 1, 1, 0.5f);
-        }
         switch (buttonNumber)
         {
             case 1:
@@ -62,6 +63,10 @@ public class TowerMenuUpdater : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// Update all tower menu fields with the given tower's statistics
+    /// </summary>
+    /// <param name="tower">Tower upgrade handler</param>
     public void UpdateTowerMenu(UpgradeHandler tower)
     {
         currentTower = tower;
@@ -69,10 +74,13 @@ public class TowerMenuUpdater : MonoBehaviour
         towerNameText.text = tower.name.Remove(tower.name.Length - 7, 7);
         sellPriceText.text = "Sell for: " + tower.GetSellCost().ToString();
         nextUpgrade = tower.GetUpgrade();
+
+        //Upgrade button handling
         if (nextUpgrade.tier != -1)
         {
             upgrade1Button.SetActive(true);
             upgrade1ButtonText.text = "Tier " + nextUpgrade.tier + " upgrade for: " + nextUpgrade.cost;
+            //TODO: Consider having elite tiers not hardcoded?
             if(nextUpgrade.tier == 3)
             {
                 upgrade2Button.SetActive(true);
@@ -87,9 +95,11 @@ public class TowerMenuUpdater : MonoBehaviour
             upgrade1Button.SetActive(false);
             upgrade2Button.SetActive(false);
         }
+
         attackDamageText.text = "Attack damage:"+ tower.GetAttackDamage().ToString();
         attackSpeedText.text = "Fire rate:" + tower.GetAttackSpeed().ToString()+"/s";
         attackRangeText.text = "Attack range:"+ tower.GetAttackRange().ToString();
+        //Projectile speed is a hidden stat for now
 
     }
 }

@@ -1,7 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// Bullet handler class
+/// </summary>
 public class BulletHandler : MonoBehaviour
 {
     ObjectPooling bulletPooler;
@@ -16,6 +17,13 @@ public class BulletHandler : MonoBehaviour
     {
         
     }
+    /// <summary>
+    /// Public facing method to start the bullet travelling coroutine
+    /// </summary>
+    /// <param name="targetObject">Target enemy to trace</param>
+    /// <param name="bullet">Bullet prefab</param>
+    /// <param name="projectileSpeed">Projectile speed of the tower that is shooting</param>
+    /// <param name="damage">Damage the bullet will deal to the enemy</param>
     public void ShootBullet(GameObject targetObject, GameObject bullet, float projectileSpeed, int damage)
     {
         StartCoroutine(MoveBulletTo(targetObject, bullet, projectileSpeed,damage));

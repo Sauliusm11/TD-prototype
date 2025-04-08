@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 /// <summary>
 /// GameManager class, responsible for managing most UI elements and states.
-/// Acts as a bridge between most class calls allowing to execute additional code before passing requests.
+/// Acts as a mediator between most class calls allowing to execute additional code before passing requests.
 /// Should only be attached to the GameManager object
 /// </summary>
 public class GameManager : MonoBehaviour
@@ -60,8 +55,6 @@ public class GameManager : MonoBehaviour
 
         selectedTile = null;
         selectedTower = null;
-
-        //TileContainer tileContainer = TileContainer.getInstance();
     }
 
     // Update is called once per frame
@@ -176,6 +169,7 @@ public class GameManager : MonoBehaviour
         //waveHandler.LoadWaves(filename);
         //CloseFilePrompt();
     }
+    //Should this not be private?
     public void ConfirmLoading(string filename)
     {
         parser.LoadLevelTiles(filename);
@@ -244,25 +238,41 @@ public class GameManager : MonoBehaviour
     {
         towerConfirmationPanel.SetActive(false);
     }
-
+    /// <summary>
+    /// Passes the cancel request of the placement of the currently placed(but not confirmed) tower
+    /// </summary
     public void CancelTowerPlacement()
     {
         placemetHandler.CancelPlacement();
     }
+    /// <summary>
+    /// Reactiavtes the tower menu(+range indicator)
+    /// saves the current tower reference and passes it to the menu updater
+    /// </summary>
+    /// <param name="tower">Newly selected tower</param>
     public void ActivateTowerMenu(UpgradeHandler tower)
     {
         DeActivateTowerMenu();
+        //Could become it's own function if needed in other situations?
         currentUpgradeHandler = tower;
         currentUpgradeHandler.EnableRangeIndicator();
         towerMenuPanel.SetActive(true);
         towerMenuUpdater.UpdateTowerMenu(tower);
         CancelTowerPlacement();
     }
+    /// <summary>
+    /// Method called when clicking the sell tower button in the tower menu.
+    /// Sells the tower straight away(TODO: add a confirmation stage)
+    /// (References do not show up, it is working)
+    /// </summary>
     public void InitiateSellTower()
     {
         currentUpgradeHandler.SellTower();
         DeActivateTowerMenu();
     }
+    /// <summary>
+    /// Deactiavtes the tower menu(+range indicator)
+    /// </summary>
     public void DeActivateTowerMenu()
     {
         towerMenuPanel.SetActive(false);
@@ -271,21 +281,39 @@ public class GameManager : MonoBehaviour
             currentUpgradeHandler.DisableRangeIndicator();
         }
     }
+    /// <summary>
+    /// Method called when clicking the regular upgrade button in the tower menu.
+    /// Upgrades the tower straight away(TODO: add a confirmation stage? This one should be a togglable setting though)
+    /// (References do not show up, it is working)
+    /// </summary>
     public void UpgradeTower()
     {
         currentUpgradeHandler.UpgradeTower(true);
         towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
+    /// <summary>
+    /// Method called when clicking the alterante elite upgrade button in the tower menu.
+    /// Upgrades the tower to the alternate elite type straight away(TODO: add a confirmation stage? This one should be a togglable setting though)
+    /// (References do not show up, it is working)
+    /// </summary>
     public void AlternateUpgradeTower()
     {
         currentUpgradeHandler.UpgradeTower(false);
         towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
+    /// <summary>
+    /// Recieve the call from the wave handler and update the wave count text and hide the next wave button
+    /// </summary>
+    /// <param name="wave">Number of the current wave</param>
+    /// <param name="totalWaves">Number of total waves</param>
     public void WaveStarted(int wave, int totalWaves)
     {
         waveCountText.text = string.Format("Wave: {0}/{1}", wave+1, totalWaves);
         callWaveButton.SetActive(false);
     }
+    /// <summary>
+    /// Recieve the call about the wave ending and reactivate the next wave button
+    /// </summary>
     public void WaveEnded()
     {
         callWaveButton.SetActive(true);

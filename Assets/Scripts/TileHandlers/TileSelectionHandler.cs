@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro;
 using UnityEngine.Tilemaps;
-using System;
 /// <summary>
 /// Class responsible for selecting tiles to place in the level editor
 /// (Can probably use for towers too)

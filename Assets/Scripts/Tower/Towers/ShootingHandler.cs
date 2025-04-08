@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -22,7 +20,7 @@ public class ShootingHandler : MonoBehaviour
     float range;
     int damage;
     float projectileSpeed;
-    bool enabled;
+    bool shootingEnabled;
     int bulletsOnBoard;
     // Start is called before the first frame update
     void Start()
@@ -43,7 +41,7 @@ public class ShootingHandler : MonoBehaviour
         }
         bulletsOnBoard = 0;
         timeSinceShot = cooldown;
-        enabled = false;
+        shootingEnabled = false;
     }
     /// <summary>
     /// Because of object pooling this is needed to set certain attributes back to default
@@ -70,7 +68,7 @@ public class ShootingHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enabled) 
+        if (shootingEnabled) 
         { 
             timeSinceShot += Time.deltaTime;
             if(timeSinceShot > cooldown) 
@@ -157,19 +155,20 @@ public class ShootingHandler : MonoBehaviour
     /// </summary>
     public void EnableTower() 
     {
-        if (!enabled) 
+        if (!shootingEnabled) 
         { 
-            enabled = true;
+            shootingEnabled = true;
             InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
         }
     }
+    /// <summary>
+    /// Activates the tower once it's selling has been confirmed
+    /// </summary>
     public void DisableTower()
     {
-        //Need to work out coroutines
-        if (enabled)
+        if (shootingEnabled)
         {
-            enabled = false;
-            
+            shootingEnabled = false;
         }
     }
     public void SetRange(float newRange)
