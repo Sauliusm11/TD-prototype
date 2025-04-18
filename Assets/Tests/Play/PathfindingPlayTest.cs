@@ -92,10 +92,10 @@ public class PathfindingPlayTest
         GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         EnemyPathFinding enemyPathfinding = GameObject.Find("BasePathfinder").GetComponent<EnemyPathFinding>();
         //Load selected level
-        parser.LoadLevelTiles("Default");
-
+        gameManager.ConfirmLoading("Default");
         //Possible that other test cases might need more money
         gameManager.SetSelectedTower(TowerContainer.getInstance().towers[0]);
+
         //Prepare mock to bypass pointer over ui check
         PointerEventData eventDataMock = new PointerEventData(GameObject.Find("EventSystem").GetComponent<EventSystem>());
         eventDataMock.position = new Vector3(-1, -1, -1);

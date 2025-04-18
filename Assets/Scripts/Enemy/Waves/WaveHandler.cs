@@ -95,7 +95,6 @@ public class WaveHandler : MonoBehaviour
                 if (pooler.gameObject.name.Contains(enemyName))
                 {
                     currentEnemyPooler = pooler;
-                    Debug.Log(pooler.gameObject.name);
                 }
             }
             while (enemy.count > 0) 
