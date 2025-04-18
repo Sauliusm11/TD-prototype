@@ -119,8 +119,6 @@ public class PathfindingPlayTest
             actual += 1 / node.GetMovementSpeedCoef();
         }
 
-        //Node expected = new Node(15, 2, 1, 1, "Portal");
-
         // Use the Assert class to test conditions.
         Assert.AreEqual(expected, actual);
         // Use yield to skip a frame.
