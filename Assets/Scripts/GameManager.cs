@@ -318,6 +318,10 @@ public class GameManager : MonoBehaviour
     {
         callWaveButton.SetActive(true);
     }
+    public bool IsWaveActive()
+    {
+        return callWaveButton.active;
+    }
     /// <summary>
     /// Activates the game over panel
     /// </summary>
