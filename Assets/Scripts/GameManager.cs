@@ -320,7 +320,7 @@ public class GameManager : MonoBehaviour
     }
     public bool IsWaveActive()
     {
-        return callWaveButton.activeInHierarchy;
+        return !callWaveButton.activeInHierarchy;
     }
     /// <summary>
     /// Activates the game over panel
