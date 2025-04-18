@@ -21,7 +21,6 @@ public class ShootingHandler : MonoBehaviour
     int damage;
     float projectileSpeed;
     bool shootingEnabled;
-    int bulletsOnBoard;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,10 +35,9 @@ public class ShootingHandler : MonoBehaviour
                 cooldown = tower.attackSpeed;
                 range = tower.attackRange;
                 damage = tower.attackDamage;
-                projectileSpeed = 5;
+                projectileSpeed = tower.projectileSpeed;
             }
         }
-        bulletsOnBoard = 0;
         timeSinceShot = cooldown;
         shootingEnabled = false;
     }
@@ -56,6 +54,7 @@ public class ShootingHandler : MonoBehaviour
                 cooldown = tower.attackSpeed;
                 range = tower.attackRange;
                 damage = tower.attackDamage;
+                projectileSpeed = tower.projectileSpeed;
             }
         }
         if(partToRotate != null)
