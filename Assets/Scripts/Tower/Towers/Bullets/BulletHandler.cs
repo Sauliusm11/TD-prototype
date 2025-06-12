@@ -38,6 +38,10 @@ public class BulletHandler : MonoBehaviour
     /// <returns></returns>
     IEnumerator MoveBulletTo(GameObject target, GameObject bullet, float speed, int damage)
     {
+        if (bulletPooler == null)
+        {
+            yield return null;
+        }
         Vector3 oldPos = bullet.transform.position;
         Vector3 goTo;
         if (target != null)
@@ -50,7 +54,7 @@ public class BulletHandler : MonoBehaviour
             {
                 totalTime /= speed;
                 float timeElapsed = Time.deltaTime;
-                while (timeElapsed < totalTime)
+                do
                 {
                     if (target != null)
                     {
@@ -75,7 +79,7 @@ public class BulletHandler : MonoBehaviour
 
                     }
                     yield return null;
-                }
+                } while (timeElapsed < totalTime);
             }
         }
         else

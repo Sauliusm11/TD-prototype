@@ -28,6 +28,7 @@ public class UpgradeHandler : MonoBehaviour
     int moneySpent;
     float coolDown;
     float range;
+    float tileRangeMult;
     int damage;
     float projectileSpeed;
     bool shootingEnabled;
@@ -105,13 +106,12 @@ public class UpgradeHandler : MonoBehaviour
     /// <param name="tile">The tile that the tower is placed on</param>
     public void ApplyBuff(TileContainer.Tile tile)
     {
-        range *= tile.attackRange;
+        tileRangeMult = tile.attackRange;
         if (baseTower == null)
         {
             GetBaseTower();
         }
-        shootingHandler.SetRange(range);
-        UpdateRangeIndicator();
+        UpdateRangeAndIndicator();
     }
     /// <summary>
     /// Handles tower upgrading
@@ -129,8 +129,7 @@ public class UpgradeHandler : MonoBehaviour
             {
                 moneySpent += upgradeTree[currentTier].cost;
                 range *= 1+upgradeTree[currentTier].attackRange;
-                UpdateRangeIndicator();
-                shootingHandler.SetRange(range);
+                UpdateRangeAndIndicator();
                 damage += upgradeTree[currentTier].attackDamage;
                 shootingHandler.SetDamage(damage);
                 coolDown -= upgradeTree[currentTier].attackSpeed;
@@ -160,9 +159,10 @@ public class UpgradeHandler : MonoBehaviour
     /// <summary>
     /// Update the range indicator scale based on current range
     /// </summary>
-    void UpdateRangeIndicator()
+    void UpdateRangeAndIndicator()
     {
-        rangeIndicator.transform.localScale = new Vector3(range * 2, range * 2, 0);
+        shootingHandler.SetRange(tileRangeMult * range);
+        rangeIndicator.transform.localScale = new Vector3(tileRangeMult * range * 2, tileRangeMult * range * 2, 0);
     }
     /// <summary>
     /// Replace the sprite of the tower base with the new tier sprite

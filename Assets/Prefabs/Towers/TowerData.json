@@ -42,6 +42,49 @@
           "projectileSpeed": 2
         }
       ]
+    },
+    {
+      "name": "Sniper",
+      "attackSpeed": 2,
+      "attackDamage": 200,
+      "attackRange": 20,
+      "projectileSpeed": 500,
+      "cost": 100,
+      "maxTier": 3,
+      "Upgrades": [
+        {
+          "tier": 1,
+          "cost": 20,
+          "attackSpeed": 0.02,
+          "attackDamage": 10,
+          "attackRange": 0.0,
+          "projectileSpeed": 0.0
+        },
+        {
+          "tier": 2,
+          "cost": 30,
+          "attackSpeed": 0.03,
+          "attackDamage": 10,
+          "attackRange": 0,
+          "projectileSpeed": 0.0
+        },
+        {
+          "tier": 3,
+          "cost": 100,
+          "attackSpeed": 1,
+          "attackDamage": 30,
+          "attackRange": -0.9,
+          "projectileSpeed": -490
+        },
+        {
+          "tier": 4,
+          "cost": 80,
+          "attackSpeed": 0.1,
+          "attackDamage": -10,
+          "attackRange": 0,
+          "projectileSpeed": 0.0
+        }
+      ]
     }
   ]
 }
