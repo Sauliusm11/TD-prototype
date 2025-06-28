@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
-/// Class for the basic movement enemy type (might become abstract later :p)
+/// Class for the basic movement enemy type
 /// </summary>
 public abstract class BaseEnemy : MonoBehaviour
 {

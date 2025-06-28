@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Shooting handler class attached to each tower (TODO: consider making this abstract?)
+/// Shooting handler class attached to each tower
 /// </summary>
 public class ShootingHandler : MonoBehaviour
 {

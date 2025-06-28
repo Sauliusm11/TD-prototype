@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 /// <summary>
 /// Class responsible for tile and tower placement, attached to the grid on which the tiles will be placed
-/// (Note: probably a bad idea to have both in the same class)
 /// </summary>
 public class TilePlacement : MonoBehaviour
 {

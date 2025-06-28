@@ -4,7 +4,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 /// <summary>
 /// Class responsible for selecting tiles to place in the level editor
-/// (Can probably use for towers too)
 /// </summary>
 public class TileSelectionHandler : MonoBehaviour
 {
