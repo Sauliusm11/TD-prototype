@@ -8,14 +8,13 @@ using UnityEngine.EventSystems;
 /// </summary>
 public class CameraHandler : MonoBehaviour
 {
-    private static readonly float PanSpeed = 4.5f;//5 works on pc, is playable on andoroid but a bit fast. 4.5 looks good.
+    private static readonly float PanSpeed = 4.5f;//5 works on pc, is playable on android but a bit fast. 4.5 looks good.
     private static readonly float ZoomSpeedTouch = 0.03f;//0.01 was slow but playable, 0.1 was fast but playable, 0.03 looks good.
     private static readonly float ZoomSpeedMouse = 1.5f;
 
-    //The x,y bounds might be off a bit
-    private static readonly float[] BoundsX = new float[] { -11f, 11f };//Subject to change
-    private static readonly float[] BoundsY = new float[] { -10f, 11f };//Subject to change 
-    private static readonly float[] ZoomBounds = new float[] { 2f, 10f };//Subject to change
+    private static readonly float[] BoundsX = new float[] { -11f, 11f };//Can be changed if needed
+    private static readonly float[] BoundsY = new float[] { -10f, 11f };//Can be changed if needed 
+    private static readonly float[] ZoomBounds = new float[] { 2f, 10f };//Can be changed if needed
 
     private Camera cam;
 
@@ -35,18 +34,18 @@ public class CameraHandler : MonoBehaviour
     bool defaultMaskOn;
     Physics2DRaycaster raycaster;
     [SerializeField]
-    GameObject cameraOnText;
+    GameObject cameraActivatedText;
     // Start is called before the first frame update
     void Start()
     {
         raycaster = GetComponent<Physics2DRaycaster>();
         defaultLayerMask = raycaster.eventMask;
         defaultMaskOn = true;
-        cameraOnText.SetActive(false);
+        cameraActivatedText.SetActive(false);
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         devMode = true;
         tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
-        GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
+        GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");//Attached to player UI
         if (towerManagerObject != null)
         {
             devMode = false;
@@ -59,23 +58,8 @@ public class CameraHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool noneSelected = false;
-        if (devMode) 
-        {
-            if(gameManager.GetSelectedTile() == null)
-            {
-                noneSelected = true;
-            }
-        }
-        else
-        {
-            if (gameManager.GetSelectedTower() == null)
-            {
-                noneSelected = true;
-            }
-        }
-        //None selected is kind of not needed now
-        if (/*noneSelected &&*/ !defaultMaskOn)
+
+        if (!defaultMaskOn)
         {
             if (Input.touchSupported)
             {
@@ -95,8 +79,8 @@ public class CameraHandler : MonoBehaviour
     /// </summary>
     public void EnableControls()
     {
-        if (defaultMaskOn) 
-        { 
+        if (defaultMaskOn)
+        {
             raycaster.eventMask = 1 << 5;
         }
         else
@@ -104,7 +88,7 @@ public class CameraHandler : MonoBehaviour
             raycaster.eventMask = defaultLayerMask;
         }
         //If mask was on camera was off and will be on now
-        cameraOnText.SetActive(defaultMaskOn);
+        cameraActivatedText.SetActive(defaultMaskOn);
         defaultMaskOn = !defaultMaskOn;
     }
     /// <summary>
@@ -118,9 +102,12 @@ public class CameraHandler : MonoBehaviour
         {
             lastPanPosition = Input.mousePosition;
         }
-        else if (Input.GetMouseButton(0))
-        {
-            PanCamera(Input.mousePosition);
+        else
+        { 
+            if (Input.GetMouseButton(0))
+            {
+                PanCamera(Input.mousePosition);
+            }
         }
 
         // Check for scrolling to zoom the camera
@@ -129,7 +116,7 @@ public class CameraHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Camera controls for devices  supporting touch
+    /// Camera controls for devices supporting touch
     /// </summary>
     void HandleTouch()
     {
@@ -183,10 +170,11 @@ public class CameraHandler : MonoBehaviour
     {
         // Determine how much to move the camera
         Vector3 offset = cam.ScreenToViewportPoint(lastPanPosition - newPanPosition);
-        Vector3 move = new Vector3(offset.x * (PanSpeed + cam.orthographicSize), offset.y * (PanSpeed + cam.orthographicSize), 0);
+        //The (PanSpeed + cam.orthographicSize) helps with the speed feeling, without it - too slow
+        Vector3 moveTo = new Vector3(offset.x * (PanSpeed + cam.orthographicSize), offset.y * (PanSpeed + cam.orthographicSize), 0);
 
         // Perform the movement
-        transform.Translate(move, Space.World);
+        transform.Translate(moveTo, Space.World);
 
         // Ensure the camera remains within bounds.
         Vector3 pos = transform.position;
