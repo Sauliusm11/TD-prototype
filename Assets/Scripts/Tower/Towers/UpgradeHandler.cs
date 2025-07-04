@@ -130,7 +130,7 @@ public class UpgradeHandler : MonoBehaviour
             if (moneyHandler.RemoveMoney(upgradeTree[currentTier].cost)) 
             {
                 moneySpent += upgradeTree[currentTier].cost;
-                range *= 1+upgradeTree[currentTier].attackRange;
+                range += upgradeTree[currentTier].attackRange;
                 UpdateRangeAndIndicator();
                 damage += upgradeTree[currentTier].attackDamage;
                 shootingHandler.SetDamage(damage);

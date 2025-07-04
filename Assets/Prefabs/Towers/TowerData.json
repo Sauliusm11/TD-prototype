@@ -22,7 +22,7 @@
           "cost": 30,
           "attackSpeed": 0.25,
           "attackDamage": 5,
-          "attackRange": 0.1,
+          "attackRange": 0.2,
           "projectileSpeed": 0.0
         },
         {
@@ -30,7 +30,7 @@
           "cost": 100,
           "attackSpeed": -1.5,
           "attackDamage": 20,
-          "attackRange": 0,
+          "attackRange": 0.0,
           "projectileSpeed": -2
         },
         {
@@ -38,7 +38,7 @@
           "cost": 80,
           "attackSpeed": 2,
           "attackDamage": -10,
-          "attackRange": 0,
+          "attackRange": 0.0,
           "projectileSpeed": 2
         }
       ]
@@ -65,7 +65,7 @@
           "cost": 50,
           "attackSpeed": 0.05,
           "attackDamage": 10,
-          "attackRange": 0,
+          "attackRange": 0.0,
           "projectileSpeed": 0.0
         },
         {
@@ -73,7 +73,7 @@
           "cost": 100,
           "attackSpeed": 0.4,
           "attackDamage": 30,
-          "attackRange": -0.8,
+          "attackRange": -3.5,
           "projectileSpeed": -490
         },
         {
@@ -81,7 +81,7 @@
           "cost": 80,
           "attackSpeed": 0.1,
           "attackDamage": -10,
-          "attackRange": 0,
+          "attackRange": 1,
           "projectileSpeed": 0.0
         }
       ]
