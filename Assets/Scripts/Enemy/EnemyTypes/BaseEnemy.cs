@@ -68,11 +68,6 @@ public abstract class BaseEnemy : MonoBehaviour
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
 
     }
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Gets the path from it's pathfinding manager and starts the follow path coroutine
     /// Should only be called from wave manager

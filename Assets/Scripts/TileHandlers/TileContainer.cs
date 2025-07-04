@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Singleton holding information about the different in game tile types
 /// </summary>
-public class TileContainer 
+public class TileContainer
 {
     private static TileContainer instance;
     private static object threadLock = new object();

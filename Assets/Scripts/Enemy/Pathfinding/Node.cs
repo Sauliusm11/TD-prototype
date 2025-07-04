@@ -11,7 +11,7 @@ public class Node : IComparable<Node>
     float currentWeight;
     bool hasTower;
     string name;
-    
+
     public Node(int x, int y, float movementSpeedCoef, float damageMultCoef, string name)
     {
         X = x;
@@ -21,7 +21,7 @@ public class Node : IComparable<Node>
         this.name = name;
     }
 
-    public int GetX() 
+    public int GetX()
     {
         return X;
     }
@@ -33,7 +33,7 @@ public class Node : IComparable<Node>
     {
         return name;
     }
-    public float GetMovementSpeedCoef() 
+    public float GetMovementSpeedCoef()
     {
         return MovementSpeedCoef;
     }
@@ -57,11 +57,11 @@ public class Node : IComparable<Node>
     {
         return currentWeight.CompareTo(other.currentWeight);
     }
-    public void SetHasTower(bool newState) 
+    public void SetHasTower(bool newState)
     {
         hasTower = newState;
     }
-    public bool GetHasTower() 
+    public bool GetHasTower()
     {
         return hasTower;
     }

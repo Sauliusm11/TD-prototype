@@ -83,14 +83,14 @@ public class UpgradeHandler : MonoBehaviour
     /// <summary>
     /// Reset all stat buffs of the current tower, if no tower exists, get a new one
     /// </summary>
-    public void ResetBuffs() 
+    public void ResetBuffs()
     {
         if (baseTower == null)
         {
             GetBaseTower();
         }
-        else 
-        { 
+        else
+        {
             attackSpeed = baseTower.attackSpeed;
             range = baseTower.attackRange;
             damage = baseTower.attackDamage;
@@ -127,7 +127,7 @@ public class UpgradeHandler : MonoBehaviour
             {
                 currentTier++;
             }
-            if (moneyHandler.RemoveMoney(upgradeTree[currentTier].cost)) 
+            if (moneyHandler.RemoveMoney(upgradeTree[currentTier].cost))
             {
                 moneySpent += upgradeTree[currentTier].cost;
                 range += upgradeTree[currentTier].attackRange;
@@ -140,12 +140,12 @@ public class UpgradeHandler : MonoBehaviour
                 projectileSpeed += upgradeTree[currentTier].projectileSpeed;
                 shootingHandler.SetProjectileSpeed(projectileSpeed);
                 currentTier++;
-                if( currentTier >= 3)
+                if (currentTier >= 3)
                 {
                     UpdateRotatingSprite(currentTier);
                 }
-                else 
-                { 
+                else
+                {
                     UpdateBaseSprite(currentTier);
                 }
             }
@@ -221,8 +221,8 @@ public class UpgradeHandler : MonoBehaviour
         {
             return moneyHandler.HasEnoughMoney(upgradeTree[currentTier].cost);
         }
-        else 
-        { 
+        else
+        {
             return false;
         }
     }
@@ -238,7 +238,7 @@ public class UpgradeHandler : MonoBehaviour
         }
         else
         {
-            return new TowerContainer.Upgrade(-1,0,0,0,0,0);
+            return new TowerContainer.Upgrade(-1, 0, 0, 0, 0, 0);
         }
     }
     /// <summary>

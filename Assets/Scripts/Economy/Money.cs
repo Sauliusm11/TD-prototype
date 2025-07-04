@@ -7,18 +7,13 @@ using TMPro;
 public class Money : MonoBehaviour
 {
     int money;
-    TMP_Text moneyDisplay;    
+    TMP_Text moneyDisplay;
     // Start is called before the first frame update
     void Start()
     {
         ResetMoney();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     /// <summary>
     /// Reset current money
     /// TODO: will be used by load level method
@@ -44,14 +39,13 @@ public class Money : MonoBehaviour
     /// <returns>If the purchase was sucessful</returns>
     public bool RemoveMoney(int cost)
     {
-        if(HasEnoughMoney(cost))
+        if (HasEnoughMoney(cost))
         {
             money -= cost;
             UpdateMoneyDisplay();
             return true;
         }
         return false;
-
     }
     /// <summary>
     /// Adds a given amount of money 

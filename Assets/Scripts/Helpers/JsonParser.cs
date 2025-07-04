@@ -139,9 +139,9 @@ public class JsonParser : MonoBehaviour
         //SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(file.ToString());
 
         //Editor version
-        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename+".json");
+        string jsonData = File.ReadAllText(Application.dataPath + "/Levels/" + filename + ".json");
         SavedTiles savedTiles = JsonUtility.FromJson<SavedTiles>(jsonData);
-        
+
         List<Tile> Tiles = tileSelectionHandler.GetTileList();
         //Clear out current level
         tilemap.CompressBounds();
@@ -199,7 +199,7 @@ public class JsonParser : MonoBehaviour
     /// Should only be called by the TileContainer
     /// </summary>
     /// <returns>A list of tile types used by TileContainer to store values for each tile type</returns>
-    public List<TileContainer.Tile> LoadTileList() 
+    public List<TileContainer.Tile> LoadTileList()
     {
         //Android(and build) version
         //TextAsset file = Resources.Load("TileMaps/Tiles/" + "TileData") as TextAsset;
@@ -210,9 +210,9 @@ public class JsonParser : MonoBehaviour
         tileList = JsonUtility.FromJson<TileList>(json);
 
         List<TileContainer.Tile> tiles = new List<TileContainer.Tile>();
-        foreach (TileInfo tileInfo in tileList.Tiles) 
+        foreach (TileInfo tileInfo in tileList.Tiles)
         {
-            TileContainer.Tile tile = new TileContainer.Tile(tileInfo.name,tileInfo.movementSpeed,tileInfo.damageMultiplier, tileInfo.attackRange);
+            TileContainer.Tile tile = new TileContainer.Tile(tileInfo.name, tileInfo.movementSpeed, tileInfo.damageMultiplier, tileInfo.attackRange);
             tiles.Add(tile);
         }
         return tiles;
@@ -238,10 +238,10 @@ public class JsonParser : MonoBehaviour
             List<TowerContainer.Upgrade> upgrades = new List<TowerContainer.Upgrade>();
             foreach (UpgradeInfo upgrade in towerInfo.Upgrades)
             {
-                upgrades.Add(new TowerContainer.Upgrade(upgrade.tier,upgrade.attackSpeed,upgrade.attackDamage,upgrade.attackRange,upgrade.cost,upgrade.projectileSpeed));
+                upgrades.Add(new TowerContainer.Upgrade(upgrade.tier, upgrade.attackSpeed, upgrade.attackDamage, upgrade.attackRange, upgrade.cost, upgrade.projectileSpeed));
             }
 
-            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost,towerInfo.projectileSpeed, upgrades, towerInfo.maxTier);
+            TowerContainer.Tower tower = new TowerContainer.Tower(towerInfo.name, towerInfo.attackSpeed, towerInfo.attackDamage, towerInfo.attackRange, towerInfo.cost, towerInfo.projectileSpeed, upgrades, towerInfo.maxTier);
             towers.Add(tower);
         }
         return towers;

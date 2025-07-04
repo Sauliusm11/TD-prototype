@@ -42,7 +42,7 @@ public class PathfindingManager : MonoBehaviour
     /// </summary>
     /// <param name="tiles">Tile array of the level</param>
     /// <param name="size">X and Y sizes of the array(needed to keep track of 2 dimensions in a 1D array)</param>
-    public void LoadLevelTileList(TileBase[] tiles,Vector3Int size)
+    public void LoadLevelTileList(TileBase[] tiles, Vector3Int size)
     {
         Nodes = new Node[tiles.Length];
         for (int x = 0; x < size.x; x++)
@@ -50,12 +50,12 @@ public class PathfindingManager : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 TileBase tile = tiles[x + y * size.x];
-                Node node = new Node(x,y,Mathf.Infinity,Mathf.Infinity,"");
+                Node node = new Node(x, y, Mathf.Infinity, Mathf.Infinity, "");
                 foreach (TileContainer.Tile tileInfo in tileContainer.tiles)
                 {
                     if (tile.name.Equals(tileInfo.name))
                     {
-                        node = new Node(x,y,tileInfo.movementSpeed,tileInfo.damageMultiplier,tile.name);
+                        node = new Node(x, y, tileInfo.movementSpeed, tileInfo.damageMultiplier, tile.name);
                     }
                 }
                 //Reminder: this only really works with one castle and one portal
@@ -122,7 +122,7 @@ public class PathfindingManager : MonoBehaviour
     public WorldNode ConvertToWorldNode(Node node)
     {
         Vector3 position = tilemap.CellToWorld(new Vector3Int(node.GetX(), node.GetY()));
-        WorldNode newNode = new WorldNode(position.x + xOffset, position.y + yOffset, node.GetMovementSpeedCoef(),node.GetName());
+        WorldNode newNode = new WorldNode(position.x + xOffset, position.y + yOffset, node.GetMovementSpeedCoef(), node.GetName());
         return newNode;
     }
     /// <summary>
@@ -147,7 +147,7 @@ public class PathfindingManager : MonoBehaviour
             if (goodToGo)
             {
                 //Place wave starting call here
-                waveHandler.StartWave(start,xOffset,yOffset);
+                waveHandler.StartWave(start, xOffset, yOffset);
             }
         }
     }
@@ -162,7 +162,7 @@ public class PathfindingManager : MonoBehaviour
             {
                 PathfinderFlags[i] = false;
             }
-        } 
+        }
     }
     /// <summary>
     /// Does all the necessary preparations and signals each pathfinder to recalculate the path.
@@ -171,8 +171,8 @@ public class PathfindingManager : MonoBehaviour
     IEnumerator PreparePathFinding()
     {
         ResetFlags();
-        StartCoroutine(baseEnemyPathFinder.CalculatePath(Nodes,start,target,tilesSize,0));
-        StartCoroutine(noTerrainEnemyPathFinder.CalculatePath(Nodes,start,target,tilesSize,1));
+        StartCoroutine(baseEnemyPathFinder.CalculatePath(Nodes, start, target, tilesSize, 0));
+        StartCoroutine(noTerrainEnemyPathFinder.CalculatePath(Nodes, start, target, tilesSize, 1));
         yield return null;
     }
 }

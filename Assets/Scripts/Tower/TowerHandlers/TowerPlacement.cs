@@ -38,7 +38,7 @@ public class TowerPlacement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void HandlePlaceTower(Vector3 position, PointerEventData eventData)
     {
@@ -71,7 +71,7 @@ public class TowerPlacement : MonoBehaviour
                         manager.MoveTowerConfirmation(position);
                     }
                 }
-                if(tower != null)
+                if (tower != null)
                 {
                     //Figure out best way to get tile name and to reset->apply buff
                     Node node = pathfindingManager.GetNodeFromCell(cellPosition);

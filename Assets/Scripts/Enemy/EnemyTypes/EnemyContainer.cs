@@ -48,7 +48,7 @@ public class EnemyContainer
         public float speedCoef;
         public string type;
         public int reward;
-        public Enemy(string name, int health, int livesCost, float speedCoef, string type,int reward)
+        public Enemy(string name, int health, int livesCost, float speedCoef, string type, int reward)
         {
             this.name = name;
             this.health = health;

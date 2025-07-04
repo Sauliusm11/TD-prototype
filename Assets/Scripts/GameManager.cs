@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    public enum State { Saving, Loading, Playing};
+    public enum State { Saving, Loading, Playing };
     State currentState;
     [SerializeField]
     GameObject saveConfirmPanel;
@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     /// <summary>
     /// Internal method to smoothly switch between states
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
         currentState = newState;
-    }    
+    }
     /// <summary>
     /// Internal method for executing code when exiting the current state
     /// </summary>
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void StartSaving()
     {
-        if(currentState != State.Saving)
+        if (currentState != State.Saving)
         {
             SwitchState(State.Saving);
         }
@@ -308,7 +308,7 @@ public class GameManager : MonoBehaviour
     /// <param name="totalWaves">Number of total waves</param>
     public void WaveStarted(int wave, int totalWaves)
     {
-        waveCountText.text = string.Format("Wave: {0}/{1}", wave+1, totalWaves);
+        waveCountText.text = string.Format("Wave: {0}/{1}", wave + 1, totalWaves);
         callWaveButton.SetActive(false);
     }
     /// <summary>

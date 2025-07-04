@@ -27,7 +27,7 @@ public class ObjectPooling : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     /// <summary>
     /// Activates an available object at the given transform
@@ -46,7 +46,7 @@ public class ObjectPooling : MonoBehaviour
         }
         else
         {
-            GameObject gameObject = Instantiate(prefab,transform.position,transform.rotation);
+            GameObject gameObject = Instantiate(prefab, transform.position, transform.rotation);
             ObjectList.Add(gameObject);
             gameObject.SetActive(true);
             return gameObject;
@@ -82,7 +82,7 @@ public class ObjectPooling : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="rotation"></param>
     /// <returns>Gameobject that was activated/created</returns>
-    public GameObject ActivateObject(Vector3 position,Quaternion rotation)
+    public GameObject ActivateObject(Vector3 position, Quaternion rotation)
     {
         if (AvailableObjectIndexes.Count > 0)
         {
@@ -106,9 +106,9 @@ public class ObjectPooling : MonoBehaviour
     /// <param name="gameObject">Object to deactivate</param>
     public void DeactivateObject(GameObject gameObject)
     {
-        for(int i = 0; i < ObjectList.Count; i++)
+        for (int i = 0; i < ObjectList.Count; i++)
         {
-            if(gameObject.GetInstanceID() == ObjectList[i].GetInstanceID())
+            if (gameObject.GetInstanceID() == ObjectList[i].GetInstanceID())
             {
 
                 if (gameObject.activeInHierarchy)

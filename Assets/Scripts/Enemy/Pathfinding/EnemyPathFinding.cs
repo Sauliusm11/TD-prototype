@@ -30,7 +30,7 @@ public abstract class EnemyPathFinding : MonoBehaviour
     /// <param name="size">X and Y sizes of the array(needed to keep track of 2 dimensions in a 1D array)</param>
     /// <param name="flagIndex">Index of this specific pathfinder flag assgined by the manager</param>
     /// <returns></returns>
-    public IEnumerator CalculatePath(Node[] nodes,Node start, Node target, Vector3Int size,int flagIndex)
+    public IEnumerator CalculatePath(Node[] nodes, Node start, Node target, Vector3Int size, int flagIndex)
     {
         Target = target;
         Vector3 current = transform.position;
@@ -45,42 +45,42 @@ public abstract class EnemyPathFinding : MonoBehaviour
 
 
 
-        int startIndex = start.GetX()+size.x*start.GetY();
-        for (int i = 0; i < gScore.Length; i++) 
+        int startIndex = start.GetX() + size.x * start.GetY();
+        for (int i = 0; i < gScore.Length; i++)
         {
             gScore[i] = float.PositiveInfinity;
             fScore[i] = float.PositiveInfinity;
-            if(i == startIndex)
+            if (i == startIndex)
             {
                 gScore[i] = 0;
                 fScore[i] = CalculateDistanceToTarget(nodes[i]);
             }
             nodes[i].SetCurrentWeight(fScore[i]);
-            
+
         }
         int counter = 0;
         priorityQueue.Enqueue(start);
         bool pathFound = false;
         int targetIndex = -1;
-        while(priorityQueue.Count() > 0)
+        while (priorityQueue.Count() > 0)
         {
             counter++;
             Node currentNode = priorityQueue.Dequeue();
-            int currentIndex = currentNode.GetX()+currentNode.GetY()*size.x;
+            int currentIndex = currentNode.GetX() + currentNode.GetY() * size.x;
             int distanceToTarget = CalculateDistanceToTarget(currentNode);
-            if( distanceToTarget <= 0)
+            if (distanceToTarget <= 0)
             {
                 pathFound = true;
                 targetIndex = currentIndex;
             }
-            if(distanceToTarget <= 0 && (fScore[currentIndex] < 1000000 || priorityQueue.Count() == 0 || counter > 10000))
+            if (distanceToTarget <= 0 && (fScore[currentIndex] < 1000000 || priorityQueue.Count() == 0 || counter > 10000))
             {
-                ReconstructPath(nodes,cameFrom,currentIndex,flagIndex);
+                ReconstructPath(nodes, cameFrom, currentIndex, flagIndex);
                 break;
             }
 
 
-            foreach (int neighbourIndex in GetNeighbourIndexes(currentIndex,size))
+            foreach (int neighbourIndex in GetNeighbourIndexes(currentIndex, size))
             {
                 float tenative_gScore = gScore[currentIndex] + CalculateWeight(nodes[currentIndex]);
                 if (nodes[currentIndex].GetHasTower())
@@ -96,7 +96,7 @@ public abstract class EnemyPathFinding : MonoBehaviour
                     //Hmmmmm, nerfing the heuristic part helped
                     //https://en.wikipedia.org/wiki/Admissible_heuristic
                     //https://stackoverflow.com/questions/13031462/difference-and-advantages-between-dijkstra-a-star
-                    fScore[neighbourIndex] = tenative_gScore + (CalculateDistanceToTarget(nodes[neighbourIndex])/2);
+                    fScore[neighbourIndex] = tenative_gScore + (CalculateDistanceToTarget(nodes[neighbourIndex]) / 2);
                     //Dijktra
                     //fScore[neighbourIndex] = tenative_gScore + 0;
 
@@ -135,17 +135,17 @@ public abstract class EnemyPathFinding : MonoBehaviour
     List<int> GetNeighbourIndexes(int index, Vector3Int size)
     {
         List<int> indexes = new List<int>();
-        if(index - size.x >= 0)
+        if (index - size.x >= 0)
         {
             indexes.Add(index - size.x);
-            if(index % size.x != 0) 
-            { 
+            if (index % size.x != 0)
+            {
                 indexes.Add(index - 1);
             }
         }
         else
         {
-            if(index - 1 >= 0)
+            if (index - 1 >= 0)
             {
                 if (index % size.x != 0)
                 {
@@ -156,14 +156,14 @@ public abstract class EnemyPathFinding : MonoBehaviour
         if (index + size.x < size.x * size.y)
         {
             indexes.Add(index + size.x);
-            if ((index + 1) % size.x != 0) 
-            { 
+            if ((index + 1) % size.x != 0)
+            {
                 indexes.Add(index + 1);
             }
         }
         else
         {
-            if (index + 1 < size.x * size.y) 
+            if (index + 1 < size.x * size.y)
             {
                 if ((index + 1) % size.x != 0)
                 {
@@ -180,9 +180,9 @@ public abstract class EnemyPathFinding : MonoBehaviour
     /// <param name="cameFrom">Array of indexes pointing to the previous node in the path</param>
     /// <param name="current">Current(final) node index</param>
     /// <param name="flagIndex">Index of this specific pathfinder flag assgined by the manager</param>
-    void ReconstructPath(Node[] nodes, int[] cameFrom, int current,int flagIndex)
+    void ReconstructPath(Node[] nodes, int[] cameFrom, int current, int flagIndex)
     {
-        path.Clear();    
+        path.Clear();
         Node currentNode = nodes[current];
         path.Push(pathfindingManager.ConvertToWorldNode(currentNode));
         while (cameFrom[current] > -1)

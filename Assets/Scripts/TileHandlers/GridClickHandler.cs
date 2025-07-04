@@ -8,7 +8,7 @@ public class GridClickHandler : MonoBehaviour, IDragHandler, IPointerClickHandle
     TowerPlacement towerPlacementHandler;
     TileHighlighter tileHighlighter;
     bool devMode;
-  
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,7 +58,7 @@ public class GridClickHandler : MonoBehaviour, IDragHandler, IPointerClickHandle
             }
             else //Placing towers
             {
-                towerPlacementHandler.HandlePlaceTower(position,eventData);
+                towerPlacementHandler.HandlePlaceTower(position, eventData);
 
                 tileHighlighter.HighlightTileFromPos(position);
             }

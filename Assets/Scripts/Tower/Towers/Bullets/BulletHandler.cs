@@ -15,7 +15,7 @@ public class BulletHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     /// <summary>
     /// Public facing method to start the bullet travelling coroutine
@@ -26,7 +26,7 @@ public class BulletHandler : MonoBehaviour
     /// <param name="damage">Damage the bullet will deal to the enemy</param>
     public void ShootBullet(GameObject targetObject, GameObject bullet, float projectileSpeed, int damage)
     {
-        StartCoroutine(MoveBulletTo(targetObject, bullet, projectileSpeed,damage));
+        StartCoroutine(MoveBulletTo(targetObject, bullet, projectileSpeed, damage));
     }
 
     /// <summary>

@@ -102,7 +102,7 @@ public class PathfindingPlayTest
         //Place towers based on given test case
         for (int i = 0; i < towerPositionsX.Length; i++)
         {
-            Vector3 position = new Vector3(towerPositionsX[i], towerPositionsY[i]); 
+            Vector3 position = new Vector3(towerPositionsX[i], towerPositionsY[i]);
             //This needs to become a test
             towerPlacement.HandlePlaceTower(position, eventDataMock);
             towerPlacement.ConfirmPlacement();
@@ -114,7 +114,7 @@ public class PathfindingPlayTest
         //Calculate speed of path
         Stack<WorldNode> path = enemyPathfinding.GetPath();
         float actual = 0;
-        foreach (WorldNode node in path) 
+        foreach (WorldNode node in path)
         {
             actual += 1 / node.GetMovementSpeedCoef();
         }

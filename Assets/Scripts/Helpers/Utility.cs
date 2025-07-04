@@ -64,8 +64,8 @@ public static class Utility
         parent.GetComponent<SpriteRenderer>().color = newColor;
         foreach (SpriteRenderer renderer in parent.GetComponentsInChildren<SpriteRenderer>())
         {
-            if (!namesToExclude.Contains(renderer.name)) 
-            { 
+            if (!namesToExclude.Contains(renderer.name))
+            {
                 renderer.color = newColor;
             }
         }

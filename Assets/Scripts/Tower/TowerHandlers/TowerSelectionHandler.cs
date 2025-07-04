@@ -40,13 +40,13 @@ public class TowerSelectionHandler : MonoBehaviour
             if (name.Equals(tower.name))
             {
                 TowerContainer.Tower selectedTower = manager.GetSelectedTower();
-                if (selectedTower != null && selectedTower.name.Equals(tower.name)) 
+                if (selectedTower != null && selectedTower.name.Equals(tower.name))
                 {
                     manager.SetSelectedTower(null);
                     DeactivateSelectionHighlighter();
                 }
-                else 
-                { 
+                else
+                {
                     manager.SetSelectedTower(tower);
                     selectionHighlighter.SetActive(true);
                     selectionHighlighter.transform.position = buttonObject.transform.position;

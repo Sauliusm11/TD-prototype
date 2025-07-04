@@ -34,7 +34,7 @@ public class WaveHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     /// <summary>
     /// Loads the wave information
@@ -59,8 +59,8 @@ public class WaveHandler : MonoBehaviour
         {
             sending = true;
             waveFinished = false;
-            gameManager.WaveStarted(currentWave,waves.Count);
-            StartCoroutine(SendWave(currentWave,start,xOffset,yOffset));
+            gameManager.WaveStarted(currentWave, waves.Count);
+            StartCoroutine(SendWave(currentWave, start, xOffset, yOffset));
             currentWave++;
         }
     }
@@ -70,7 +70,7 @@ public class WaveHandler : MonoBehaviour
         if (enemyCount == 0 && !sending)
         {
             gameManager.WaveEnded();
-            waveFinished=true;
+            waveFinished = true;
         }
     }
     /// <summary>
@@ -97,7 +97,7 @@ public class WaveHandler : MonoBehaviour
                     currentEnemyPooler = pooler;
                 }
             }
-            while (enemy.count > 0) 
+            while (enemy.count > 0)
             {
                 //Need to add some variance to enemies(but also their target then)(prob stored in the enemy itself)
                 float additionalXOffset = Random.Range(-maxOffset, maxOffset);

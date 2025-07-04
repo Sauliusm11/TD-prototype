@@ -27,7 +27,7 @@ public class PriorityQueue<T> where T : IComparable<T>
             int parentIndex = (currentIndex - 1) / 2;
             if (data[currentIndex].CompareTo(data[parentIndex]) >= 0) //Finished heapifyinig
             {
-                break; 
+                break;
             }
             (data[parentIndex], data[currentIndex]) = (data[currentIndex], data[parentIndex]);
             //Original below
@@ -61,12 +61,12 @@ public class PriorityQueue<T> where T : IComparable<T>
             }
             int rightChild = currentIndex + 1;
             if (rightChild <= lastIndex && data[rightChild].CompareTo(data[currentIndex]) < 0)
-            { 
-                currentIndex = rightChild; 
+            {
+                currentIndex = rightChild;
             }
             if (data[currentIndex].CompareTo(data[parentIndex]) >= 0) //Finished heapifyinig
-            { 
-                break; 
+            {
+                break;
             }
             (data[currentIndex], data[parentIndex]) = (data[parentIndex], data[currentIndex]);
             //Original below

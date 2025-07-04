@@ -35,8 +35,8 @@ public class TilePlacement : MonoBehaviour
         if (!PointerOverUI(eventData))//Do not place if pointer is on UI
         {
             Vector3Int cellPosition = tilemap.WorldToCell(position);
-            if(manager.GetSelectedTile() != null) 
-            { 
+            if (manager.GetSelectedTile() != null)
+            {
                 TileContainer.Tile selection = manager.GetSelectedTile();
                 Tile tile = tileSelectionHandler.GetTileFromSelection(selection);
                 tilemap.SetTile(cellPosition, tile);
@@ -44,7 +44,7 @@ public class TilePlacement : MonoBehaviour
 
         }
     }
-    
+
 
     /// <summary>
     /// Checks if pointer is hovering over a UI object

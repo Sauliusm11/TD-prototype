@@ -18,12 +18,12 @@ public class TowerClickHandler : MonoBehaviour, IPointerClickHandler
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (upgradeHandler.GetShootingState()) 
-        { 
+        if (upgradeHandler.GetShootingState())
+        {
             gameManager.ActivateTowerMenu(upgradeHandler);
             tileHighlighter.HighlightTileFromPos(gameObject.transform.position);
         }

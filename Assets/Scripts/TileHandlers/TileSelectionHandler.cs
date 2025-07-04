@@ -38,8 +38,8 @@ public class TileSelectionHandler : MonoBehaviour
                 {
                     manager.SetSelectedTile(null);
                 }
-                else 
-                { 
+                else
+                {
                     manager.SetSelectedTile(tile);
                 }
             }

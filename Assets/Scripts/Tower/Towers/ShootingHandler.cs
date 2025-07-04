@@ -57,7 +57,7 @@ public class ShootingHandler : MonoBehaviour
                 projectileSpeed = tower.projectileSpeed;
             }
         }
-        if(partToRotate != null)
+        if (partToRotate != null)
         {
             Quaternion rotation = new Quaternion();
             partToRotate.transform.rotation = rotation;
@@ -67,10 +67,10 @@ public class ShootingHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shootingEnabled) 
-        { 
+        if (shootingEnabled)
+        {
             timeSinceShot += Time.deltaTime;
-            if(timeSinceShot > cooldown) 
+            if (timeSinceShot > cooldown)
             {
                 Shoot();
             }
@@ -94,7 +94,7 @@ public class ShootingHandler : MonoBehaviour
     /// <summary>
     /// Finds the enemy cloest to the exit within range and points the part to rotate at it.
     /// </summary>
-    void AimAtTarget() 
+    void AimAtTarget()
     {
         //Update target list before picking target
         UpdateTargets();
@@ -119,11 +119,11 @@ public class ShootingHandler : MonoBehaviour
             rotation.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(direction.y, direction.x) + 90);//Idk why, but + 90 helps
             partToRotate.transform.rotation = rotation;
         }
-        else 
+        else
         {
             currentTarget = -1;
         }
-        
+
     }
     /// <summary>
     /// Uses a physics2D OverlapCircleAll to find all enemies within range
@@ -152,10 +152,10 @@ public class ShootingHandler : MonoBehaviour
     /// <summary>
     /// Activates the tower once it's purchase has been confirmed
     /// </summary>
-    public void EnableTower() 
+    public void EnableTower()
     {
-        if (!shootingEnabled) 
-        { 
+        if (!shootingEnabled)
+        {
             shootingEnabled = true;
             InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
         }

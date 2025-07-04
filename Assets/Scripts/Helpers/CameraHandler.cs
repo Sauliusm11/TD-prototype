@@ -103,7 +103,7 @@ public class CameraHandler : MonoBehaviour
             lastPanPosition = Input.mousePosition;
         }
         else
-        { 
+        {
             if (Input.GetMouseButton(0))
             {
                 PanCamera(Input.mousePosition);

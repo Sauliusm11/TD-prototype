@@ -41,7 +41,7 @@ public class TowerMenuUpdater : MonoBehaviour
         //Money can always be changing, so we check for updates in update
         if (currentTower != null)
         {
-            SetButtonState(1,currentTower.IsUpgradeAvailable());
+            SetButtonState(1, currentTower.IsUpgradeAvailable());
         }
     }
     /// <summary>
@@ -81,24 +81,24 @@ public class TowerMenuUpdater : MonoBehaviour
             upgrade1Button.SetActive(true);
             upgrade1ButtonText.text = "Tier " + nextUpgrade.tier + " upgrade for: " + nextUpgrade.cost;
             //TODO: Consider having elite tiers not hardcoded?
-            if(nextUpgrade.tier == 3)
+            if (nextUpgrade.tier == 3)
             {
                 upgrade2Button.SetActive(true);
                 upgrade1ButtonText.text = "Elite upgrade for: " + nextUpgrade.cost;
-                upgrade2ButtonText.text = "Alternate elite upgrade for: " + tower.GetSecondaryElite().cost; 
+                upgrade2ButtonText.text = "Alternate elite upgrade for: " + tower.GetSecondaryElite().cost;
             }
-            tierText.text = "Tier: " + (nextUpgrade.tier-1).ToString();
+            tierText.text = "Tier: " + (nextUpgrade.tier - 1).ToString();
         }
-        else 
+        else
         {
             tierText.text = "Tier: max";
             upgrade1Button.SetActive(false);
             upgrade2Button.SetActive(false);
         }
 
-        attackDamageText.text = "Attack damage:"+ tower.GetAttackDamage().ToString();
-        attackSpeedText.text = "Fire rate:" + tower.GetAttackSpeed().ToString()+"/s";
-        attackRangeText.text = "Attack range:"+ tower.GetAttackRange().ToString();
+        attackDamageText.text = "Attack damage:" + tower.GetAttackDamage().ToString();
+        attackSpeedText.text = "Fire rate:" + tower.GetAttackSpeed().ToString() + "/s";
+        attackRangeText.text = "Attack range:" + tower.GetAttackRange().ToString();
         //Projectile speed is a hidden stat for now
 
     }

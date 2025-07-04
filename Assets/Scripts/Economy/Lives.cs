@@ -16,11 +16,6 @@ public class Lives : MonoBehaviour
         ResetLives();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     /// <summary>
     /// Reset current lives
     /// TODO: will be used by load level method

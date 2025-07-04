@@ -15,7 +15,7 @@ public class CleanUp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     /// <summary>
     /// Sends a signal to all object poolers(children) to deactivate all objects

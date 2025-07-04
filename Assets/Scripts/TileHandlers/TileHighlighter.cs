@@ -41,11 +41,11 @@ public class TileHighlighter : MonoBehaviour
         tilemap.CompressBounds();
         BoundsInt bounds = tilemap.cellBounds;
         //For some reason the max coordinates include one more than they should
-        if (bounds.y > cellPosition.y || bounds.yMax-1 < cellPosition.y || bounds.x > cellPosition.x || bounds.xMax-1 < cellPosition.x)
+        if (bounds.y > cellPosition.y || bounds.yMax - 1 < cellPosition.y || bounds.x > cellPosition.x || bounds.xMax - 1 < cellPosition.x)
         {
             return;
         }
-        else 
+        else
         {
             selectedTileHighlighter.transform.position = cellPosition;
             Node node = pathfindingManager.GetNodeFromCell(cellPosition);
