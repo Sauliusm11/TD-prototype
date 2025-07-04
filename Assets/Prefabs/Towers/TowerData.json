@@ -70,20 +70,21 @@
         },
         {
           "tier": 3,
-          "cost": 100,
-          "attackSpeed": 0.4,
-          "attackDamage": 30,
-          "attackRange": -3.5,
-          "projectileSpeed": -490
-        },
-        {
-          "tier": 4,
           "cost": 80,
           "attackSpeed": 0.1,
           "attackDamage": -10,
           "attackRange": 1,
           "projectileSpeed": 0.0
+        },
+        {
+          "tier": 4,
+          "cost": 50,
+          "attackSpeed": 0.4,
+          "attackDamage": 30,
+          "attackRange": -3.5,
+          "projectileSpeed": -490
         }
+
       ]
     }
   ]
