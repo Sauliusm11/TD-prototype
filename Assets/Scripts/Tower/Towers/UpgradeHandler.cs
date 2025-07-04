@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -26,7 +27,8 @@ public class UpgradeHandler : MonoBehaviour
     SpriteRenderer rotatingSpriteRenderer;
     int currentTier;
     int moneySpent;
-    float coolDown;
+    float attackSpeed;
+    float cooldown;
     float range;
     float tileRangeMult;
     int damage;
@@ -89,7 +91,7 @@ public class UpgradeHandler : MonoBehaviour
         }
         else 
         { 
-            coolDown = baseTower.attackSpeed;
+            attackSpeed = baseTower.attackSpeed;
             range = baseTower.attackRange;
             damage = baseTower.attackDamage;
             moneySpent = baseTower.cost;
@@ -132,8 +134,9 @@ public class UpgradeHandler : MonoBehaviour
                 UpdateRangeAndIndicator();
                 damage += upgradeTree[currentTier].attackDamage;
                 shootingHandler.SetDamage(damage);
-                coolDown -= upgradeTree[currentTier].attackSpeed;
-                shootingHandler.SetCooldown(coolDown);
+                attackSpeed += upgradeTree[currentTier].attackSpeed;
+                cooldown = CalculateCooldownFromAttackSpeed(attackSpeed);
+                shootingHandler.SetCooldown(cooldown);
                 projectileSpeed += upgradeTree[currentTier].projectileSpeed;
                 shootingHandler.SetProjectileSpeed(projectileSpeed);
                 currentTier++;
@@ -148,6 +151,7 @@ public class UpgradeHandler : MonoBehaviour
             }
         }
     }
+
     /// <summary>
     /// Check if the current tower is enabled(not in ghost form)
     /// </summary>
@@ -245,6 +249,11 @@ public class UpgradeHandler : MonoBehaviour
     {
         return upgradeTree[baseTower.maxTier-1];
     }
+
+    private float CalculateCooldownFromAttackSpeed(float attackSpeed)
+    {
+        return 1 / attackSpeed;
+    }
     public void EnableRangeIndicator()
     {
         rangeIndicator.SetActive(true);
@@ -259,7 +268,7 @@ public class UpgradeHandler : MonoBehaviour
     }
     public float GetAttackSpeed()
     {
-        return 1 / coolDown;
+        return attackSpeed;
     }
     public float GetAttackRange()
     {

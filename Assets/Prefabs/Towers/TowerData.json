@@ -2,7 +2,7 @@
   "Towers": [
     {
       "name": "Cannon",
-      "attackSpeed": 0.5,
+      "attackSpeed": 2,
       "attackDamage": 20,
       "attackRange": 2.0,
       "projectileSpeed": 5.0,
@@ -12,7 +12,7 @@
         {
           "tier": 1,
           "cost": 20,
-          "attackSpeed": 0.05,
+          "attackSpeed": 0.25,
           "attackDamage": 5,
           "attackRange": 0.0,
           "projectileSpeed": 0.0
@@ -20,7 +20,7 @@
         {
           "tier": 2,
           "cost": 30,
-          "attackSpeed": 0.05,
+          "attackSpeed": 0.25,
           "attackDamage": 5,
           "attackRange": 0.1,
           "projectileSpeed": 0.0
@@ -28,7 +28,7 @@
         {
           "tier": 3,
           "cost": 100,
-          "attackSpeed": -0.3,
+          "attackSpeed": -1.5,
           "attackDamage": 20,
           "attackRange": 0,
           "projectileSpeed": -2
@@ -36,7 +36,7 @@
         {
           "tier": 4,
           "cost": 80,
-          "attackSpeed": 0.2,
+          "attackSpeed": 2,
           "attackDamage": -10,
           "attackRange": 0,
           "projectileSpeed": 2
@@ -45,7 +45,7 @@
     },
     {
       "name": "Sniper",
-      "attackSpeed": 2,
+      "attackSpeed": 0.5,
       "attackDamage": 200,
       "attackRange": 20,
       "projectileSpeed": 500,
@@ -55,7 +55,7 @@
         {
           "tier": 1,
           "cost": 20,
-          "attackSpeed": 0.02,
+          "attackSpeed": 0.05,
           "attackDamage": 10,
           "attackRange": 0.0,
           "projectileSpeed": 0.0
@@ -63,7 +63,7 @@
         {
           "tier": 2,
           "cost": 30,
-          "attackSpeed": 0.03,
+          "attackSpeed": 0.05,
           "attackDamage": 10,
           "attackRange": 0,
           "projectileSpeed": 0.0
@@ -71,7 +71,7 @@
         {
           "tier": 3,
           "cost": 100,
-          "attackSpeed": 1,
+          "attackSpeed": 0.4,
           "attackDamage": 30,
           "attackRange": -0.9,
           "projectileSpeed": -490
