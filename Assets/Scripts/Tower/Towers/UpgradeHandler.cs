@@ -247,7 +247,7 @@ public class UpgradeHandler : MonoBehaviour
     /// <returns></returns>
     public TowerContainer.Upgrade GetSecondaryElite()
     {
-        return upgradeTree[baseTower.maxTier-1];
+        return upgradeTree[baseTower.maxTier];
     }
 
     private float CalculateCooldownFromAttackSpeed(float attackSpeed)
