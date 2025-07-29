@@ -23,12 +23,6 @@ public class ObjectPooling : MonoBehaviour
         }
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Activates an available object at the given transform
     /// If none are available, instantiates a new one

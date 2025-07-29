@@ -56,12 +56,6 @@ public class GameManager : MonoBehaviour
         selectedTile = null;
         selectedTower = null;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Internal method to smoothly switch between states
     /// </summary>

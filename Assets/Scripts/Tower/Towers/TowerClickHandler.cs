@@ -20,6 +20,10 @@ public class TowerClickHandler : MonoBehaviour, IPointerClickHandler
     {
 
     }
+    /// <summary>
+    /// Chekcks if the tower that has been clicked on is active and opens the tower menu if it is
+    /// </summary>
+    /// <param name="eventData">Event data of the pointer click</param>
     public void OnPointerClick(PointerEventData eventData)
     {
         if (upgradeHandler.GetShootingState())

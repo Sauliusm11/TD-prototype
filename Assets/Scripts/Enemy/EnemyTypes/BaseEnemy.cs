@@ -33,10 +33,10 @@ public abstract class BaseEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        enemyPooler = getEnemyPooler();
+        enemyPooler = GetEnemyPooler();
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
     }
-    protected abstract ObjectPooling getEnemyPooler();
+    protected abstract ObjectPooling GetEnemyPooler();
 
     /// <summary>
     /// Because of object pooling the same object can be 'created' multiple times

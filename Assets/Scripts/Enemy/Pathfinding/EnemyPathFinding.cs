@@ -93,16 +93,14 @@ public abstract class EnemyPathFinding : MonoBehaviour
                     cameFrom[neighbourIndex] = currentIndex;
                     gScore[neighbourIndex] = tenative_gScore;
                     //A*
-                    //Hmmmmm, nerfing the heuristic part helped
+                    //Switch to Dijkstra if any more issues happen
                     //https://en.wikipedia.org/wiki/Admissible_heuristic
                     //https://stackoverflow.com/questions/13031462/difference-and-advantages-between-dijkstra-a-star
                     fScore[neighbourIndex] = tenative_gScore + (CalculateDistanceToTarget(nodes[neighbourIndex]) / 2);
                     //Dijktra
                     //fScore[neighbourIndex] = tenative_gScore + 0;
 
-                    //I guess I need to update the queue separately?
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
-                    //I mean, this works but space complexity grows a lot (or does it?)
                     priorityQueue.Enqueue(nodes[neighbourIndex]);
                 }
             }

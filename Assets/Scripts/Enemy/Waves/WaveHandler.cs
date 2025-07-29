@@ -30,12 +30,6 @@ public class WaveHandler : MonoBehaviour
         sending = false;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Loads the wave information
     /// </summary>
@@ -64,6 +58,9 @@ public class WaveHandler : MonoBehaviour
             currentWave++;
         }
     }
+    /// <summary>
+    /// Decreases the enemy counter and handles flagging of the end of the wave 
+    /// </summary>
     public void DecreaseEnemyCount()
     {
         enemyCount--;

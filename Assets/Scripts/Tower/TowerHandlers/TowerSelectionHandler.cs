@@ -10,14 +10,12 @@ public class TowerSelectionHandler : MonoBehaviour
     [SerializeField]
     List<ObjectPooling> ObjectPoolers;
     TowerContainer towerContainer;
-    TilePlacement placemetHandler;
     [SerializeField]
     GameObject selectionHighlighter;
     // Start is called before the first frame update
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        placemetHandler = GameObject.Find("Grid").GetComponent<TilePlacement>();
     }
 
     /// <summary>

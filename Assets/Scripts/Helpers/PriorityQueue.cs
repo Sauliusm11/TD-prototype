@@ -69,8 +69,6 @@ public class PriorityQueue<T> where T : IComparable<T>
                 break;
             }
             (data[currentIndex], data[parentIndex]) = (data[parentIndex], data[currentIndex]);
-            //Original below
-            //T tmp = data[pi]; data[pi] = data[ci]; data[ci] = tmp;
             parentIndex = currentIndex;
         }
         return firstItem;

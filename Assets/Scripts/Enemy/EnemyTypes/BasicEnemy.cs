@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BasicEnemy : BaseEnemy
 {
-    protected override ObjectPooling getEnemyPooler()
+    protected override ObjectPooling GetEnemyPooler()
     {
         return GameObject.Find("BasicEnemyPooler").GetComponent<ObjectPooling>();
     }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -249,7 +248,11 @@ public class UpgradeHandler : MonoBehaviour
     {
         return upgradeTree[baseTower.maxTier];
     }
-
+    /// <summary>
+    /// Converts the attack speed stat(shots per second) into the cooldown between shots used by shooting handler
+    /// </summary>
+    /// <param name="attackSpeed">Current attack speed of the tower</param>
+    /// <returns>Cooldown needed to get the desired rate of fire</returns>
     private float CalculateCooldownFromAttackSpeed(float attackSpeed)
     {
         return 1 / attackSpeed;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BasicNoTerrainEnemy : BaseEnemy
 {
-    protected override ObjectPooling getEnemyPooler()
+    protected override ObjectPooling GetEnemyPooler()
     {
         return GameObject.Find("BasicNoTerrainEnemyPooler").GetComponent<ObjectPooling>();
     }

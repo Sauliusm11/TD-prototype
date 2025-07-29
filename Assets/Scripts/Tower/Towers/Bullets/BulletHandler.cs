@@ -54,6 +54,7 @@ public class BulletHandler : MonoBehaviour
             {
                 totalTime /= speed;
                 float timeElapsed = Time.deltaTime;
+                //Do while prevents bullets breaking when they are too fast for a single tick
                 do
                 {
                     if (target != null)
@@ -63,7 +64,6 @@ public class BulletHandler : MonoBehaviour
                     else
                     {
                         bulletPooler.DeactivateObject(bullet);
-                        //Destroy(bullet);
                         break;
                     }
                     float timeDelta = Time.deltaTime;
@@ -73,10 +73,8 @@ public class BulletHandler : MonoBehaviour
                     {
                         bullet.transform.position = goTo;
                         bulletPooler.DeactivateObject(bullet);
-                        //Destroy(bullet);
                         BaseEnemy enemy = target.GetComponent<BaseEnemy>();
                         enemy.ReduceHealth(damage);
-
                     }
                     yield return null;
                 } while (timeElapsed < totalTime);
@@ -85,8 +83,6 @@ public class BulletHandler : MonoBehaviour
         else
         {
             bulletPooler.DeactivateObject(bullet);
-            //Destroy(bullet);
         }
-
     }
 }

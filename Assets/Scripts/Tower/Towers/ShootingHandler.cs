@@ -170,18 +170,34 @@ public class ShootingHandler : MonoBehaviour
             shootingEnabled = false;
         }
     }
+    /// <summary>
+    /// Update the actual range with the new value, should only be called by upgrade handler
+    /// </summary>
+    /// <param name="newRange">New range value</param>
     public void SetRange(float newRange)
     {
         range = newRange;
     }
+    /// <summary>
+    /// Update the actual damage with the new value, should only be called by upgrade handler
+    /// </summary>
+    /// <param name="newDamage">New damage value</param>
     public void SetDamage(int newDamage)
     {
         damage = newDamage;
     }
+    /// <summary>
+    /// Update the actual cooldown with the new value, should only be called by upgrade handler
+    /// </summary>
+    /// <param name="newCooldown">New cooldown value</param>
     public void SetCooldown(float newCooldown)
     {
         cooldown = newCooldown;
     }
+    /// <summary>
+    /// Update the actual projectile speed with the new value, should only be called by upgrade handler
+    /// </summary>
+    /// <param name="newProjectileSpeed">New projectile speed value</param>
     public void SetProjectileSpeed(float newProjectileSpeed)
     {
         projectileSpeed = newProjectileSpeed;

@@ -30,11 +30,19 @@ public class TileHighlighter : MonoBehaviour
     {
 
     }
+    /// <summary>
+    /// Converts a world position into the tilemap cell postion and calls HighlightTileFromCellPos
+    /// </summary>
+    /// <param name="position">World position of the click</param>
     public void HighlightTileFromPos(Vector3 position)
     {
         Vector3Int cellPosition = tilemap.WorldToCell(position);
         HighlightTileFromCellPos(cellPosition);
     }
+    /// <summary>
+    /// Places the tile highlighter on the given cell position and updates the tile information panel
+    /// </summary>
+    /// <param name="cellPosition">Tilemap cell position</param>
     public void HighlightTileFromCellPos(Vector3Int cellPosition)
     {
 

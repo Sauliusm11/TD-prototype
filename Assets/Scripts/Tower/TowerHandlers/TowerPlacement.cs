@@ -34,12 +34,11 @@ public class TowerPlacement : MonoBehaviour
         defaultColor = Color.white;
         partiallyTransparenent = new Color(defaultColor.r, defaultColor.g, defaultColor.b, 0.5f);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    /// <summary>
+    /// Handles tower placement when the user is clicking on the level (only placing the preview)
+    /// </summary>
+    /// <param name="position">World position of the click</param>
+    /// <param name="eventData">Event data of the pointer click event</param>
     public void HandlePlaceTower(Vector3 position, PointerEventData eventData)
     {
         Vector3Int cellPosition = tilemap.WorldToCell(position);
@@ -73,7 +72,7 @@ public class TowerPlacement : MonoBehaviour
                 }
                 if (tower != null)
                 {
-                    //Figure out best way to get tile name and to reset->apply buff
+                    //Get tile name, reset and apply buff to the tower(needed because of object pooling)
                     Node node = pathfindingManager.GetNodeFromCell(cellPosition);
                     string name = node.GetName();
                     UpgradeHandler handler = currentTower.GetComponent<UpgradeHandler>();
@@ -91,7 +90,6 @@ public class TowerPlacement : MonoBehaviour
         }
     }
 
-    //TODO: what to do with this
     /// <summary>
     /// Checks if pointer is hovering over a valid tile
     /// </summary>

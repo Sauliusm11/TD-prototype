@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 /// <summary>
 /// Camera handler class made using 
-/// https://kylewbanks.com/blog/unity3d-panning-and-pinch-to-zoom-camera-with-touch-and-mouse-input 
-/// as a base and adapted to personal preference
-/// TODO: rewrite yourself if using for uni
 /// </summary>
 public class CameraHandler : MonoBehaviour
 {
@@ -23,13 +20,6 @@ public class CameraHandler : MonoBehaviour
     private bool wasZoomingLastFrame; // Touch mode only
     private Vector2[] lastZoomPositions; // Touch mode only
 
-
-
-    bool devMode;
-    TileSelectionHandler tileSelectionHandler;
-    TowerSelectionHandler towerSelectionHandler;
-    GameManager gameManager;
-
     LayerMask defaultLayerMask;
     bool defaultMaskOn;
     Physics2DRaycaster raycaster;
@@ -42,14 +32,7 @@ public class CameraHandler : MonoBehaviour
         defaultLayerMask = raycaster.eventMask;
         defaultMaskOn = true;
         cameraActivatedText.SetActive(false);
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        devMode = true;
-        tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");//Attached to player UI
-        if (towerManagerObject != null)
-        {
-            devMode = false;
-        }
     }
     void Awake()
     {
