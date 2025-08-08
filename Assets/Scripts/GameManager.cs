@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// Method called when clicking the regular upgrade button in the tower menu.
+    /// Method called when clicking the regular upgrade (confirmation)button in the tower menu.
     /// Upgrades the tower straight away
     /// (References do not show up, it is working)
     /// </summary>
@@ -288,7 +288,7 @@ public class GameManager : MonoBehaviour
         towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     /// <summary>
-    /// Method called when clicking the alterante elite upgrade button in the tower menu.
+    /// Method called when clicking the alterante elite upgrade (confirmation)button in the tower menu.
     /// Upgrades the tower to the alternate elite type straight away
     /// (References do not show up, it is working)
     /// </summary>

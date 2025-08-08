@@ -37,6 +37,7 @@ public class TowerMenuUpdater : MonoBehaviour
     Button upgrade1SpriteRenderer;
     Button upgrade2SpriteRenderer;
     TowerContainer.Upgrade nextUpgrade;
+    TowerContainer.Upgrade alternateEliteUpgrade;
     UpgradeHandler currentTower;
 
     private void Start()
@@ -49,8 +50,8 @@ public class TowerMenuUpdater : MonoBehaviour
         //Money can always be changing, so we check for updates in update
         if (currentTower != null)
         {
-            if (upgrade1Button.activeInHierarchy) 
-            { 
+            if (upgrade1Button.activeInHierarchy)
+            {
                 SetButtonState(1, currentTower.IsUpgradeAvailable(false));
             }
             if (upgrade2Button.activeInHierarchy)
@@ -85,6 +86,7 @@ public class TowerMenuUpdater : MonoBehaviour
     public void UpdateTowerMenu(UpgradeHandler tower)
     {
         currentTower = tower;
+        UpdateBaseStatsDisplay(currentTower);
         //Full tower object name is "Tower (Clone)", want to show only "Tower"
         towerNameText.text = tower.name.Remove(tower.name.Length - 7, 7);
         sellPriceText.text = "Sell for: " + tower.GetSellCost().ToString();
@@ -100,11 +102,10 @@ public class TowerMenuUpdater : MonoBehaviour
             if (nextUpgrade.tier == 3)
             {
                 upgrade2Button.SetActive(true);
+                alternateEliteUpgrade = tower.GetSecondaryElite();
                 upgrade1ButtonText.text = "Elite upgrade for: " + nextUpgrade.cost;
-                upgrade2ButtonText.text = "Alternate elite upgrade for: " + tower.GetSecondaryElite().cost;
+                upgrade2ButtonText.text = "Alternate elite upgrade for: " + alternateEliteUpgrade.cost;
             }
-            upgrade1ConfirmationButtonText.text = "Confirm upgrade for:" + nextUpgrade.cost;
-            upgrade2ConfirmationButtonText.text = "Confirm upgrade for:" + tower.GetSecondaryElite().cost;
             tierText.text = "Tier: " + (nextUpgrade.tier - 1).ToString();
         }
         else
@@ -113,26 +114,80 @@ public class TowerMenuUpdater : MonoBehaviour
             upgrade1Button.SetActive(false);
             upgrade2Button.SetActive(false);
         }
-
+    }
+    /// <summary>
+    /// Updates the current stats of the tower on the display
+    /// </summary>
+    /// <param name="tower">Upgrade handler of the tower to display</param>
+    public void UpdateBaseStatsDisplay(UpgradeHandler tower)
+    {
         attackDamageText.text = "Attack damage:" + tower.GetAttackDamage().ToString();
         attackSpeedText.text = "Fire rate:" + tower.GetAttackSpeed().ToString() + "/s";
         attackRangeText.text = "Attack range:" + tower.GetAttackRange().ToString();
         //Projectile speed is a hidden stat for now
-
     }
+    /// <summary>
+    /// Gets the sign of a number from a given value
+    /// </summary>
+    /// <param name="value">Number to determine the sign of</param>
+    /// <returns>String containing "+" if positive empty string if negative</returns>
+    string GetSign(float value)
+    {
+        if (value > 0)
+        {
+            return "+";
+        }
+        return string.Empty;
+    }
+    /// <summary>
+    /// Appends a given string with the given stat change
+    /// </summary>
+    /// <param name="currentString">Currently displayed stat string</param>
+    /// <param name="statChange">Added or removed value if the upgrade is confirmed</param>
+    /// <returns>Formatted string displaying the change</returns>
+    string UpdateStatPreview(string currentString, float statChange)
+    {
+        string sign = GetSign(statChange);
+        return string.Format("{0} ({1}{2})", currentString, sign, statChange);
+    }
+    /// <summary>
+    /// Method called when clicking the upgrade button in the tower menu.
+    /// Shows the preview and enables the confirmation button
+    /// (References do not show up, it is working)
+    /// </summary>
     public void ActivateConfirmation1()
     {
         DisableConfirmations();
         upgrade1ConfirmationButton.SetActive(true);
+        upgrade1ConfirmationButtonText.text = "Confirm upgrade for:" + nextUpgrade.cost;
+        attackDamageText.text = UpdateStatPreview(attackDamageText.text, nextUpgrade.attackDamage);
+        attackSpeedText.text = UpdateStatPreview(attackSpeedText.text, nextUpgrade.attackSpeed);
+        attackRangeText.text = UpdateStatPreview(attackRangeText.text, nextUpgrade.attackRange);
     }
-    public void ActivateConfirmation2() 
+    /// <summary>
+    /// Method called when clicking the alterante elite upgrade button in the tower menu.
+    /// Shows the preview and enables the confirmation button
+    /// (References do not show up, it is working)
+    /// </summary>
+    public void ActivateConfirmation2()
     {
         DisableConfirmations();
         upgrade2ConfirmationButton.SetActive(true);
+        upgrade2ConfirmationButtonText.text = "Confirm upgrade for:" + alternateEliteUpgrade.cost;
+        attackDamageText.text = UpdateStatPreview(attackDamageText.text, alternateEliteUpgrade.attackDamage);
+        attackSpeedText.text = UpdateStatPreview(attackSpeedText.text, alternateEliteUpgrade.attackSpeed);
+        attackRangeText.text = UpdateStatPreview(attackRangeText.text, alternateEliteUpgrade.attackRange);
     }
+    /// <summary>
+    /// Disables all active confirmation buttons and removes the preview from the stat strings
+    /// </summary>
     public void DisableConfirmations()
     {
         upgrade1ConfirmationButton.SetActive(false);
         upgrade2ConfirmationButton.SetActive(false);
+        if (currentTower != null)
+        {
+            UpdateBaseStatsDisplay(currentTower);
+        }
     }
 }
