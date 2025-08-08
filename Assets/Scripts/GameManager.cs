@@ -269,6 +269,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void DeActivateTowerMenu()
     {
+        towerMenuUpdater.DisableConfirmations();
         towerMenuPanel.SetActive(false);
         if (currentUpgradeHandler != null)
         {
@@ -277,22 +278,24 @@ public class GameManager : MonoBehaviour
     }
     /// <summary>
     /// Method called when clicking the regular upgrade button in the tower menu.
-    /// Upgrades the tower straight away(TODO: add a confirmation stage? This one should be a togglable setting though)
+    /// Upgrades the tower straight away
     /// (References do not show up, it is working)
     /// </summary>
     public void UpgradeTower()
     {
         currentUpgradeHandler.UpgradeTower(true);
+        towerMenuUpdater.DisableConfirmations();
         towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     /// <summary>
     /// Method called when clicking the alterante elite upgrade button in the tower menu.
-    /// Upgrades the tower to the alternate elite type straight away(TODO: add a confirmation stage? This one should be a togglable setting though)
+    /// Upgrades the tower to the alternate elite type straight away
     /// (References do not show up, it is working)
     /// </summary>
     public void AlternateUpgradeTower()
     {
         currentUpgradeHandler.UpgradeTower(false);
+        towerMenuUpdater.DisableConfirmations();
         towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     /// <summary>

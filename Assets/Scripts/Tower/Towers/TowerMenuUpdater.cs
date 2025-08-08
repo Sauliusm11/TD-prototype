@@ -23,9 +23,17 @@ public class TowerMenuUpdater : MonoBehaviour
     [SerializeField]
     TMP_Text upgrade2ButtonText;
     [SerializeField]
+    TMP_Text upgrade1ConfirmationButtonText;
+    [SerializeField]
+    TMP_Text upgrade2ConfirmationButtonText;
+    [SerializeField]
     GameObject upgrade1Button;
     [SerializeField]
     GameObject upgrade2Button;
+    [SerializeField]
+    GameObject upgrade1ConfirmationButton;
+    [SerializeField]
+    GameObject upgrade2ConfirmationButton;
     Button upgrade1SpriteRenderer;
     Button upgrade2SpriteRenderer;
     TowerContainer.Upgrade nextUpgrade;
@@ -41,7 +49,14 @@ public class TowerMenuUpdater : MonoBehaviour
         //Money can always be changing, so we check for updates in update
         if (currentTower != null)
         {
-            SetButtonState(1, currentTower.IsUpgradeAvailable());
+            if (upgrade1Button.activeInHierarchy) 
+            { 
+                SetButtonState(1, currentTower.IsUpgradeAvailable(false));
+            }
+            if (upgrade2Button.activeInHierarchy)
+            {
+                SetButtonState(2, currentTower.IsUpgradeAvailable(true));
+            }
         }
     }
     /// <summary>
@@ -81,12 +96,15 @@ public class TowerMenuUpdater : MonoBehaviour
             upgrade1Button.SetActive(true);
             upgrade1ButtonText.text = "Tier " + nextUpgrade.tier + " upgrade for: " + nextUpgrade.cost;
             //TODO: Consider having elite tiers not hardcoded?
+            upgrade2Button.SetActive(false);
             if (nextUpgrade.tier == 3)
             {
                 upgrade2Button.SetActive(true);
                 upgrade1ButtonText.text = "Elite upgrade for: " + nextUpgrade.cost;
                 upgrade2ButtonText.text = "Alternate elite upgrade for: " + tower.GetSecondaryElite().cost;
             }
+            upgrade1ConfirmationButtonText.text = "Confirm upgrade for:" + nextUpgrade.cost;
+            upgrade2ConfirmationButtonText.text = "Confirm upgrade for:" + tower.GetSecondaryElite().cost;
             tierText.text = "Tier: " + (nextUpgrade.tier - 1).ToString();
         }
         else
@@ -101,5 +119,20 @@ public class TowerMenuUpdater : MonoBehaviour
         attackRangeText.text = "Attack range:" + tower.GetAttackRange().ToString();
         //Projectile speed is a hidden stat for now
 
+    }
+    public void ActivateConfirmation1()
+    {
+        DisableConfirmations();
+        upgrade1ConfirmationButton.SetActive(true);
+    }
+    public void ActivateConfirmation2() 
+    {
+        DisableConfirmations();
+        upgrade2ConfirmationButton.SetActive(true);
+    }
+    public void DisableConfirmations()
+    {
+        upgrade1ConfirmationButton.SetActive(false);
+        upgrade2ConfirmationButton.SetActive(false);
     }
 }

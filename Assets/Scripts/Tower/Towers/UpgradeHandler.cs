@@ -122,7 +122,7 @@ public class UpgradeHandler : MonoBehaviour
     {
         if (currentTier < baseTower.maxTier)
         {
-            if (!primary)
+            if (!primary && moneyHandler.HasEnoughMoney(upgradeTree[currentTier+1].cost))
             {
                 currentTier++;
             }
@@ -214,10 +214,14 @@ public class UpgradeHandler : MonoBehaviour
     /// Check if an upgrade is available for the tower
     /// </summary>
     /// <returns>True if an upgrade can be afforded</returns>
-    public bool IsUpgradeAvailable()
+    public bool IsUpgradeAvailable(bool secondary)
     {
         if (currentTier < baseTower.maxTier)
         {
+            if (secondary) 
+            {
+                return moneyHandler.HasEnoughMoney(upgradeTree[currentTier + 1].cost);
+            }
             return moneyHandler.HasEnoughMoney(upgradeTree[currentTier].cost);
         }
         else
