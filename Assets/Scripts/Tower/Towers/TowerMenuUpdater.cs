@@ -163,6 +163,8 @@ public class TowerMenuUpdater : MonoBehaviour
         attackDamageText.text = UpdateStatPreview(attackDamageText.text, nextUpgrade.attackDamage);
         attackSpeedText.text = UpdateStatPreview(attackSpeedText.text, nextUpgrade.attackSpeed);
         attackRangeText.text = UpdateStatPreview(attackRangeText.text, nextUpgrade.attackRange);
+        currentTower.EnablePreviewRangeIndicator();
+        currentTower.UpdatePreviewRangeIndicator(nextUpgrade.attackRange);
     }
     /// <summary>
     /// Method called when clicking the alterante elite upgrade button in the tower menu.
@@ -177,9 +179,11 @@ public class TowerMenuUpdater : MonoBehaviour
         attackDamageText.text = UpdateStatPreview(attackDamageText.text, alternateEliteUpgrade.attackDamage);
         attackSpeedText.text = UpdateStatPreview(attackSpeedText.text, alternateEliteUpgrade.attackSpeed);
         attackRangeText.text = UpdateStatPreview(attackRangeText.text, alternateEliteUpgrade.attackRange);
+        currentTower.EnablePreviewRangeIndicator();
+        currentTower.UpdatePreviewRangeIndicator(alternateEliteUpgrade.attackRange);
     }
     /// <summary>
-    /// Disables all active confirmation buttons and removes the preview from the stat strings
+    /// Disables all active confirmation buttons and turns off the preview
     /// </summary>
     public void DisableConfirmations()
     {
@@ -187,6 +191,7 @@ public class TowerMenuUpdater : MonoBehaviour
         upgrade2ConfirmationButton.SetActive(false);
         if (currentTower != null)
         {
+            currentTower.DisablePreviewRangeIndicator();
             UpdateBaseStatsDisplay(currentTower);
         }
     }

@@ -58,7 +58,13 @@ public class TowerPlacement : MonoBehaviour
                 {
                     currentTower = currentPooler.ActivateObject(position, new Quaternion());
                     currentTowerCellPosition = cellPosition;
-                    Utility.SetParentAndChildrenColors(currentTower, partiallyTransparenent);
+                    //Range indicator needs to stay transparent
+                    List<string> exclude = new List<string>
+                    {
+                        "RangeIndicator",
+                        "PreviewRangeIndicator"
+                    };
+                    Utility.SetParentAndChildrenColors(currentTower, partiallyTransparenent, exclude);
                     manager.ActivateTowerConfirmation(position);
                 }
                 else //Move existing placement
@@ -115,7 +121,8 @@ public class TowerPlacement : MonoBehaviour
             //Range indicator needs to stay transparent
             List<string> exclude = new List<string>
             {
-                "RangeIndicator"
+                "RangeIndicator",
+                "PreviewRangeIndicator"
             };
             Utility.SetParentAndChildrenColors(currentTower, defaultColor, exclude);
             Node node = pathfindingManager.AddTowerToNode(currentTowerCellPosition);

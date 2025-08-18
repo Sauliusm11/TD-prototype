@@ -15,6 +15,7 @@ public class UpgradeHandler : MonoBehaviour
     PathfindingManager pathfindingManager;
 
     GameObject rangeIndicator;
+    GameObject previewRangeIndicator;
 
     TowerContainer.Tower baseTower;
     List<TowerContainer.Upgrade> upgradeTree = new List<TowerContainer.Upgrade>();
@@ -61,6 +62,7 @@ public class UpgradeHandler : MonoBehaviour
         shootingHandler = gameObject.GetComponent<ShootingHandler>();
         shootingEnabled = false;
         rangeIndicator = transform.Find("RangeIndicator").gameObject;
+        previewRangeIndicator = transform.Find("PreviewRangeIndicator").gameObject;
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null)
         {
@@ -158,6 +160,11 @@ public class UpgradeHandler : MonoBehaviour
     public bool GetShootingState()
     {
         return shootingEnabled;
+    }
+    public void UpdatePreviewRangeIndicator(float rangeDifference)
+    {
+        float newRange = range + rangeDifference;
+        previewRangeIndicator.transform.localScale = new Vector3(tileRangeMult * newRange * 2, tileRangeMult * newRange * 2, 0);
     }
     /// <summary>
     /// Update the range indicator scale based on current range
@@ -268,6 +275,14 @@ public class UpgradeHandler : MonoBehaviour
     public void DisableRangeIndicator()
     {
         rangeIndicator.SetActive(false);
+    }
+    public void EnablePreviewRangeIndicator()
+    {
+        previewRangeIndicator.SetActive(true);
+    }
+    public void DisablePreviewRangeIndicator()
+    {
+        previewRangeIndicator.SetActive(false);
     }
     public int GetAttackDamage()
     {
