@@ -32,7 +32,7 @@ public class ShootingHandler : MonoBehaviour
         {
             if (this.name.Contains(tower.name))
             {
-                cooldown = tower.attackSpeed;
+                cooldown = 1 / tower.attackSpeed;
                 range = tower.attackRange;
                 damage = tower.attackDamage;
                 projectileSpeed = tower.projectileSpeed;
@@ -51,7 +51,7 @@ public class ShootingHandler : MonoBehaviour
         {
             if (this.name.Contains(tower.name))
             {
-                cooldown = tower.attackSpeed;
+                cooldown = 1 / tower.attackSpeed;
                 range = tower.attackRange;
                 damage = tower.attackDamage;
                 projectileSpeed = tower.projectileSpeed;
