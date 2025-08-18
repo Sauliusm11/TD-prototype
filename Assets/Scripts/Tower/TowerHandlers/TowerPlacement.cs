@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class TowerPlacement : MonoBehaviour
 {
+    Quaternion currentRotation;
     Tilemap tilemap;
     GameManager manager;
     PathfindingManager pathfindingManager;
@@ -33,6 +34,22 @@ public class TowerPlacement : MonoBehaviour
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
         defaultColor = Color.white;
         partiallyTransparenent = new Color(defaultColor.r, defaultColor.g, defaultColor.b, 0.5f);
+        ResetPlacementRotation();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            RotateRight();
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                RotateLeft();
+            }
+        }
+
     }
     /// <summary>
     /// Handles tower placement when the user is clicking on the level (only placing the preview)
@@ -134,7 +151,7 @@ public class TowerPlacement : MonoBehaviour
             manager.DeactivateTowerConfirmation();
             handler.EnableTower();
             currentTower = null;
-
+            ResetPlacementRotation();
             //Uncomment these to deselect after buying a tower(should be a setting in the future)
             //manager.SetSelectedTower(null);
             //towerSelectionHandler.DeactivateSelectionHighlighter();
@@ -153,6 +170,32 @@ public class TowerPlacement : MonoBehaviour
             //These kind of make the cancel button make sense (deselecting)
             manager.SetSelectedTower(null);
             towerSelectionHandler.DeactivateSelectionHighlighter();
+            ResetPlacementRotation();
+        }
+    }
+
+    void ResetPlacementRotation()
+    {
+        currentRotation = Quaternion.Euler(0, 0, 0);
+        ApplyRotation();
+    }
+    void RotateRight()
+    {
+        Vector3 currentEuler = currentRotation.eulerAngles;
+        currentRotation = Quaternion.Euler(currentEuler.x, currentEuler.y, (currentEuler.z - 90) % 360);
+        ApplyRotation();
+    }
+    void RotateLeft()
+    {
+        Vector3 currentEuler = currentRotation.eulerAngles;
+        currentRotation = Quaternion.Euler(currentEuler.x, currentEuler.y, (currentEuler.z + 90) % 360);
+        ApplyRotation();
+    }
+    void ApplyRotation()
+    {
+        if (currentTower != null)
+        {
+            currentTower.transform.rotation = currentRotation;
         }
     }
 }
