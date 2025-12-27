@@ -4,17 +4,17 @@ using UnityEngine.Tilemaps;
 /// <summary>
 /// Class attached to every tower object, responsible for handling upgrades and tower stats(power)
 /// </summary>
-public class UpgradeHandler : MonoBehaviour
+abstract public class UpgradeHandler : MonoBehaviour
 {
     Money moneyHandler;
     TowerSelectionHandler towerSelectionHandler;
-    ShootingHandler shootingHandler;
+    protected ShootingHandler shootingHandler;
     ObjectPooling currentPooler;
     TowerContainer towerContainer;
     Tilemap tilemap;
     PathfindingManager pathfindingManager;
 
-    GameObject rangeIndicator;
+    protected GameObject rangeIndicator;
 
     TowerContainer.Tower baseTower;
     List<TowerContainer.Upgrade> upgradeTree = new List<TowerContainer.Upgrade>();
@@ -28,8 +28,8 @@ public class UpgradeHandler : MonoBehaviour
     int moneySpent;
     float attackSpeed;
     float cooldown;
-    float range;
-    float tileRangeMult;
+    protected float range;
+    protected float tileRangeMult;
     int damage;
     float projectileSpeed;
     bool shootingEnabled;
@@ -162,11 +162,8 @@ public class UpgradeHandler : MonoBehaviour
     /// <summary>
     /// Update the range indicator scale based on current range
     /// </summary>
-    void UpdateRangeAndIndicator()
-    {
-        shootingHandler.SetRange(tileRangeMult * range);
-        rangeIndicator.transform.localScale = new Vector3(tileRangeMult * range * 2, tileRangeMult * range * 2, 0);
-    }
+    abstract public void UpdateRangeAndIndicator();
+
     /// <summary>
     /// Replace the sprite of the tower base with the new tier sprite
     /// </summary>
