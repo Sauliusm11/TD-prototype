@@ -88,7 +88,7 @@
     },
     {
       "name": "Inferno",
-      "attackSpeed": 10,
+      "attackSpeed": 1,
       "attackDamage": 10,
       "attackRange": 2.5,
       "projectileSpeed": 10.0,
@@ -98,16 +98,16 @@
         {
           "tier": 1,
           "cost": 100,
-          "attackSpeed": 5,
-          "attackDamage": 0,
+          "attackSpeed": 0,
+          "attackDamage": 5,
           "attackRange": 0.0,
           "projectileSpeed": 0.0
         },
         {
           "tier": 2,
           "cost": 100,
-          "attackSpeed": 0,
-          "attackDamage": 10,
+          "attackSpeed": 0.1,
+          "attackDamage": 0,
           "attackRange": 0,
           "projectileSpeed": 0.0
         },
