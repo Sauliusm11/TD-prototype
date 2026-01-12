@@ -87,18 +87,19 @@ public abstract class EnemyPathFinding : MonoBehaviour
                 {
                     tenative_gScore += 1000000;
                 }
+                //Debug.Log("Tile: x: " + currentIndex % 18 + "y: " + currentIndex / 18 + "Distance to get to: " + tenative_gScore);
                 if (tenative_gScore < gScore[neighbourIndex])
                 {
-
                     cameFrom[neighbourIndex] = currentIndex;
                     gScore[neighbourIndex] = tenative_gScore;
                     //A*
                     //Switch to Dijkstra if any more issues happen
                     //https://en.wikipedia.org/wiki/Admissible_heuristic
                     //https://stackoverflow.com/questions/13031462/difference-and-advantages-between-dijkstra-a-star
-                    fScore[neighbourIndex] = tenative_gScore + (CalculateDistanceToTarget(nodes[neighbourIndex]) / 2);
-                    //Dijktra
-                    //fScore[neighbourIndex] = tenative_gScore + 0;
+                    //fScore[neighbourIndex] = tenative_gScore + (CalculateDistanceToTarget(nodes[neighbourIndex]) / 2) + ((float)neighbourIndex / 1000000);
+                    //Debug.Log("G score:" + tenative_gScore + "F score:" + fScore[neighbourIndex]);
+                    //Dijktra(with a loose tie break in the form of a tiny weight based on index in array)
+                    fScore[neighbourIndex] = tenative_gScore + ((float)neighbourIndex / 1000000);
 
                     nodes[neighbourIndex].SetCurrentWeight(fScore[neighbourIndex]);
                     priorityQueue.Enqueue(nodes[neighbourIndex]);

@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class NoTerrainPathfinding : EnemyPathFinding
 {
+    const float speedOverSafetyCoef = 1f; //Bigger number = bigger emphasis on shorter walking distance
+
     protected override float CalculateWeight(Node node)
     {
-        return 1f + Mathf.Pow((node.GetDamageMultCoef()), 2);//Adding one increases how much the enemy prioritizes saftey over speed
+        return speedOverSafetyCoef + Mathf.Pow((node.GetDamageMultCoef()), 2);
     }
 }
