@@ -21,6 +21,12 @@ public abstract class ShootingHandler : MonoBehaviour
     protected int damage;
     protected float projectileSpeed;
     bool shootingEnabled;
+
+    private void OnEnable()
+    {
+        timeSinceShot = cooldown;
+        shootingEnabled = false;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -38,14 +44,13 @@ public abstract class ShootingHandler : MonoBehaviour
                 projectileSpeed = tower.projectileSpeed;
             }
         }
-        timeSinceShot = cooldown;
-        shootingEnabled = false;
     }
     /// <summary>
     /// Because of object pooling this is needed to set certain attributes back to default
     /// </summary>
     private void OnDisable()
     {
+        CancelInvoke();
         TowerContainer towerContainer = TowerContainer.getInstance();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
