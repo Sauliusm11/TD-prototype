@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 /// <summary>
-/// Camera handler class made using 
+/// Camera handler class
 /// </summary>
 public class CameraHandler : MonoBehaviour
 {
@@ -28,20 +28,16 @@ public class CameraHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cam = GetComponent<Camera>();
         raycaster = GetComponent<Physics2DRaycaster>();
         defaultLayerMask = raycaster.eventMask;
         defaultMaskOn = true;
         cameraActivatedText.SetActive(false);
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");//Attached to player UI
     }
-    void Awake()
-    {
-        cam = GetComponent<Camera>();
-    }
     // Update is called once per frame
     void Update()
     {
-
         if (!defaultMaskOn)
         {
             if (Input.touchSupported)
@@ -103,7 +99,6 @@ public class CameraHandler : MonoBehaviour
     /// </summary>
     void HandleTouch()
     {
-
         switch (Input.touchCount)
         {
             case 1: // Panning
@@ -142,7 +137,6 @@ public class CameraHandler : MonoBehaviour
                     lastZoomPositions = newPositions;
                 }
                 break;
-
             default:
                 wasZoomingLastFrame = false;
                 break;
