@@ -2,7 +2,6 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEngine.Tilemaps;
 
 public class ManagerCheck : MonoBehaviour
 {
@@ -68,5 +67,26 @@ public class ManagerCheck : MonoBehaviour
         // Use yield to skip a frame.
         yield return null;
     }
+    [UnityTest]
+    public IEnumerator TileSelectionManagerFoundPasses()
+    {
+        //Arrange
+        TileSelectionHandler tileSelectionHandler = GameObject.Find("TileSelectionManager").GetComponent<TileSelectionHandler>();
+        // Use the Assert class to test conditions. 
+        Assert.IsNotNull(tileSelectionHandler);
+        // Use yield to skip a frame.
+        yield return null;
+    }
+    [UnityTest]
+    public IEnumerator TowerSelectionManagerFoundPasses()
+    {
+        //Arrange
+        TowerSelectionHandler towerSelectionHandler = GameObject.Find("TowerSelectionManager").GetComponent<TowerSelectionHandler>();
+        // Use the Assert class to test conditions. 
+        Assert.IsNotNull(towerSelectionHandler);
+        // Use yield to skip a frame.
+        yield return null;
+    }
+
 }
 
