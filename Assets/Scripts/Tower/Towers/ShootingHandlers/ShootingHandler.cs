@@ -1,3 +1,4 @@
+using Assets.Scripts.Tower.Towers.ShootingHandlers.TargetingTypes;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ public abstract class ShootingHandler : MonoBehaviour
     [SerializeField]
     GameObject bulletPrefab;
     protected GameObject shootingPoint;
-    protected List<GameObject> EnemyObjects = new List<GameObject>();
+    protected TargetingHandler targetingHandler;
     protected List<BaseEnemy> baseEnemies = new List<BaseEnemy>();
     protected int currentTarget;
     protected float timeSinceShot;
@@ -30,6 +31,7 @@ public abstract class ShootingHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        targetingHandler = GetComponent<TargetingHandler>();
         bulletPooler = GameObject.Find("CannonBulletPooler").GetComponent<ObjectPooling>();
         partToRotate = transform.Find("TowerCannon").gameObject;
         shootingPoint = partToRotate.transform.Find("ShootingPoint").gameObject;
@@ -90,11 +92,6 @@ public abstract class ShootingHandler : MonoBehaviour
     /// Finds the enemy cloest to the exit within range and points the part to rotate at it.
     /// </summary>
     public abstract void AimAtTarget();
-
-    /// <summary>
-    /// Uses a physics2D OverlapCircleAll to find all enemies within range
-    /// </summary>
-    public abstract void UpdateTargets();
 
     /// <summary>
     /// Activates the tower once it's purchase has been confirmed

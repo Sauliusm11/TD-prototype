@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 8868522344275685211}
   - component: {fileID: -8139605921049934815}
   - component: {fileID: -593941038987981025}
+  - component: {fileID: -7464268529889054125}
   m_Layer: 3
   m_Name: Inferno
   m_TagString: Untagged
@@ -276,6 +277,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 21386bfbc0ba8d14b945c8065a3cb05e, type: 3}
   - {fileID: 21300000, guid: 4a2dab4a150cf2048b7fc1b3c00c9c27, type: 3}
   - {fileID: 21300000, guid: 063937174e046494483275e2b0724537, type: 3}
+--- !u!114 &-7464268529889054125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2515541212192130132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0befe1d35fbcb494baf9afe18d85d8aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5647244713469593638
 GameObject:
   m_ObjectHideFlags: 0
