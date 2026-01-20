@@ -14,7 +14,7 @@ public class TileContainer
     /// (Should be) The only way to gain access to the TileContainer 
     /// </summary>
     /// <returns></returns>
-    public static TileContainer getInstance()
+    public static TileContainer GetInstance()
     {
 
         if (instance == null)

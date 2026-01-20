@@ -43,7 +43,7 @@ public abstract class BaseEnemy : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        tileContainer = TileContainer.getInstance();
+        tileContainer = TileContainer.GetInstance();
         enemyHealthBarPooler = GameObject.Find("EnemyHealthBarPooler").GetComponent<ObjectPooling>();
         healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
         healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(healthBarParent.transform);
@@ -51,7 +51,7 @@ public abstract class BaseEnemy : MonoBehaviour
         healthBarSlider = healthBarObject.GetComponent<Slider>();
         healthBarSlider.value = 1;
         UpdateHealthBarPosition();
-        EnemyContainer enemyContainer = EnemyContainer.getInstance();
+        EnemyContainer enemyContainer = EnemyContainer.GetInstance();
         foreach (EnemyContainer.Enemy enemy in enemyContainer.enemies)
         {
             if (this.name.Contains(enemy.name))

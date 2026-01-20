@@ -17,7 +17,6 @@ public class TilePlacement : MonoBehaviour
     {
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
-        GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         tilemap = gameObject.GetComponentInChildren<Tilemap>();
     }
     /// <summary>

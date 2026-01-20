@@ -23,12 +23,13 @@ public class TileSelectionHandler : MonoBehaviour
     /// </summary>
     public void SelectSquare()
     {
+        int selectionPrefixLength = 6;
         if (tileContainer == null)
         {
-            tileContainer = TileContainer.getInstance();
+            tileContainer = TileContainer.GetInstance();
         }
         string name = EventSystem.current.currentSelectedGameObject.name;
-        name = name.Substring(6);
+        name = name[selectionPrefixLength..];
         foreach (TileContainer.Tile tile in tileContainer.tiles)
         {
             if (name.Equals(tile.name))

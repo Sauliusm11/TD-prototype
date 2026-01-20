@@ -26,7 +26,7 @@ public class PathfindingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tileContainer = TileContainer.getInstance();
+        tileContainer = TileContainer.GetInstance();
         baseEnemyPathFinder = GameObject.Find("BasePathfinder").GetComponent<EnemyPathFinding>();
         PathfinderFlags.Add(false);
         noTerrainEnemyPathFinder = GameObject.Find("NoTerrainPathfinder").GetComponent<EnemyPathFinding>();

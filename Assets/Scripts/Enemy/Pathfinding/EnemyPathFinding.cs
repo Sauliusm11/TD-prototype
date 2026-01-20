@@ -33,7 +33,6 @@ public abstract class EnemyPathFinding : MonoBehaviour
     public IEnumerator CalculatePath(Node[] nodes, Node start, Node target, Vector3Int size, int flagIndex)
     {
         Target = target;
-        Vector3 current = transform.position;
         PriorityQueue<Node> priorityQueue = new PriorityQueue<Node>();
         int[] cameFrom = new int[nodes.Length];
         for (int i = 0; i < cameFrom.Length; i++)

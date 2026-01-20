@@ -33,7 +33,6 @@ public class CameraHandler : MonoBehaviour
         defaultLayerMask = raycaster.eventMask;
         defaultMaskOn = true;
         cameraActivatedText.SetActive(false);
-        GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");//Attached to player UI
     }
     // Update is called once per frame
     void Update()

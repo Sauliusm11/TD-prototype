@@ -12,7 +12,7 @@ public class EnemyContainer
     /// (Should be) The only way to gain access to the EnemyContainer 
     /// </summary>
     /// <returns></returns>
-    public static EnemyContainer getInstance()
+    public static EnemyContainer GetInstance()
     {
 
         if (instance == null)

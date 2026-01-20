@@ -66,7 +66,7 @@ abstract public class UpgradeHandler : MonoBehaviour
         {
             towerSelectionHandler = towerManagerObject.GetComponent<TowerSelectionHandler>();
         }
-        towerContainer = TowerContainer.getInstance();
+        towerContainer = TowerContainer.GetInstance();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
             if (gameObject.name.Contains(tower.name))

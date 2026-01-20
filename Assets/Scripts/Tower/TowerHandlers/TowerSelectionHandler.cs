@@ -25,13 +25,14 @@ public class TowerSelectionHandler : MonoBehaviour
     /// </summary>
     public void SelectTower()
     {
+        int selectionPrefixLength = 6;
         if (towerContainer == null)
         {
-            towerContainer = TowerContainer.getInstance();
+            towerContainer = TowerContainer.GetInstance();
         }
         GameObject buttonObject = EventSystem.current.currentSelectedGameObject;
         string name = buttonObject.name;
-        name = name.Substring(6);
+        name = name[selectionPrefixLength..];
         manager.CancelTowerPlacement();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {

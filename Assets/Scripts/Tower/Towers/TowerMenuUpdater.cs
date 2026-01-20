@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 /// <summary>
 /// Class responsible for updating the tower menu with statistics of the currently selected tower
@@ -71,7 +71,8 @@ public class TowerMenuUpdater : MonoBehaviour
     {
         currentTower = tower;
         //Full tower object name is "Tower (Clone)", want to show only "Tower"
-        towerNameText.text = tower.name.Remove(tower.name.Length - 7, 7);
+        int cloneTextLength = 7;
+        towerNameText.text = tower.name[..^cloneTextLength];
         sellPriceText.text = "Sell for: " + tower.GetSellCost().ToString();
         nextUpgrade = tower.GetUpgrade();
 

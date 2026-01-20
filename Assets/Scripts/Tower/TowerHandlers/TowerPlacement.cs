@@ -25,7 +25,7 @@ public class TowerPlacement : MonoBehaviour
         manager = GameObject.Find("GameManager").GetComponent<GameManager>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
-        tileContainer = TileContainer.getInstance();
+        tileContainer = TileContainer.GetInstance();
         GameObject towerManagerObject = GameObject.Find("TowerSelectionManager");
         if (towerManagerObject != null)
         {

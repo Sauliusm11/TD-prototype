@@ -9,14 +9,9 @@ public class CleanUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        towerContainer = TowerContainer.getInstance();
+        towerContainer = TowerContainer.GetInstance();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Sends a signal to all object poolers(children) to deactivate all objects
     /// Called every time a level is (re)loaded

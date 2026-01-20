@@ -12,11 +12,6 @@ public class BulletHandler : MonoBehaviour
         bulletPooler = GameObject.Find("CannonBulletPooler").GetComponent<ObjectPooling>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Public facing method to start the bullet travelling coroutine
     /// </summary>

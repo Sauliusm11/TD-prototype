@@ -94,7 +94,7 @@ public class PathfindingPlayTest
         //Load selected level
         gameManager.ConfirmLoading("Default");
         //Possible that other test cases might need more money
-        gameManager.SetSelectedTower(TowerContainer.getInstance().towers[0]);
+        gameManager.SetSelectedTower(TowerContainer.GetInstance().towers[0]);
 
         //Prepare mock to bypass pointer over ui check
         PointerEventData eventDataMock = new PointerEventData(GameObject.Find("EventSystem").GetComponent<EventSystem>());

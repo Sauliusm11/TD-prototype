@@ -15,11 +15,6 @@ public class TowerClickHandler : MonoBehaviour, IPointerClickHandler
         tileHighlighter = GameObject.Find("TileHighlighter").GetComponent<TileHighlighter>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Chekcks if the tower that has been clicked on is active and opens the tower menu if it is
     /// </summary>

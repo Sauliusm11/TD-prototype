@@ -21,15 +21,10 @@ public class TileHighlighter : MonoBehaviour
     {
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
-        tileContainer = TileContainer.getInstance();
+        tileContainer = TileContainer.GetInstance();
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
     /// <summary>
     /// Converts a world position into the tilemap cell postion and calls HighlightTileFromCellPos
     /// </summary>

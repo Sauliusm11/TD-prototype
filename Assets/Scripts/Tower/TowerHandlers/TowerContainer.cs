@@ -13,7 +13,7 @@ public class TowerContainer
     /// (Should be) The only way to gain access to the TowerContainer 
     /// </summary>
     /// <returns></returns>
-    public static TowerContainer getInstance()
+    public static TowerContainer GetInstance()
     {
 
         if (instance == null)

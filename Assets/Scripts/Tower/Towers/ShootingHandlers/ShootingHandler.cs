@@ -35,7 +35,7 @@ public abstract class ShootingHandler : MonoBehaviour
         bulletPooler = GameObject.Find("CannonBulletPooler").GetComponent<ObjectPooling>();
         partToRotate = transform.Find("TowerCannon").gameObject;
         shootingPoint = partToRotate.transform.Find("ShootingPoint").gameObject;
-        TowerContainer towerContainer = TowerContainer.getInstance();
+        TowerContainer towerContainer = TowerContainer.GetInstance();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
             if (this.name.Contains(tower.name))
@@ -53,7 +53,7 @@ public abstract class ShootingHandler : MonoBehaviour
     private void OnDisable()
     {
         CancelInvoke();
-        TowerContainer towerContainer = TowerContainer.getInstance();
+        TowerContainer towerContainer = TowerContainer.GetInstance();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {
             if (this.name.Contains(tower.name))
@@ -101,7 +101,7 @@ public abstract class ShootingHandler : MonoBehaviour
         if (!shootingEnabled)
         {
             shootingEnabled = true;
-            InvokeRepeating("AimAtTarget", 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
+            InvokeRepeating(nameof(AimAtTarget), 0, 0.05f);//Increase the last number in case of performance issues(makes aiming choppier)
         }
     }
     /// <summary>
