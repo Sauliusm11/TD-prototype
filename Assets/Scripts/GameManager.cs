@@ -173,6 +173,8 @@ public class GameManager : MonoBehaviour
         objectCleaner.CleanUpObjects();
         WaveEnded();
         DeactivateGameOver();
+        DeactivateTowerMenu();
+        DeactivateTowerConfirmation();
         CloseFilePrompt();
     }
     /// <summary>
@@ -246,7 +248,7 @@ public class GameManager : MonoBehaviour
     /// <param name="tower">Newly selected tower</param>
     public void ActivateTowerMenu(UpgradeHandler tower)
     {
-        DeActivateTowerMenu();
+        DeactivateTowerMenu();
         //Could become it's own function if needed in other situations?
         currentUpgradeHandler = tower;
         currentUpgradeHandler.EnableRangeIndicator();
@@ -262,12 +264,12 @@ public class GameManager : MonoBehaviour
     public void InitiateSellTower()
     {
         currentUpgradeHandler.SellTower();
-        DeActivateTowerMenu();
+        DeactivateTowerMenu();
     }
     /// <summary>
     /// Deactiavtes the tower menu(+range indicator)
     /// </summary>
-    public void DeActivateTowerMenu()
+    public void DeactivateTowerMenu()
     {
         towerMenuPanel.SetActive(false);
         if (currentUpgradeHandler != null)

@@ -59,7 +59,7 @@ public class TowerPlacement : MonoBehaviour
     public void HandlePlaceTower(Vector3 position, PointerEventData eventData)
     {
         Vector3Int cellPosition = tilemap.WorldToCell(position);
-        manager.DeActivateTowerMenu();
+        manager.DeactivateTowerMenu();
         if (!PointerHelper.PointerOverTower(eventData) && PointerOverTile(cellPosition) && manager.GetSelectedTower() != null)
         {
             TowerContainer.Tower selection = manager.GetSelectedTower();
@@ -99,6 +99,7 @@ public class TowerPlacement : MonoBehaviour
                         {
                             handler.ResetBuffs();
                             handler.ApplyBuff(tile);
+                            handler.EnableRangeIndicator();
                             break;
                         }
                     }
