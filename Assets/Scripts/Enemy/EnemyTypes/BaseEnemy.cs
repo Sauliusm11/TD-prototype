@@ -1,3 +1,4 @@
+using Assets.Scripts.Enemy;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,12 +25,14 @@ public abstract class BaseEnemy : MonoBehaviour
     int reward;
     [SerializeField]
     GameObject healthBarPrefab;
-    GameObject healthBarParent;
+    GameObject worldSpaceUICanvas;
     GameObject healthBarObject;
     Slider healthBarSlider;
     ObjectPooling enemyPooler;
     ObjectPooling enemyHealthBarPooler;
+    ObjectPooling damageNumberPooler;
     WaveHandler waveHandler;
+    DamageNumberHandler damageNumberHandler;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,8 +48,10 @@ public abstract class BaseEnemy : MonoBehaviour
     {
         tileContainer = TileContainer.GetInstance();
         enemyHealthBarPooler = GameObject.Find("EnemyHealthBarPooler").GetComponent<ObjectPooling>();
-        healthBarParent = GameObject.Find("UIWorldSpaceCanvas");
-        healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(healthBarParent.transform);
+        damageNumberPooler = GameObject.Find("DamageNumberPooler").GetComponent<ObjectPooling>();
+        worldSpaceUICanvas = GameObject.Find("UIWorldSpaceCanvas");
+        damageNumberHandler = GameObject.Find("DamageNumberManager").GetComponent<DamageNumberHandler>();
+        healthBarObject = enemyHealthBarPooler.ActivateObjectWithParent(worldSpaceUICanvas.transform);
         healthBarObject.transform.SetAsFirstSibling();
         healthBarSlider = healthBarObject.GetComponent<Slider>();
         healthBarSlider.value = 1;
@@ -109,8 +114,10 @@ public abstract class BaseEnemy : MonoBehaviour
         //TODO: Probably safer to use proper locks
         if (currentHealth > 0)
         {
-            currentHealth -= Mathf.RoundToInt(damage * currentTile.damageMultiplier);
+            int damageTaken = Mathf.RoundToInt(damage * currentTile.damageMultiplier);
+            currentHealth -= damageTaken;
             healthBarSlider.value = (float)currentHealth / maxHealth;
+            damageNumberHandler.ShowDamageNumber(damageTaken, 0.2f, gameObject.transform);
             if (currentHealth <= 0)
             {
                 moneyHandler.AddMoney(reward);

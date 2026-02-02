@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Tower.Towers
 {
-    public class ShootingHandlerStatic : ShootingHandler
+    public class AreaShootingHandler : ShootingHandler
     {
         private GameObject fireIndicator;
         private GameObject rangeIndicator;

@@ -15,8 +15,7 @@ namespace Assets.Scripts.Tower.Towers.ShootingHandlers.TargetingTypes
             foreach (Collider2D collider in colliders)
             {
                 GameObject collisionGameObject = collider.gameObject;
-                BaseEnemy baseEnemy = collisionGameObject.GetComponent<BaseEnemy>();
-                if (baseEnemy != null)
+                if (collisionGameObject.TryGetComponent<BaseEnemy>(out var baseEnemy))
                 {
                     baseEnemies.Add(baseEnemy);
                 }

@@ -8,8 +8,6 @@ using UnityEngine;
 public abstract class ShootingHandler : MonoBehaviour
 {
     protected GameObject partToRotate;
-    [SerializeField]
-    GameObject bulletPrefab;
     protected GameObject shootingPoint;
     protected TargetingHandler targetingHandler;
     protected List<BaseEnemy> baseEnemies = new List<BaseEnemy>();
@@ -68,6 +66,7 @@ public abstract class ShootingHandler : MonoBehaviour
         {
             Quaternion rotation = new Quaternion();
             partToRotate.transform.rotation = rotation;
+            gameObject.transform.rotation = rotation;
         }
     }
 

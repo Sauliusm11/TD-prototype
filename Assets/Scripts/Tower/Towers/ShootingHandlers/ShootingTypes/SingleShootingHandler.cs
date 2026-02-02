@@ -2,8 +2,10 @@
 
 namespace Assets.Scripts.Tower.Towers
 {
-    public class ShootingHandlerRotational : ShootingHandler
+    public class SingleShootingHandler : ShootingHandler
     {
+        [SerializeField]
+        GameObject bulletPrefab;
         public override void AimAtTarget()
         {
             //Update target list before picking target
