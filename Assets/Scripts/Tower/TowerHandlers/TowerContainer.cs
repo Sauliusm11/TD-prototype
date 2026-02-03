@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class TowerContainer
 {
-
     private static TowerContainer instance;
     private static object threadLock = new object();
 

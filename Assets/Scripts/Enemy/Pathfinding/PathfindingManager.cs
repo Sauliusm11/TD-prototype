@@ -111,7 +111,6 @@ public class PathfindingManager : MonoBehaviour
     /// </summary>
     public void CallWave()
     {
-        //TODO: add checks to prevent spamming
         StartCoroutine(PreparePathFinding());
     }
     /// <summary>
