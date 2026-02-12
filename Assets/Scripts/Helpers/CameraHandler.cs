@@ -13,6 +13,9 @@ public class CameraHandler : MonoBehaviour
     private static readonly float[] BoundsY = new float[] { -10f, 11f };//Can be changed if needed 
     private static readonly float[] ZoomBounds = new float[] { 2f, 10f };//Can be changed if needed
 
+    private static readonly float KeyboardSpeed = 0.01f;//TODO: Should be a setting
+    private static readonly float ShiftKeyMult = 2f;
+
     private Camera cam;
 
     private Vector3 lastPanPosition;
@@ -48,6 +51,9 @@ public class CameraHandler : MonoBehaviour
                 HandleMouse();
             }
         }
+        HandleKeyboard();
+        // Check for scrolling to zoom the camera
+        HandleScrolling();
     }
 
     /// <summary>
@@ -87,10 +93,41 @@ public class CameraHandler : MonoBehaviour
                 PanCamera(Input.mousePosition);
             }
         }
-
-        // Check for scrolling to zoom the camera
+    }
+    void HandleScrolling()
+    {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         ZoomCamera(scroll, ZoomSpeedMouse);
+    }
+    void HandleKeyboard()
+    {
+        Vector3 newPosition = cam.transform.position;
+        float speed = KeyboardSpeed;
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            speed = KeyboardSpeed * ShiftKeyMult;
+        }
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            Vector3 position = new Vector3(0, speed, 0);
+            newPosition += position;
+        }
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        {
+            Vector3 position = new Vector3(-speed, 0, 0);
+            newPosition += position;
+        }
+        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        {
+            Vector3 position = new Vector3(0, -speed, 0);
+            newPosition += position;
+        }
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            Vector3 position = new Vector3(speed, 0, 0);
+            newPosition += position;
+        }
+        BoundsCheck(newPosition);
     }
 
     /// <summary>
@@ -153,13 +190,17 @@ public class CameraHandler : MonoBehaviour
         transform.Translate(moveTo, Space.World);
 
         // Ensure the camera remains within bounds.
-        Vector3 pos = transform.position;
-        pos.x = Mathf.Clamp(transform.position.x, BoundsX[0], BoundsX[1]);
-        pos.y = Mathf.Clamp(transform.position.y, BoundsY[0], BoundsY[1]);
-        transform.position = pos;
+        BoundsCheck(transform.position);
 
         // Cache the position
         lastPanPosition = newPanPosition;
+    }
+
+    void BoundsCheck(Vector3 pos)
+    {
+        pos.x = Mathf.Clamp(pos.x, BoundsX[0], BoundsX[1]);
+        pos.y = Mathf.Clamp(pos.y, BoundsY[0], BoundsY[1]);
+        transform.position = pos;
     }
 
     void ZoomCamera(float offset, float speed)
