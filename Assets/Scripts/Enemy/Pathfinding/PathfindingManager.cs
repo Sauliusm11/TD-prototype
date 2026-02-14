@@ -50,6 +50,10 @@ public class PathfindingManager : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 TileBase tile = tiles[x + y * size.x];
+                if (tile == null)
+                {
+                    continue;
+                }
                 Node node = new Node(x, y, Mathf.Infinity, Mathf.Infinity, "");
                 foreach (TileContainer.Tile tileInfo in tileContainer.tiles)
                 {

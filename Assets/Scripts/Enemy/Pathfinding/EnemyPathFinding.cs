@@ -47,6 +47,10 @@ public abstract class EnemyPathFinding : MonoBehaviour
         int startIndex = start.GetX() + size.x * start.GetY();
         for (int i = 0; i < gScore.Length; i++)
         {
+            if (nodes[i] == null)
+            {
+                continue;
+            }
             gScore[i] = float.PositiveInfinity;
             fScore[i] = float.PositiveInfinity;
             if (i == startIndex)
