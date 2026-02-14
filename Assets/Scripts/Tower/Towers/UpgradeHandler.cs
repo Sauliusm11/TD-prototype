@@ -222,6 +222,19 @@ abstract public class UpgradeHandler : MonoBehaviour
             return false;
         }
     }
+    public bool IsSecondaryUpgradeAvailable()
+    {
+        //We do not add to the current tier here because
+        //the max tier in tower data is 1 lower than the level of the alternate upgrade
+        if (currentTier < baseTower.maxTier)
+        {
+            return moneyHandler.HasEnoughMoney(upgradeTree[currentTier + 1].cost);
+        }
+        else
+        {
+            return false;
+        }
+    }
     /// <summary>
     /// Get the upgrade object of the next upgrade tier
     /// </summary>

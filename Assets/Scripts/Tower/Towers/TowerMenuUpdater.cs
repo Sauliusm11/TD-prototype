@@ -42,6 +42,7 @@ public class TowerMenuUpdater : MonoBehaviour
         if (currentTower != null)
         {
             SetButtonState(1, currentTower.IsUpgradeAvailable());
+            SetButtonState(2, currentTower.IsSecondaryUpgradeAvailable());
         }
     }
     /// <summary>
@@ -87,6 +88,10 @@ public class TowerMenuUpdater : MonoBehaviour
                 upgrade2Button.SetActive(true);
                 upgrade1ButtonText.text = "Elite upgrade for: " + nextUpgrade.cost;
                 upgrade2ButtonText.text = "Alternate elite upgrade for: " + tower.GetSecondaryElite().cost;
+            }
+            else
+            {
+                upgrade2Button.SetActive(false);
             }
             tierText.text = "Tier: " + (nextUpgrade.tier - 1).ToString();
         }
