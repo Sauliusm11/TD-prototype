@@ -58,6 +58,10 @@ public class TowerPlacement : MonoBehaviour
     /// <param name="eventData">Event data of the pointer click event</param>
     public void HandlePlaceTower(Vector3 position, PointerEventData eventData)
     {
+        if (manager.IsWaveActive())
+        {
+            return;
+        }
         Vector3Int cellPosition = tilemap.WorldToCell(position);
         manager.DeactivateTowerMenu();
         if (!PointerHelper.PointerOverTower(eventData) && PointerOverTile(cellPosition) && manager.GetSelectedTower() != null)
@@ -128,6 +132,10 @@ public class TowerPlacement : MonoBehaviour
     public void ConfirmPlacement()
     {
         TowerContainer.Tower selection = manager.GetSelectedTower();
+        if (manager.IsWaveActive())
+        {
+            CancelPlacement();
+        }
         if (currentTower != null && moneyHandler.RemoveMoney(selection.cost))
         {
             //Range indicator needs to stay transparent

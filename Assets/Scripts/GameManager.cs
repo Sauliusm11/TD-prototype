@@ -22,7 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject towerMenuPanel;
     [SerializeField]
-    GameObject InGameUIPanel;
+    GameObject inGameUIPanel;
+    [SerializeField]
+    GameObject buildPhaseTextObject;
     TowerMenuUpdater towerMenuUpdater;
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
@@ -91,7 +93,7 @@ public class GameManager : MonoBehaviour
                 LevelPanel.SetActive(true);
                 break;
             case State.Playing:
-                InGameUIPanel.SetActive(true);
+                inGameUIPanel.SetActive(true);
                 break;
             case State.GameOver:
                 gameOverPanel.SetActive(true);
@@ -122,7 +124,7 @@ public class GameManager : MonoBehaviour
                 WaveEnded();
                 DeactivateTowerMenu();
                 DeactivateTowerConfirmation();
-                InGameUIPanel.SetActive(false);
+                inGameUIPanel.SetActive(false);
                 break;
             case State.GameOver:
                 gameOverPanel.SetActive(false);
@@ -326,6 +328,8 @@ public class GameManager : MonoBehaviour
     {
         waveCountText.text = string.Format("Wave: {0}/{1}", wave + 1, totalWaves);
         callWaveButton.SetActive(false);
+        buildPhaseTextObject.SetActive(false);
+        CancelTowerPlacement();
     }
     /// <summary>
     /// Recieve the call about the wave ending and reactivate the next wave button
@@ -333,14 +337,11 @@ public class GameManager : MonoBehaviour
     public void WaveEnded()
     {
         callWaveButton.SetActive(true);
+        buildPhaseTextObject.SetActive(true);
     }
     public bool IsWaveActive()
     {
         return !callWaveButton.activeInHierarchy;
-    }
-    void ActivateInGameUI()
-    {
-
     }
     /// <summary>
     /// Activates the game over panel
