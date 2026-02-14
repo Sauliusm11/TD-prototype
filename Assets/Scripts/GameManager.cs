@@ -36,12 +36,14 @@ public class GameManager : MonoBehaviour
     Money moneyHandler;
     Lives livesHandler;
     CleanUp objectCleaner;
+    string currentLevelName;
 
     UpgradeHandler currentUpgradeHandler;
     [HideInInspector]
     public TileContainer.Tile selectedTile;
     [HideInInspector]
     public TowerContainer.Tower selectedTower;
+
     private void Awake()
     {
         SwitchState(State.Playing);
@@ -189,6 +191,7 @@ public class GameManager : MonoBehaviour
     }
     public void ConfirmLoading(string filename)
     {
+        currentLevelName = filename;
         parser.LoadLevelTiles(filename);
         waveHandler.LoadWaves(filename);
 
@@ -348,7 +351,7 @@ public class GameManager : MonoBehaviour
     }
     public void Restart()
     {
-        SwitchState(State.Playing);
+        ConfirmLoading(currentLevelName);
     }
     public void ActivateLevelSelect()
     {
