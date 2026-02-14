@@ -50,17 +50,20 @@ public class TileHighlighter : MonoBehaviour
         }
         else
         {
-            selectedTileHighlighter.transform.position = cellPosition;
             Node node = pathfindingManager.GetNodeFromCell(cellPosition);
-            string nodeName = node.GetName();
-            foreach (TileContainer.Tile tile in tileContainer.tiles)
+            if (node != null)
             {
-                if (tile.name.Equals(nodeName))
+                selectedTileHighlighter.transform.position = cellPosition;
+                string nodeName = node.GetName();
+                foreach (TileContainer.Tile tile in tileContainer.tiles)
                 {
-                    attackRangeText.text = tile.attackRange.ToString();
-                    damageMultiplierText.text = tile.damageMultiplier.ToString();
-                    movementSpeedText.text = tile.movementSpeed.ToString();
-                    break;
+                    if (tile.name.Equals(nodeName))
+                    {
+                        attackRangeText.text = tile.attackRange.ToString();
+                        damageMultiplierText.text = tile.damageMultiplier.ToString();
+                        movementSpeedText.text = tile.movementSpeed.ToString();
+                        break;
+                    }
                 }
             }
         }
