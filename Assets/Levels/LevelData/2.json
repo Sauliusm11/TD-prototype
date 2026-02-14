@@ -5,7 +5,11 @@
       "Enemies": [
         {
           "name": "BasicEnemy",
-          "count": 15
+          "count": 20
+        },
+        {
+          "name": "BasicNoTerrainEnemy",
+          "count": 1
         }
       ]
     },
@@ -23,11 +27,7 @@
       "Enemies": [
         {
           "name": "BasicEnemy",
-          "count": 40
-        },        
-        {
-          "name": "BasicNoTerrainEnemy",
-          "count": 15
+          "count": 60
         }
       ]
     },
@@ -37,10 +37,6 @@
         {
           "name": "BasicEnemy",
           "count": 100
-        },
-        {
-          "name": "BasicNoTerrainEnemy",
-          "count": 50
         }
       ]
     }
