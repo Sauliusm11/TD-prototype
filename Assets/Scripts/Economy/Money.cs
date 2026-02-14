@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 /// <summary>
 /// Money tracking class
 /// Should only be attached to the MoneyHandler object
@@ -63,6 +63,7 @@ public class Money : MonoBehaviour
     {
         if (moneyDisplay == null)
         {
+            //TODO: This is a part of the start state switching race condition
             moneyDisplay = GameObject.Find("MoneyCount").GetComponent<TMP_Text>();
         }
         moneyDisplay.text = money.ToString();

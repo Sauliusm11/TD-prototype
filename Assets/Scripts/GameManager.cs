@@ -7,18 +7,22 @@ using UnityEngine;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    public enum State { Saving, Loading, Playing };
+    public enum State { Saving, Loading, Playing, GameOver, Menu };
     State currentState;
     [SerializeField]
     GameObject saveConfirmPanel;
     [SerializeField]
     GameObject loadConfirmPanel;
     [SerializeField]
+    GameObject LevelPanel;
+    [SerializeField]
     GameObject gameOverPanel;
     [SerializeField]
     GameObject towerConfirmationPanel;
     [SerializeField]
     GameObject towerMenuPanel;
+    [SerializeField]
+    GameObject InGameUIPanel;
     TowerMenuUpdater towerMenuUpdater;
     TMP_InputField saveFileInputField;
     TMP_InputField loadFileInputField;
@@ -38,10 +42,13 @@ public class GameManager : MonoBehaviour
     public TileContainer.Tile selectedTile;
     [HideInInspector]
     public TowerContainer.Tower selectedTower;
+    private void Awake()
+    {
+        SwitchState(State.Playing);
+    }
     // Start is called before the first frame update
     void Start()
     {
-        SwitchState(State.Playing);
         parser = GameObject.Find("JsonParser").GetComponent<JsonParser>();
         towerMenuUpdater = towerMenuPanel.GetComponent<TowerMenuUpdater>();
         placemetHandler = GameObject.Find("Grid").GetComponent<TowerPlacement>();
@@ -52,7 +59,8 @@ public class GameManager : MonoBehaviour
         loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
         objectCleaner = GameObject.Find("ObjectPoolers").GetComponent<CleanUp>();
         waveCountText = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
-
+        //TODO: Techincally could cause problems if others don't pick up the ui objects before this happens
+        SwitchState(State.Loading);
         selectedTile = null;
         selectedTower = null;
     }
@@ -78,8 +86,13 @@ public class GameManager : MonoBehaviour
                 break;
             case State.Loading:
                 loadConfirmPanel.SetActive(true);
+                LevelPanel.SetActive(true);
                 break;
             case State.Playing:
+                InGameUIPanel.SetActive(true);
+                break;
+            case State.GameOver:
+                gameOverPanel.SetActive(true);
                 break;
             default:
                 break;
@@ -98,8 +111,19 @@ public class GameManager : MonoBehaviour
                 break;
             case State.Loading:
                 loadConfirmPanel.SetActive(false);
+                LevelPanel.SetActive(false);
                 break;
             case State.Playing:
+                moneyHandler.ResetMoney();
+                livesHandler.ResetLives();
+                objectCleaner.CleanUpObjects();
+                WaveEnded();
+                DeactivateTowerMenu();
+                DeactivateTowerConfirmation();
+                InGameUIPanel.SetActive(false);
+                break;
+            case State.GameOver:
+                gameOverPanel.SetActive(false);
                 break;
             default:
                 break;
@@ -163,19 +187,12 @@ public class GameManager : MonoBehaviour
         //waveHandler.LoadWaves(filename);
         //CloseFilePrompt();
     }
-    //Should this not be private?
     public void ConfirmLoading(string filename)
     {
         parser.LoadLevelTiles(filename);
         waveHandler.LoadWaves(filename);
-        moneyHandler.ResetMoney();
-        livesHandler.ResetLives();
-        objectCleaner.CleanUpObjects();
-        WaveEnded();
-        DeactivateGameOver();
-        DeactivateTowerMenu();
-        DeactivateTowerConfirmation();
-        CloseFilePrompt();
+
+        SwitchState(State.Playing);
     }
     /// <summary>
     /// Stores the selected tile internally for the TilePlacement to access 
@@ -318,19 +335,27 @@ public class GameManager : MonoBehaviour
     {
         return !callWaveButton.activeInHierarchy;
     }
+    void ActivateInGameUI()
+    {
+
+    }
     /// <summary>
     /// Activates the game over panel
     /// </summary>
     public void ActivateGameOver()
     {
-        gameOverPanel.SetActive(true);
+        SwitchState(State.GameOver);
     }
-    /// <summary>
-    /// Deactivates the game over panel
-    /// </summary>
-    void DeactivateGameOver()
+    public void Restart()
     {
-        gameOverPanel.SetActive(false);
+        SwitchState(State.Playing);
     }
-
+    public void ActivateLevelSelect()
+    {
+        SwitchState(State.Loading);
+    }
+    public void ActivateMainMenu()
+    {
+        SwitchState(State.Menu);
+    }
 }

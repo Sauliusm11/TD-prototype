@@ -59,6 +59,7 @@ public class Lives : MonoBehaviour
     {
         if (livesDisplay == null)
         {
+            //TODO: This is a part of the start state switching race condition
             livesDisplay = GameObject.Find("LivesCount").GetComponent<TMP_Text>();
         }
         livesDisplay.text = lives.ToString();
