@@ -26,6 +26,10 @@ public class TowerMenuUpdater : MonoBehaviour
     GameObject upgrade1Button;
     [SerializeField]
     GameObject upgrade2Button;
+    [SerializeField]
+    GameObject confirmUpgrade1Button;
+    [SerializeField]
+    GameObject confirmUpgrade2Button;
     Button upgrade1SpriteRenderer;
     Button upgrade2SpriteRenderer;
     TowerContainer.Upgrade nextUpgrade;
@@ -107,5 +111,19 @@ public class TowerMenuUpdater : MonoBehaviour
         attackRangeText.text = "Attack range:" + tower.GetAttackRange().ToString();
         //Projectile speed is a hidden stat for now
 
+    }
+
+    public void ActivateUpgradeConfirmation()
+    {
+        confirmUpgrade1Button.SetActive(true);
+    }
+    public void ActivateAlternateUpgradeConfirmation()
+    {
+        confirmUpgrade2Button.SetActive(true);
+    }
+    public void CancelUpgradeConfirmation()
+    {
+        confirmUpgrade1Button.SetActive(false);
+        confirmUpgrade2Button.SetActive(false);
     }
 }

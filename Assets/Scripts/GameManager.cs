@@ -293,11 +293,24 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void DeactivateTowerMenu()
     {
+        towerMenuUpdater.CancelUpgradeConfirmation();
         towerMenuPanel.SetActive(false);
         if (currentUpgradeHandler != null)
         {
             currentUpgradeHandler.DisableRangeIndicator();
         }
+    }
+    public void ConfirmUpgrade()
+    {
+        currentUpgradeHandler.UpgradeTower(true);
+        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
+        CancelUpgrade();
+    }
+    public void ConfirmAlternateUpgrade()
+    {
+        currentUpgradeHandler.UpgradeTower(false);
+        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
+        CancelUpgrade();
     }
     /// <summary>
     /// Method called when clicking the regular upgrade button in the tower menu.
@@ -306,8 +319,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void UpgradeTower()
     {
-        currentUpgradeHandler.UpgradeTower(true);
-        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
+        CancelUpgrade();
+        towerMenuUpdater.ActivateUpgradeConfirmation();
     }
     /// <summary>
     /// Method called when clicking the alterante elite upgrade button in the tower menu.
@@ -316,8 +329,12 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void AlternateUpgradeTower()
     {
-        currentUpgradeHandler.UpgradeTower(false);
-        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
+        CancelUpgrade();
+        towerMenuUpdater.ActivateAlternateUpgradeConfirmation();
+    }
+    public void CancelUpgrade()
+    {
+        towerMenuUpdater.CancelUpgradeConfirmation();
     }
     /// <summary>
     /// Recieve the call from the wave handler and update the wave count text and hide the next wave button
