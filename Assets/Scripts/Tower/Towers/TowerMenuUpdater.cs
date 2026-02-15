@@ -105,25 +105,48 @@ public class TowerMenuUpdater : MonoBehaviour
             upgrade1Button.SetActive(false);
             upgrade2Button.SetActive(false);
         }
-
         attackDamageText.text = "Attack damage:" + tower.GetAttackDamage().ToString();
         attackSpeedText.text = "Fire rate:" + tower.GetAttackSpeed().ToString() + "/s";
         attackRangeText.text = "Attack range:" + tower.GetAttackRange().ToString();
         //Projectile speed is a hidden stat for now
 
+        if (confirmUpgrade1Button.activeInHierarchy)
+        {
+            float value = tower.GetUpgrade().attackDamage;
+            attackDamageText.text += (value > 0 ? "(+" : "(") + value + ")";
+            value = tower.GetUpgrade().attackSpeed;
+            attackSpeedText.text += (value > 0 ? "(+" : "(") + value + ")";
+            value = tower.GetUpgrade().attackRange;
+            attackRangeText.text += (value > 0 ? "(+" : "(") + value + ")";
+        }
+        if (confirmUpgrade2Button.activeInHierarchy)
+        {
+            float value = tower.GetSecondaryElite().attackDamage;
+            attackDamageText.text += (value > 0 ? "(+" : "(") + value + ")";
+            value = tower.GetSecondaryElite().attackSpeed;
+            attackSpeedText.text += (value > 0 ? "(+" : "(") + value + ")";
+            value = tower.GetSecondaryElite().attackRange;
+            attackRangeText.text += (value > 0 ? "(+" : "(") + value + ")";
+        }
     }
 
     public void ActivateUpgradeConfirmation()
     {
         confirmUpgrade1Button.SetActive(true);
+        UpdateTowerMenu(currentTower);
     }
     public void ActivateAlternateUpgradeConfirmation()
     {
         confirmUpgrade2Button.SetActive(true);
+        UpdateTowerMenu(currentTower);
     }
     public void CancelUpgradeConfirmation()
     {
         confirmUpgrade1Button.SetActive(false);
         confirmUpgrade2Button.SetActive(false);
+        if (currentTower != null)
+        {
+            UpdateTowerMenu(currentTower);
+        }
     }
 }

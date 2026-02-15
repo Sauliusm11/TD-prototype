@@ -309,7 +309,6 @@ public class GameManager : MonoBehaviour
     public void ConfirmAlternateUpgrade()
     {
         currentUpgradeHandler.UpgradeTower(false);
-        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
         CancelUpgrade();
     }
     /// <summary>
@@ -321,6 +320,7 @@ public class GameManager : MonoBehaviour
     {
         CancelUpgrade();
         towerMenuUpdater.ActivateUpgradeConfirmation();
+        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     /// <summary>
     /// Method called when clicking the alterante elite upgrade button in the tower menu.
