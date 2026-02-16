@@ -51,6 +51,7 @@ public abstract class ShootingHandler : MonoBehaviour
     private void OnDisable()
     {
         CancelInvoke();
+        shootingEnabled = false;
         TowerContainer towerContainer = TowerContainer.GetInstance();
         foreach (TowerContainer.Tower tower in towerContainer.towers)
         {

@@ -78,6 +78,7 @@ public class TowerPlacement : MonoBehaviour
                 if (tower != null && currentTower == null)//No ghost tower yet
                 {
                     currentTower = currentPooler.ActivateObject(position, new Quaternion());
+                    currentTower.GetComponent<ShootingHandler>().DisableTower();
                     currentTowerCellPosition = cellPosition;
                     Utility.SetParentAndChildrenColors(currentTower, partiallyTransparenent);
                     manager.ActivateTowerConfirmation(position);

@@ -40,6 +40,10 @@ abstract public class UpgradeHandler : MonoBehaviour
         pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
     }
+    private void OnDisable()
+    {
+        shootingEnabled = false;
+    }
 
     /// <summary>
     /// Activates the tower once it's purchase has been confirmed
@@ -197,6 +201,7 @@ abstract public class UpgradeHandler : MonoBehaviour
         Vector3Int cellPosition = tilemap.WorldToCell(gameObject.transform.position);
         pathfindingManager.RemoveTowerFromNode(cellPosition);
         shootingHandler.DisableTower();
+        shootingEnabled = false;
         currentPooler.DeactivateObject(gameObject);
     }
     /// <summary>
