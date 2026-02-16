@@ -48,8 +48,8 @@
       "attackSpeed": 0.5,
       "attackDamage": 200,
       "attackRange": 5,
-      "projectileSpeed": 500,
-      "cost": 100,
+      "projectileSpeed": 50,
+      "cost": 200,
       "maxTier": 3,
       "Upgrades": [
         {
