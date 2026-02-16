@@ -1,3 +1,4 @@
+using Assets.Scripts.Helpers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class PathfindingManager : MonoBehaviour
     WaveHandler waveHandler;
     EnemyPathFinding baseEnemyPathFinder;
     EnemyPathFinding noTerrainEnemyPathFinder;
+    PathPreviewDisplay pathPreview;
     Vector3Int tilesSize;
     TileContainer tileContainer;
     Node[] Nodes;
@@ -19,6 +21,7 @@ public class PathfindingManager : MonoBehaviour
     Node start;
     List<bool> PathfinderFlags = new List<bool>();
     private static object threadLock = new object();
+    bool isPreview;
 
     Tilemap tilemap;
     float xOffset;
@@ -34,6 +37,7 @@ public class PathfindingManager : MonoBehaviour
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
 
         tilemap = GameObject.Find("Grid").GetComponentInChildren<Tilemap>();
+        pathPreview = GameObject.Find("PathPreviewPanel").GetComponent<PathPreviewDisplay>();
     }
     /// <summary>
     /// Builds a 'graph' using the Node class from the tiles of the loaded level.
@@ -115,7 +119,28 @@ public class PathfindingManager : MonoBehaviour
     /// </summary>
     public void CallWave()
     {
+        StartCoroutine(CancelPathFinding());
+        isPreview = false;
+        StopCoroutine(PreparePathFinding());
         StartCoroutine(PreparePathFinding());
+    }
+    public void CalculatePreview()
+    {
+        StartCoroutine(CancelPathFinding());
+        isPreview = true;
+        StopCoroutine(PreparePathFinding());
+        pathPreview.ClearOutPreview();
+        StartCoroutine(PreparePathFinding());
+    }
+    public void CalculatePlacementPreview(Vector3Int position)
+    {
+        StartCoroutine(CancelPathFinding());
+        isPreview = true;
+        StopCoroutine(PreparePathFinding());
+        pathPreview.ClearOutPreview();
+        AddTowerToNode(position);
+        StartCoroutine(PreparePathFinding());
+        RemoveTowerFromNode(position);
     }
     /// <summary>
     /// Convert a Node from the grid system to the WorldNode
@@ -147,10 +172,13 @@ public class PathfindingManager : MonoBehaviour
                     break;
                 }
             }
-            if (goodToGo)
+            if (!isPreview && goodToGo)
             {
-                //Place wave starting call here
                 waveHandler.StartWave(start, xOffset, yOffset);
+            }
+            if (isPreview && goodToGo)
+            {
+                pathPreview.ShowPath();
             }
         }
     }
@@ -176,6 +204,12 @@ public class PathfindingManager : MonoBehaviour
         ResetFlags();
         StartCoroutine(baseEnemyPathFinder.CalculatePath(Nodes, start, target, tilesSize, 0));
         StartCoroutine(noTerrainEnemyPathFinder.CalculatePath(Nodes, start, target, tilesSize, 1));
+        yield return null;
+    }
+    IEnumerator CancelPathFinding()
+    {
+        StopCoroutine(nameof(baseEnemyPathFinder.CalculatePath));
+        StopCoroutine(nameof(noTerrainEnemyPathFinder.CalculatePath));
         yield return null;
     }
 }

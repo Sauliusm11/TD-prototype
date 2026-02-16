@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     Money moneyHandler;
     Lives livesHandler;
     CleanUp objectCleaner;
+    GameObject pathPreview;
+    PathfindingManager pathfindingManager;
     string currentLevelName;
 
     UpgradeHandler currentUpgradeHandler;
@@ -59,10 +61,12 @@ public class GameManager : MonoBehaviour
         waveHandler = GameObject.Find("WaveManager").GetComponent<WaveHandler>();
         moneyHandler = GameObject.Find("MoneyHandler").GetComponent<Money>();
         livesHandler = GameObject.Find("LivesHandler").GetComponent<Lives>();
+        pathfindingManager = GameObject.Find("PathFindingManager").GetComponent<PathfindingManager>();
         saveFileInputField = saveConfirmPanel.GetComponentInChildren<TMP_InputField>();
         loadFileInputField = loadConfirmPanel.GetComponentInChildren<TMP_InputField>();
         objectCleaner = GameObject.Find("ObjectPoolers").GetComponent<CleanUp>();
         waveCountText = GameObject.Find("WaveCount").GetComponent<TMP_Text>();
+        pathPreview = GameObject.Find("PathPreviewPanel");
         //TODO: Techincally could cause problems if others don't pick up the ui objects before this happens
         SwitchState(State.Loading);
         selectedTile = null;
@@ -196,7 +200,7 @@ public class GameManager : MonoBehaviour
         currentLevelName = filename;
         parser.LoadLevelTiles(filename);
         waveHandler.LoadWaves(filename);
-
+        pathfindingManager.CalculatePreview();
         SwitchState(State.Playing);
     }
     /// <summary>
@@ -347,6 +351,7 @@ public class GameManager : MonoBehaviour
         callWaveButton.SetActive(false);
         buildPhaseTextObject.SetActive(false);
         CancelTowerPlacement();
+        pathPreview.SetActive(false);
     }
     /// <summary>
     /// Recieve the call about the wave ending and reactivate the next wave button
@@ -355,6 +360,7 @@ public class GameManager : MonoBehaviour
     {
         callWaveButton.SetActive(true);
         buildPhaseTextObject.SetActive(true);
+        pathPreview.SetActive(true);
     }
     public bool IsWaveActive()
     {

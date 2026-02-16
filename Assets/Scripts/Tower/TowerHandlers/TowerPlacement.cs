@@ -108,6 +108,7 @@ public class TowerPlacement : MonoBehaviour
                         }
                     }
                 }
+                pathfindingManager.CalculatePlacementPreview(cellPosition);
             }
         }
     }
@@ -180,6 +181,7 @@ public class TowerPlacement : MonoBehaviour
             manager.SetSelectedTower(null);
             towerSelectionHandler.DeactivateSelectionHighlighter();
             ResetPlacementRotation();
+            pathfindingManager.CalculatePreview();
         }
     }
 
