@@ -1,4 +1,5 @@
 using Assets.Scripts.Enemy;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Class for the basic movement enemy type
 /// </summary>
-public abstract class BaseEnemy : MonoBehaviour
+public abstract class BaseEnemy : MonoBehaviour, IComparable<BaseEnemy>
 {
     Money moneyHandler;
     Lives livesHandler;
@@ -105,6 +106,10 @@ public abstract class BaseEnemy : MonoBehaviour
         }
         return path.Count + 1;
     }
+    public float GetHealth()
+    {
+        return currentHealth;
+    }
     /// <summary>
     /// Damage the enemy and do enemy death related checks
     /// </summary>
@@ -143,6 +148,11 @@ public abstract class BaseEnemy : MonoBehaviour
         enemyPooler.DeactivateObject(gameObject);
     }
     protected abstract float GetMoveSpeed(WorldNode node, float walkingSpeed);
+    public int CompareTo(BaseEnemy other)
+    {
+        return GetProgress().CompareTo(other.GetProgress());
+    }
+
     /// <summary>
     /// Move the enemy one tile at a time along the path
     /// </summary>

@@ -23,6 +23,8 @@ public class TowerMenuUpdater : MonoBehaviour
     [SerializeField]
     TMP_Text upgrade2ButtonText;
     [SerializeField]
+    TMP_Text targetingTypeText;
+    [SerializeField]
     GameObject upgrade1Button;
     [SerializeField]
     GameObject upgrade2Button;
@@ -30,6 +32,10 @@ public class TowerMenuUpdater : MonoBehaviour
     GameObject confirmUpgrade1Button;
     [SerializeField]
     GameObject confirmUpgrade2Button;
+    [SerializeField]
+    GameObject changeTargetingLeftButton;
+    [SerializeField]
+    GameObject changeTargetingRightButton;
     Button upgrade1SpriteRenderer;
     Button upgrade2SpriteRenderer;
     TowerContainer.Upgrade nextUpgrade;
@@ -80,7 +86,7 @@ public class TowerMenuUpdater : MonoBehaviour
         towerNameText.text = tower.name[..^cloneTextLength];
         sellPriceText.text = "Sell for: " + tower.GetSellCost().ToString();
         nextUpgrade = tower.GetUpgrade();
-
+        UpdateTargetingTypeText(tower);
         //Upgrade button handling
         if (nextUpgrade.tier != -1)
         {
@@ -148,5 +154,21 @@ public class TowerMenuUpdater : MonoBehaviour
         {
             UpdateTowerMenu(currentTower);
         }
+    }
+    private void UpdateTargetingTypeText(UpgradeHandler tower)
+    {
+        ShootingHandler shootingHandler = tower.gameObject.GetComponent<ShootingHandler>();
+        GameManager.TargetingType targetingType = shootingHandler.GetTargetingType();
+        if (targetingType == GameManager.TargetingType.Area)
+        {
+            changeTargetingLeftButton.SetActive(false);
+            changeTargetingRightButton.SetActive(false);
+        }
+        else
+        {
+            changeTargetingLeftButton.SetActive(true);
+            changeTargetingRightButton.SetActive(true);
+        }
+        targetingTypeText.text = targetingType.ToString();
     }
 }

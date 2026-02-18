@@ -35,6 +35,15 @@ namespace Assets.Scripts.Tower.Towers
             }
         }
 
+        public override GameManager.TargetingType GetTargetingType()
+        {
+            return GameManager.TargetingType.Area;
+        }
+        public override void SetTargetingType(GameManager.TargetingType newTargetingType)
+        {
+            //Area does not have targeting type changing
+        }
+
         IEnumerator DisableFireIndicator(float waitTime)
         {
             yield return new WaitForSeconds(waitTime);

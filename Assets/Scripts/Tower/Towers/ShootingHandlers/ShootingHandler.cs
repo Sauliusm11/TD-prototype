@@ -93,6 +93,9 @@ public abstract class ShootingHandler : MonoBehaviour
     /// </summary>
     public abstract void AimAtTarget();
 
+    public abstract GameManager.TargetingType GetTargetingType();
+    public abstract void SetTargetingType(GameManager.TargetingType newTargetingType);
+
     /// <summary>
     /// Activates the tower once it's purchase has been confirmed
     /// </summary>

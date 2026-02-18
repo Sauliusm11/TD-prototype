@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     public enum State { Saving, Loading, Playing, GameOver, Menu };
     State currentState;
+    public enum TargetingType { First, Last, Strong, Weak, Area };
     [SerializeField]
     GameObject saveConfirmPanel;
     [SerializeField]
@@ -339,6 +340,33 @@ public class GameManager : MonoBehaviour
     public void CancelUpgrade()
     {
         towerMenuUpdater.CancelUpgradeConfirmation();
+    }
+    public void CycleTargetingLeft()
+    {
+        CycleTageting(true);
+    }
+    public void CycleTargetingRight()
+    {
+        CycleTageting(false);
+    }
+    void CycleTageting(bool left)
+    {
+        ShootingHandler shootingHandler = currentUpgradeHandler.gameObject.GetComponent<ShootingHandler>();
+        TargetingType targetingType = shootingHandler.GetTargetingType();
+        if (targetingType != TargetingType.Area)
+        {
+            targetingType += left ? -1 : 1;
+            if (targetingType == TargetingType.Area)
+            {
+                targetingType = TargetingType.First;
+            }
+            if (((int)targetingType) == -1)
+            {
+                targetingType = TargetingType.Weak;
+            }
+        }
+        shootingHandler.SetTargetingType(targetingType);
+        towerMenuUpdater.UpdateTowerMenu(currentUpgradeHandler);
     }
     /// <summary>
     /// Recieve the call from the wave handler and update the wave count text and hide the next wave button
